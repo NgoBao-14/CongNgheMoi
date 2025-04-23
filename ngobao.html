@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Tài Xỉu Sóc Đĩa</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+
+  <div class="bg-white shadow-lg rounded-xl p-6 w-[400px]">
+    <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">🎲 Tài Xỉu Sóc Đĩa</h1>
+
+    <div class="mb-4">
+      <div class="flex justify-between mb-2">
+        <span>Số dư:</span>
+        <span id="balance" class="font-semibold text-green-600">10000</span>
+      </div>
+      <input type="number" id="bet" class="w-full border rounded px-3 py-2" placeholder="Nhập số tiền cược" value="1000" min="100">
+    </div>
+
+    <div class="flex justify-center space-x-4 mb-6">
+      <button onclick="play('Tài')" class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-lg">Chọn Tài</button>
+      <button onclick="play('Xỉu')" class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg">Chọn Xỉu</button>
+    </div>
+
+    <div class="text-center text-lg font-medium text-gray-700 mb-2">🎲 Xúc xắc:</div>
+    <div id="dice" class="flex justify-center space-x-4 text-3xl mb-4">
+      <span id="dice1">🎲</span>
+      <span id="dice2">🎲</span>
+      <span id="dice3">🎲</span>
+    </div>
+
+    <div id="result" class="text-center text-xl font-bold text-purple-700 mt-4"></div>
+  </div>
+
+  <script>
+    let balance = 10000;
+    const diceEls = [document.getElementById('dice1'), document.getElementById('dice2'), document.getElementById('dice3')];
+    const balanceEl = document.getElementById('balance');
+    const resultEl = document.getElementById('result');
+
+    function rollDiceAnimation(diceEl, finalValue, delay) {
+      return new Promise(resolve => {
+        let count = 0;
+        const interval = setInterval(() => {
+          const val = Math.floor(Math.random() * 6) + 1;
+          diceEl.textContent = getDiceEmoji(val);
+          count++;
+          if (count > delay / 100) {
+            clearInterval(interval);
+            diceEl.textContent = getDiceEmoji(finalValue);
+            resolve(finalValue);
+          }
+        }, 100);
+      });
+    }
+
+    function getDiceEmoji(num) {
+      const diceMap = ['⚀','⚁','⚂','⚃','⚄','⚅'];
+      return diceMap[num - 1];
+    }
+
+    async function play(choice) {
+      const bet = parseInt(document.getElementById("bet").value);
+      if (isNaN(bet) || bet <= 0) {
+        alert("Vui lòng nhập số tiền hợp lệ!");
+        return;
+      }
+      if (bet > balance) {
+        alert("Không đủ tiền!");
+        return;
+      }
+
+      resultEl.textContent = "Đang sóc đĩa... 🎲";
+      
+      // Xúc xắc kết quả
+      const values = [
+        Math.floor(Math.random() * 6) + 1,
+        Math.floor(Math.random() * 6) + 1,
+        Math.floor(Math.random() * 6) + 1
+      ];
+      const total = values.reduce((a, b) => a + b, 0);
+      const isTai = total >= 11 && total <= 17;
+      const result = isTai ? 'Tài' : 'Xỉu';
+
+      // Xoay xúc xắc (giả lập lắc xúc xắc)
+      await Promise.all([
+        rollDiceAnimation(diceEls[0], values[0], 1000),
+        rollDiceAnimation(diceEls[1], values[1], 1200),
+        rollDiceAnimation(diceEls[2], values[2], 1400),
+      ]);
+
+      // Kết quả và xử lý tiền
+      let msg = `Tổng: ${total} ⇒ ${result}`;
+      if (choice === result) {
+        balance += bet;
+        msg += " ✅ Bạn thắng!";
+      } else {
+        balance -= bet;
+        msg += " ❌ Bạn thua!";
+      }
+
+      balanceEl.textContent = balance;
+      resultEl.textContent = msg;
+    }
+  </script>
+
+</body>
+</html>
