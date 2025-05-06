@@ -1,17 +1,16 @@
 <?php
-//Đừng có đụng dô đụng dô không cần thay đổi gì hết
 class DB{
     //đừng thay đổi gì hết
-    public $con;
+    public $connect;
     protected $servername = "localhost";
     protected $username = "bao";
     protected $password = "123456";
     protected $dbname = "thongtinmay";
 
     function __construct(){
-        $this->con = mysqli_connect($this->servername, $this->username, $this->password);
-        mysqli_select_db($this->con, $this->dbname);
-        mysqli_query($this->con, "SET NAMES 'utf8'");
+        $this->connect = mysqli_connect($this->servername, $this->username, $this->password);
+        mysqli_select_db($this->connect, $this->dbname);
+        mysqli_query($this->connect, "SET NAMES 'utf8'");
     }
 }
 

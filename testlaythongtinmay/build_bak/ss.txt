@@ -1,0 +1,1 @@
+jpackage --type exe --input . --name NhapDiem --main-jar testlaythongtinmay.jar --main-class testlaythongtinmay.Testlaythongtinmay --java-options "-Dfile.encoding=UTF-8" --win-console

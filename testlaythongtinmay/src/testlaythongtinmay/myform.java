@@ -303,9 +303,14 @@ public class myform extends javax.swing.JFrame {
             column.add("Tên Đề tài");
             column.add("Trạng thái");
             column.add("Nhóm");
-            DefaultTableModel model = new DefaultTableModel(datalist,column);
-            tbl_detai.setModel(model);
-            customTableUI();
+            DefaultTableModel model = new DefaultTableModel(datalist, column) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        tbl_detai.setModel(model);
+        customTableUI();
 
         }catch (Exception e)
         {
@@ -344,7 +349,12 @@ public class myform extends javax.swing.JFrame {
             column.add("Tên");
             column.add("Lớp");
             column.add("Điểm");
-            DefaultTableModel model = new DefaultTableModel(datalist,column);
+            DefaultTableModel model = new DefaultTableModel(datalist,column){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                    return column != 0 && column != 1 && column != 2 && column != 3 && column != 4;
+            }
+            };
             tbl_sinhvien.setModel(model);
             customTableUI();
 
