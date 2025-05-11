@@ -1,0 +1,190 @@
+/* Thiết lập biến CSS */
+:root {
+    --sidebar-width: 250px; /* Chiều rộng sidebar */
+    --sidebar-bg: #343a40; /* Màu nền sidebar */
+    --sidebar-color: #c2c7d0; /* Màu chữ sidebar */
+    --sidebar-hover: rgba(255, 255, 255, 0.1); /* Màu hover sidebar */
+    --header-height: 57px; /* Chiều cao header */
+    --box-border-radius: 12px; /* Tăng độ bo góc cho các ô thông tin */
+    --box-transition: all 0.3s ease; /* Hiệu ứng chuyển động mượt mà */
+    --box-hover-transform: translateY(-5px); /* Hiệu ứng nổi lên khi hover */
+    --box-hover-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Bóng đổ khi hover */
+  }
+  
+  /* Thiết lập cơ bản cho body */
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  /* Thiết lập chiều rộng cố định cho sidebar */
+  .main-sidebar {
+    width: var(--sidebar-width) !important;
+    min-width: var(--sidebar-width) !important;
+    max-width: var(--sidebar-width) !important;
+  }
+  
+  /* Điều chỉnh margin cho phần nội dung */
+  .content-wrapper {
+    margin-left: var(--sidebar-width) !important;
+  }
+  
+  /* Định dạng text trong sidebar */
+  .main-sidebar .nav-link p {
+    margin-left: 10px; /* Thêm khoảng cách giữa icon và text */
+    text-align: left; /* Căn trái thay vì căn giữa */
+    font-weight: bold;
+    font-size: 16px;
+    display: inline-block; /* Hiển thị inline với icon */
+  }
+  
+  /* Định dạng biểu tượng trong sidebar */
+  .main-sidebar .nav-icon {
+    margin-right: 5px;
+    display: inline-block; /* Hiển thị inline với text */
+    text-align: center;
+    width: 20px; /* Giảm chiều rộng icon */
+    font-size: 1.25rem;
+    margin-bottom: 0; /* Bỏ margin bottom */
+  }
+  
+  /* Hiển thị text của logo */
+  .brand-text {
+    display: inline-block; /* Hiển thị text logo */
+    margin-left: 10px;
+  }
+  
+  /* Căn trái logo */
+  .brand-link {
+    text-align: left;
+    padding: 15px;
+  }
+  
+  /* Điều chỉnh hình ảnh logo */
+  .brand-image {
+    float: left !important; /* Cho phép logo float bên trái */
+    margin-right: 10px !important;
+    max-height: 33px;
+  }
+  
+  /* Căn trái avatar người dùng */
+  .user-panel {
+    text-align: left;
+    display: flex !important;
+  }
+  
+  .user-panel .image {
+    float: left;
+    padding-left: 10px;
+    display: inline-block;
+    margin: 0;
+  }
+  
+  /* Điều chỉnh thông tin người dùng */
+  .user-panel .info {
+    padding: 0 10px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Định dạng các mục menu trong sidebar */
+  .nav-sidebar .nav-item {
+    margin-bottom: 5px;
+  }
+  
+  .nav-sidebar .nav-link {
+    text-align: left;
+    padding: 12px 15px;
+    border-radius: 4px; 
+    margin: 0 5px;
+    transition: all 0.3s;
+  }
+  
+  /* Hiệu ứng hover cho các mục menu */
+  .nav-sidebar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Định dạng mục menu đang active */
+  .nav-sidebar .nav-link.active {
+    background-color: #007bff;
+  }
+  
+  /* Hiển thị ô tìm kiếm trong sidebar */
+  .sidebar .form-inline {
+    display: block;
+    padding: 10px;
+  }
+  
+  /* Định dạng các ô thông tin */
+  .info-box {
+    border-radius: var(--box-border-radius); /* Tăng độ bo góc */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bóng đổ ban đầu */
+    padding: 1.5rem;
+    position: relative;
+    color: white;
+    height: 100%;
+    transition: var(--box-transition); /* Thêm hiệu ứng chuyển động */
+    cursor: pointer; /* Thêm con trỏ pointer khi hover */
+    overflow: hidden; /* Đảm bảo nội dung không tràn ra ngoài khi bo góc */
+  }
+  
+  /* Hiệu ứng hover cho các ô thông tin */
+  .info-box:hover {
+    transform: var(--box-hover-transform); /* Hiệu ứng nổi lên */
+    box-shadow: var(--box-hover-shadow); /* Tăng bóng đổ khi hover */
+  }
+  
+  /* Định dạng số trong ô thông tin */
+  .info-box-number {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Định dạng text trong ô thông tin */
+  .info-box-text {
+    font-size: 1rem;
+  }
+  
+  /* Định dạng biểu tượng trong ô thông tin */
+  .info-box-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 2rem;
+    opacity: 0.3;
+  }
+  
+  /* Hiệu ứng cho link "More info" */
+  .info-box a {
+    transition: var(--box-transition);
+  }
+  
+  .info-box:hover a {
+    text-decoration: underline;
+  }
+  
+  /* Responsive cho màn hình nhỏ */
+  @media (max-width: 768px) {
+    .content-wrapper {
+      margin-left: 0 !important;
+    }
+  
+    .main-sidebar {
+      margin-left: -250px; /* Cập nhật giá trị này từ -80px thành -250px */
+    }
+  
+    .sidebar-open .main-sidebar {
+      margin-left: 0;
+    }
+  }
+  .bg-blue {
+    background-color: rgb(202, 233, 253);
+  }
+  

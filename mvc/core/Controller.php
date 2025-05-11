@@ -3,7 +3,7 @@
 class Controller{
 
     public function model($model){
-        require_once "./mvc/models/".$model.".php";
+        require_once "./mvc/model/".$model.".php";
         return new $model;
     }
 
