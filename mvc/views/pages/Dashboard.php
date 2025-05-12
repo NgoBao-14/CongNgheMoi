@@ -2,8 +2,98 @@
     $dt = json_decode($data['khoa'], true);
     $detaikhoa = json_decode($data['detaikhoa'], true);
 ?>
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="#" class="brand-link">
+      <img src="https://adminlte.io/themes/v3/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">Quản lý khóa luận</span>
+    </a>
 
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="https://adminlte.io/themes/v3/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+          <a href="#" class="d-block">Admin</a>
+        </div>
+      </div>
 
+      <!-- SidebarSearch Form -->
+      <div class="form-inline">
+        <div class="input-group" data-widget="sidebar-search">
+          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-sidebar">
+              <i class="fas fa-search fa-fw"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+<!-- Sidebar Menu -->
+<nav class="mt-2">
+  <ul class="nav nav-pills nav-sidebar flex-column" role="menu">
+    <!-- Bảng điều khiển -->
+    <li class="nav-item">
+      <a href="/CongNgheMoi/Admin/" class="nav-link active">
+        <i class="nav-icon fas fa-tachometer-alt"></i>
+        <p>Dashboard</p>
+      </a>
+    </li>
+    
+    <!-- Danh sách đăng ký -->
+    <li class="nav-item">
+      <a href="/CongNgheMoi/Admin/DSDeTai" class="nav-link">
+        <i class="nav-icon fas fa-clipboard-list"></i>
+        <p>Danh sách đề tài</p>
+      </a>
+    </li>
+    
+    <!-- Sinh viên -->
+    <li class="nav-item">
+      <a href="/CongNgheMoi/Admin/QuanLySV" class="nav-link">
+        <i class="nav-icon fas fa-user-graduate"></i>
+        <p>Quản lý sinh viên</p>
+      </a>
+    </li>
+    
+    <!-- Giáo viên -->
+    <li class="nav-item">
+      <a href="/CongNgheMoi/Admin/QuanLyGV" class="nav-link">
+        <i class="nav-icon fas fa-chalkboard-teacher"></i>
+        <p>Quản lý giảng viên</p>
+      </a>
+    </li>
+    
+    
+    <!-- Quản lý hội đồng -->
+    <li class="nav-item">
+      <a href="/CongNgheMoi/Admin/QuanLyNhom" class="nav-link">
+        <i class="nav-icon fas fa-users"></i>
+        <p>Quản lý nhóm sinh viên</p>
+      </a>
+    </li>
+    
+    
+    
+    <!-- Cài đặt hệ thống -->
+    <li class="nav-item">
+      <a href="#" class="nav-link">
+        <i class="nav-icon fas fa-cog"></i>
+        <p>Cài đặt hệ thống</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
 <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
@@ -249,3 +339,6 @@
         </div>
       </div>
     </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->

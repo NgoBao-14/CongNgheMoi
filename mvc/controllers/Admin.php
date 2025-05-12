@@ -27,6 +27,34 @@
                 "detaikhoa" => $detaikhoa,
             ]);
         }
+        public function QuanLySV()
+        {
+            $admin = $this->model("mAdmin");
+            $khoa = $admin->GetKhoa();
+            $sinhvien = $admin->GetThongTinSV();
+            if(isset($_POST['btnLoc']))
+            {
+                $id = $_POST['loc'];
+                $sinhvien = $admin->GetThongTinSVTheoKhoa($id);
+            }
+            
+            $this->view("layoutadmin", [
+                "Page" => "QuanLySV",
+                "khoa" => $khoa,
+                "sinhvien" => $sinhvien,
+            ]);
+        }
+        function CapNhatSV()
+        {
+            $admin = $this->model("mAdmin");
+            $id = $_REQUEST['id'];
+            $this->view("layoutadmin", [
+                "Page" => "CapNhatSV",
+                "id" => $id,
+                // "sinhvien" => $admin->GetThongTinSV(),
+                // "khoa" => $admin->GetKhoa(),
+            ]);
+        }
     }
 
 ?>

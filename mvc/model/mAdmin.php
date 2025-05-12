@@ -70,5 +70,25 @@
         }
         return json_encode($data);
        }
+       public function GetThongTinSV()
+       {
+        $str = "SELECT * FROM user u JOIN sinhvien sv ON u.iduser=sv.iduser join chuyennganh cn on u.IDNganh=cn.IDNganh"; 
+        $result = $this->connect->query($str);
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        return json_encode($data);
+       }
+       public function GetThongTinSVTheoKhoa($id)
+       {
+        $str = "SELECT * FROM user u JOIN sinhvien sv ON u.iduser=sv.iduser join chuyennganh cn on u.IDNganh=cn.IDNganh WHERE cn.IDNganh = $id"; 
+        $result = $this->connect->query($str);
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        return json_encode($data);
+       }
     }
 ?>
