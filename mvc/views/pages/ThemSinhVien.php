@@ -1,8 +1,10 @@
 <?php
+  $year = date('Y'); // Lấy năm hiện tạ
+  $prefix = substr($year, -2);
+  $random = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
+  $masv =  $prefix.$random;
 
-  $sinhvien = json_decode($data["sinhvien"], true);
-  $dt = json_decode($data["khoa"], true);
-  $nhom = json_decode($data["nhom"], true);
+  $dt = json_decode($data['khoa'], true);
 ?>
 
 
@@ -209,41 +211,32 @@
                         <i class="fas fa-exclamation-circle me-2"></i>Vui lòng điền đầy đủ thông tin!
                     </div>
                     
-                    <form id="studentForm" action="" method="post">
+                    <form id="studentForm" action="" method="POST">
                         <div class="row">
                             <!-- Cột bên trái -->
-                            <div class="col-md-6">   
-                                <?php
-                                foreach ($sinhvien as $sv) :
-                                    $mssv = $sv['MaSV'];
-                                    $hoDem = $sv['HoDem'];
-                                    $ten = $sv['Ten'];
-                                    $lop = $sv['Lop'];
-                                    $stt = $sv['SDT'];
-                                    $email = $sv['Email'];
-                                    $chuyenNganh = $sv['ChuyenNganh'];
-                                ?>
+                            <div class="col-md-6">
+                                
                                 <div class="form-floating">
                                     <label for="mssv">MSSV</label>
-                                    <input type="text" class="form-control" id="mssv" value="<?php echo $mssv?>" placeholder="MSSV" readonly>
+                                    <input type="text" name="masv" class="form-control" id="mssv" value="<?php echo $masv?>" placeholder="MSSV" readonly>
                                    
                                 </div>
                                 
                                 <div class="form-floating">
                                   <label for="hoDem">Họ đệm</label>
-                                    <input type="text" name="hodem" class="form-control" id="hoDem" value="<?php echo $hoDem?>" placeholder="Họ đệm">
+                                    <input type="text" name="hodem" class="form-control" id="hoDem"  placeholder="Họ đệm">
                                     
                                 </div>
 
                                 <div class="form-floating">
                                     <label for="stt">Số điện thoại</label>
-                                    <input type="text" name="sdt" class="form-control" id="sdt" value="<?php echo $stt?>" placeholder="Số điện thoại">
+                                    <input type="text" name="sdt" class="form-control" id="stt"  placeholder="Số điện thoại">
                                     
                                 </div>
 
                                 <div class="form-floating">
                                     <label for="stt">Email</label>
-                                    <input type="text" name="email" class="form-control" id="stt" value="<?php echo $email?>" placeholder="Email">
+                                    <input type="text" name="email" class="form-control" id="stt"  placeholder="Email">
                                     
                                 </div>
                             </div>
@@ -252,23 +245,21 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <label for="ten">Tên</label>
-                                    <input type="text" name="ten" class="form-control" id="ten" value="<?php echo $ten?>" placeholder="Tên">
-                                   
+                                    <input type="text" name="ten" class="form-control" id="ten"  placeholder="Tên">
                                 </div>
                                 
                                 <div class="form-floating">
                                     <label for="lop">Lớp</label>
-                                    <input type="text" name="lop" class="form-control" id="lop" value="<?php echo $lop?>" placeholder="Lớp">
-                                    
+                                    <input type="text" name="lop" class="form-control" id="lop"  placeholder="Lớp">   
                                 </div>
                                 
                                 <div class="form-floating">
                                   <label for="chuyenNganh">Chuyên Ngành</label>
                                     <select name="chuyennganh" class="form-control" style="min-width: 150px;">
-                                          <option value="cn.IDNganh" disabled>Chuyên ngành</option>
+                                          <option value="cn.IDNganh">Chuyên ngành</option>
                                           <?php
                                           foreach ($dt as $khoa):
-                                          echo '<option value="'.$khoa['IDNganh'].'" '.($sv['IDNganh'] == $khoa['IDNganh'] ? 'selected' : '').'>'.$khoa['ChuyenNganh'].'</option>';
+                                          echo '<option value="'.$khoa['IDNganh'].'">'.$khoa['ChuyenNganh'].'</option>';
                                           endforeach;
                                           ?>
                                     </select>
@@ -277,25 +268,23 @@
 
                                 <div class="form-floating">
                                     <label for="Nhom">Nhóm</label>
-                                    <select name="idnhom" class="form-control" style="min-width: 150px;">
+                                    <select name="nhom" class="form-control" style="min-width: 150px;" readonly>
                                           <option value="cn.IDNganh" disabled>Nhóm</option>
                                           <?php
                                           foreach ($nhom as $idnhom):
-                                          echo '<option value="'.$idnhom['IDNhom'].'" '.($sv['IDNhom'] == $idnhom['IDNhom'] ? 'selected' : '').'>'.$idnhom['IDNhom'].'</option>';
+                                          echo '<option value="'.$idnhom['IDNhom'].'">'.$idnhom['IDNhom'].'</option>';
                                           endforeach;
                                           ?>
                                     </select>
                                 </div>
-                                  <?php
-                                    endforeach; 
-                                  ?>
+
                                 
                             </div>
                         </div>
                         
                         <div class="form-footer text-center">
-                            <button type="submit" name="btn_CapNhat" class="btn btn-primary btn-lg px-5 me-3">
-                                <i class="fas fa-check me-2"></i> Xác nhận
+                            <button type="submit" name="btn_them" class="btn btn-primary btn-lg px-5 me-3">
+                                <i class="fas fa-check me-2"></i> Thêm
                             </button>
                             <button type="button" id="cancelBtn" class="btn btn-outline-secondary btn-lg px-5">
                                 <i class="fas fa-times me-2"></i> Hủy
@@ -327,7 +316,56 @@
             const successMessage = document.getElementById('successMessage');
             const errorMessage = document.getElementById('errorMessage');
             
-            
+            // // Form submission
+            // studentForm.addEventListener('submit', function(e) {
+            //     e.preventDefault();
+                
+            //     // Get all input fields
+            //     const stt = document.getElementById('stt').value;
+            //     const mssv = document.getElementById('mssv').value;
+            //     const hoDem = document.getElementById('hoDem').value;
+            //     const ten = document.getElementById('ten').value;
+            //     const lop = document.getElementById('lop').value;
+            //     const chuyenNganh = document.getElementById('chuyenNganh').value;
+                
+            //     // Simple validation
+            //     if (!stt || !mssv || !hoDem || !ten || !lop || !chuyenNganh) {
+            //         errorMessage.style.display = 'block';
+            //         successMessage.style.display = 'none';
+                    
+            //         // Hide error message after 3 seconds
+            //         setTimeout(() => {
+            //             errorMessage.style.display = 'none';
+            //         }, 3000);
+                    
+            //         return;
+            //     }
+                
+            //     // Form data object
+            //     const formData = {
+            //         stt,
+            //         mssv,
+            //         hoDem,
+            //         ten,
+            //         lop,
+            //         chuyenNganh
+            //     };
+                
+                // Log form data (in a real application, you would send this to a server)
+                console.log('Form submitted:', formData);
+                
+                // Show success message
+                successMessage.style.display = 'block';
+                errorMessage.style.display = 'none';
+                
+                // Hide success message after 3 seconds
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 3000);
+                
+                // Reset form
+                studentForm.reset();
+            });
             
             // Cancel button
             cancelBtn.addEventListener('click', function() {
@@ -348,5 +386,23 @@
                     this.parentElement.style.transform = 'translateY(0)';
                 });
             });
-        });
+        // });
     </script>
+    <?php
+      if (isset ($data['rs']))
+      {
+          if($data["rs"]== 'true')
+          {
+              echo'<script language="javascript">
+                    alert("Thêm sinh viên thành công");	
+                    </script>';
+              header("location: QuanLySV");
+          }
+          else
+          {
+              echo'<script language="javascript">
+                    alert("Thêm sinh viên thất bại");	
+                    </script>';
+          }
+      }
+    ?>

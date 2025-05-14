@@ -117,6 +117,7 @@
               <div class="card-header d-flex justify-content-between align-items-center">
                 <div class="flex-grow-1">
                   <h3 class="card-title mb-0">Danh sách sinh viên</h3>
+                  <a href="/CongNgheMoi/Admin/ThemSinhVien" class="btn btn-primary btn-sm" style="margin-left: 20px;">Thêm Sinh Viên</a>
                 </div>
                 <div class="d-flex align-items-center">
                 <form action="/CongNgheMoi/Admin/QuanLySV" method="POST">
@@ -159,7 +160,7 @@
                     <td>'.$index["ChuyenNganh"].'</td>
                     <td>
                       <a href="/CongNgheMoi/Admin/CapNhatSV?id='.$index["iduser"].'" class="btn btn-primary btn-sm">Cập nhật</a>
-                      <a href="/CongNgheMoi/Admin/XoaSV/'.$index["MaSV"].'" class="btn btn-danger btn-sm">Xóa</a>
+                      <a href="/CongNgheMoi/mvc/api/xoasinhvien.php?id='.$index["iduser"].'" onclick="return confirm(\'Bạn có chắc chắn muốn xóa sinh viên này không?\')" class="btn btn-danger btn-sm">Xóa</a>
                   </tr>';
                   $dem++;
                   endforeach;
