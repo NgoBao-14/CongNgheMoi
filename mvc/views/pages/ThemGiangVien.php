@@ -133,7 +133,7 @@
     
     <!-- Sinh viên -->
     <li class="nav-item">
-      <a href="/CongNgheMoi/Admin/QuanLySV" class="nav-link active">
+      <a href="/CongNgheMoi/Admin/QuanLySV" class="nav-link ">
         <i class="nav-icon fas fa-user-graduate"></i>
         <p>Quản lý sinh viên</p>
       </a>
@@ -141,7 +141,7 @@
     
     <!-- Giáo viên -->
     <li class="nav-item">
-      <a href="/CongNgheMoi/Admin/QuanLyGV" class="nav-link">
+      <a href="/CongNgheMoi/Admin/QuanLyGV" class="nav-link active">
         <i class="nav-icon fas fa-chalkboard-teacher"></i>
         <p>Quản lý giảng viên</p>
       </a>
@@ -217,8 +217,8 @@
                             <div class="col-md-6">
                                 
                                 <div class="form-floating">
-                                    <label for="mssv">MSSV</label>
-                                    <input type="text" name="masv" class="form-control" id="mssv" value="<?php echo $masv?>" placeholder="MSSV" readonly>
+                                    <label for="mssv">MSGV</label>
+                                    <input type="text" name="msgv" class="form-control" id="mssv" value="<?php echo $masv?>" placeholder="MSSV" readonly>
                                    
                                 </div>
                                 
@@ -234,11 +234,7 @@
                                     
                                 </div>
 
-                                <div class="form-floating">
-                                    <label for="stt">Email</label>
-                                    <input type="text" name="email" class="form-control" id="stt"  placeholder="Email">
-                                    
-                                </div>
+                                
                             </div>
                             
                             <!-- Cột bên phải -->
@@ -248,10 +244,7 @@
                                     <input type="text" name="ten" class="form-control" id="ten"  placeholder="Tên">
                                 </div>
                                 
-                                <div class="form-floating">
-                                    <label for="lop">Lớp</label>
-                                    <input type="text" name="lop" class="form-control" id="lop"  placeholder="Lớp">   
-                                </div>
+                                
                                 
                                 <div class="form-floating">
                                   <label for="chuyenNganh">Chuyên Ngành</label>
@@ -267,15 +260,9 @@
                                 </div>
 
                                 <div class="form-floating">
-                                    <label for="Nhom">Nhóm</label>
-                                    <select name="nhom" class="form-control" style="min-width: 150px;" readonly>
-                                          <option value="cn.IDNganh" disabled>Nhóm</option>
-                                          <?php
-                                          foreach ($nhom as $idnhom):
-                                          echo '<option value="'.$idnhom['IDNhom'].'">'.$idnhom['IDNhom'].'</option>';
-                                          endforeach;
-                                          ?>
-                                    </select>
+                                    <label for="stt">Email</label>
+                                    <input type="text" name="email" class="form-control" id="stt"  placeholder="Email">
+                                    
                                 </div>
 
                                 
@@ -394,14 +381,14 @@
           if($data["rs"]== 'true')
           {
               echo'<script language="javascript">
-                    alert("Thêm sinh viên thành công");	
+                    alert("Thêm giảng viên thành công");	
                     </script>';
               header("location: QuanLySV");
           }
           else
           {
               echo'<script language="javascript">
-                    alert("Thêm sinh viên thất bại");	
+                    alert("Thêm giảng viên thất bại");	
                     </script>';
           }
       }

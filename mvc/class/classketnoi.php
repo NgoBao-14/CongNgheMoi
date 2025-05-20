@@ -30,13 +30,10 @@ require("../private/JWT.php");
 				
 			}
 		}
-		public function xuatdanhsachsinhvien($iddetai,$idnhom)
+		public function xuatdanhsachdiem($iddetai)
 		{
 			$link = $this->connect;
-			$sql = "SELECT * FROM sinhvien sv join user u on sv.iduser = u.iduser
-					join nhom n on sv.IDNhom = n.IDNhom
-					join detai dt on n.IDDeTai=dt.IDDeTai
-					where dt.IDDeTai = '$iddetai' AND n.IDNhom = '$idnhom'";
+			$sql = "SELECT * FROM diem d JOIN detai dt ON d.IDDeTai=dt.IDDeTai WHERE d.IDDeTai = '$iddetai'";
 			$ketqua = mysqli_query($link,$sql);
 			$i = mysqli_num_rows($ketqua);
 			if($i>0)
@@ -44,20 +41,32 @@ require("../private/JWT.php");
 				$dulieu = array();
 				while($row = mysqli_fetch_array($ketqua))
 				{
-					$iduser = $row["iduser"];
-					$MaSV = $row["MaSV"];
-					$HoDem = $row["HoDem"];
-					$Ten = $row["Ten"];
-					$Lop = $row["Lop"];
-					$Diem = $row["Diem"];
+					$muc1 = $row["Muc1"];
+					$muc2 = $row["Muc2"];
+					$muc31 = $row["Muc3.1"];
+					$muc32 = $row["Muc3.2"];
+					$muc33 = $row["Muc3.3"];
+					$muc41 = $row["Muc4.1"];
+					$muc42 = $row["Muc4.2"];
+					$muc51 = $row["Muc5.1"];
+					$muc52 = $row["Muc5.2"];
+					$muc61 = $row["Muc6.1"];
+					$muc62 = $row["Muc6.2"];
+					$muc63 = $row["Muc6.3"];
 				
 					$dulieu[] = array(
-						'iduser'=>$iduser,
-						'MaSV'=>$MaSV,
-						'HoDem'=>$HoDem,
-						'Ten'=>$Ten,
-						'Lop'=>$Lop,
-						'Diem'=>$Diem,
+						'Muc1'=>$muc1,
+						'Muc2'=>$muc2,
+						'Muc3.1'=>$muc31,
+						'Muc3.2'=>$muc32,
+						'Muc3.3'=>$muc33,
+						'Muc4.1'=>$muc41,
+						'Muc4.2'=>$muc42,
+						'Muc5.1'=>$muc51,
+						'Muc5.2'=>$muc52,
+						'Muc6.1'=>$muc61,
+						'Muc6.2'=>$muc62,
+						'Muc6.3'=>$muc63
 
 						);
 					

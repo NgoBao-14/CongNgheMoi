@@ -4,19 +4,27 @@
  */
 package testlaythongtinmay;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Desktop;
+import java.awt.Font;
 import java.net.URI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
 import java.util.Vector;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,6 +32,42 @@ import org.json.JSONObject;
  *
  * @author admin
  */
+class TextAreaRenderer extends JTextArea implements TableCellRenderer {
+    public TextAreaRenderer() {
+        setLineWrap(true);
+        setWrapStyleWord(true);
+        setOpaque(true);
+        setFont(new Font("Segoe UI", Font.PLAIN, 13));
+//        setMargin(new Insets(10, 5, 10, 5));
+        setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        
+    }
+
+    public Component getTableCellRendererComponent(JTable table, Object value,
+                                                   boolean isSelected, boolean hasFocus,
+                                                   int row, int column) {
+        setText(value != null ? value.toString() : "");
+
+        if (isSelected) {
+            setBackground(table.getSelectionBackground());
+            setForeground(table.getSelectionForeground());
+        } else {
+            setBackground(table.getBackground());
+            setForeground(table.getForeground());
+        }
+
+        // Tính chiều cao phù hợp với nội dung
+        setSize(table.getColumnModel().getColumn(column).getWidth(), Short.MAX_VALUE);
+        int preferredHeight = getPreferredSize().height;
+
+        // Đặt chiều cao hàng nếu chưa đúng
+        if (table.getRowHeight(row) < preferredHeight + 10) {
+            table.setRowHeight(row, preferredHeight + 10); // +10 cho căn giữa dọc mượt hơn
+        }
+
+        return this;
+    }
+}
 public class myform extends javax.swing.JFrame {
 
 
@@ -46,22 +90,54 @@ public class myform extends javax.swing.JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
     private void customTableUI() {
+    // Set chiều cao dòng
     tbl_detai.setRowHeight(30);
     tbl_sinhvien.setRowHeight(30);
-    
+
+    // Renderer căn giữa
     DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
     centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-    centerRenderer.setVerticalAlignment(SwingConstants.CENTER); 
-    // Áp dụng cho tất cả các cột
-    TableColumnModel columnModel = tbl_detai.getColumnModel();
-    for (int i = 0; i < columnModel.getColumnCount(); i++) {
-    columnModel.getColumn(i).setCellRenderer(centerRenderer);
+    centerRenderer.setVerticalAlignment(SwingConstants.CENTER);
+
+    // Renderer cho ô có thể wrap text (textArea)
+    TextAreaRenderer wrapRenderer = new TextAreaRenderer();
+
+    // ==== Cấu hình bảng đề tài ====
+    TableColumnModel columnModelDetai = tbl_detai.getColumnModel();
+    for (int i = 0; i < columnModelDetai.getColumnCount(); i++) {
+        columnModelDetai.getColumn(i).setCellRenderer(centerRenderer);
     }
-    TableColumnModel columnModel1 = tbl_sinhvien.getColumnModel();
-    for (int i = 0; i < columnModel1.getColumnCount(); i++) {
-    columnModel1.getColumn(i).setCellRenderer(centerRenderer);
+
+    // ==== Cấu hình bảng sinh viên ====
+    TableColumnModel columnModelSV = tbl_sinhvien.getColumnModel();
+
+    // Cột cần thu hẹp
+    int[] smallCols = {0, 1, 3, 8};
+    for (int col : smallCols) {
+        if (col < columnModelSV.getColumnCount()) {
+            columnModelSV.getColumn(col).setPreferredWidth(50);
+            columnModelSV.getColumn(col).setMaxWidth(50);
+            columnModelSV.getColumn(col).setMinWidth(40);
+        }
+    }
+
+    // Cột cần wrap nội dung
+    int[] wrapCols = {0, 1, 2, 3, 4, 5, 6, 7};
+    for (int col : wrapCols) {
+        if (col < columnModelSV.getColumnCount()) {
+            columnModelSV.getColumn(col).setCellRenderer(wrapRenderer);
+        }
+    }
+
+    // Căn giữa các cột còn lại (trừ cột 2 và 4-7)
+    for (int i = 0; i < columnModelSV.getColumnCount(); i++) {
+        if (i==8) {
+            columnModelSV.getColumn(i).setCellRenderer(centerRenderer);
+            
+        }
     }
 }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -161,7 +237,9 @@ public class myform extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,7 +269,7 @@ public class myform extends javax.swing.JFrame {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1363, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1302, Short.MAX_VALUE)
             .addComponent(btn_luu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
@@ -210,9 +288,9 @@ public class myform extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())))
@@ -247,33 +325,40 @@ public class myform extends javax.swing.JFrame {
 
     private void btn_luuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_luuActionPerformed
         // TODO add your handling code here:
-        if (tbl_sinhvien.isEditing()) {
-            tbl_sinhvien.getCellEditor().stopCellEditing();
-            }
         try {
-            for(int i = 0;i<tbl_sinhvien.getRowCount();i++)
-            {
-                String idsv = (String) tbl_sinhvien.getValueAt(i, 0);
-                String masv = (String) tbl_sinhvien.getValueAt(i, 1);
-                String lop = (String) tbl_sinhvien.getValueAt(i, 4);
-                String diem = String.valueOf(tbl_sinhvien.getValueAt(i, 5));
-                
-                
-                String thamso = "diem="+diem+"&iduser="+idsv+"&MaSV="+masv+"&Lop="+lop+"";
-                String url = Constants.API_NHAP_DIEM+thamso;
-                mycls cls = new mycls();
-                cls.geturl(url);
-                
-            }
-            
-            JOptionPane.showMessageDialog(null, "Lưu thành công");
-            String iddetai = txt_iddetai.getText();
-            String idnhom = txt_idnhom.getText();
-            loadsinhvien(iddetai,idnhom);
-            
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Lưu thất bại");
+        String[] muc = new String[12];
+        for (int i = 0; i < muc.length; i++) {
+            muc[i] = (String) tbl_sinhvien.getValueAt(i, 8);
         }
+
+        String iddetai = txt_iddetai.getText();
+        StringBuilder thamso = new StringBuilder();
+        thamso.append("Muc1=").append(muc[0])
+              .append("&Muc2=").append(muc[1])
+              .append("&Muc3_1=").append(muc[2])
+              .append("&Muc3_2=").append(muc[3])
+              .append("&Muc3_3=").append(muc[4])
+              .append("&Muc4_1=").append(muc[5])
+              .append("&Muc4_2=").append(muc[6])
+              .append("&Muc5_1=").append(muc[7])
+              .append("&Muc5_2=").append(muc[8])
+              .append("&Muc6_1=").append(muc[9])
+              .append("&Muc6_2=").append(muc[10])
+              .append("&Muc6_3=").append(muc[11])
+              .append("&iddetai=").append(iddetai);
+
+        String url = Constants.API_NHAP_DIEM + thamso.toString();
+        mycls cls = new mycls();
+        cls.geturl(url);
+         JOptionPane.showMessageDialog(this, "Lưu điểm thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+    } catch (Exception e) {
+        e.printStackTrace(); // In lỗi ra console để dễ debug
+    }
+        
+        
+        
+        
+        
     }//GEN-LAST:event_btn_luuActionPerformed
 
     private void loaddetai()
@@ -317,52 +402,146 @@ public class myform extends javax.swing.JFrame {
         
         }
     }
-    private void loadsinhvien(String id, String idnhom)
-    {
-        mycls cls = new mycls();
-        try
-        {
-            JSONArray jarr = new JSONArray();
-//            String id = txt_iddetai.getText();
-//            String idnhom = txt_idnhom.getText();
-            String thamso = "iddetai="+id+"&idnhom="+idnhom+"";
-            String url = Constants.API_XEM_DSSV+thamso;
-            jarr = cls.docapi(url);
-            Vector<Vector<String>> datalist = new Vector<>();
-            for(int i=0; i<cls.docapi(url).length(); i++)
-            {
-                JSONObject job = jarr.getJSONObject(i);
-                Vector<String> data = new Vector<>();
-                data.add(job.getString("iduser"));
-                data.add(job.getString("MaSV"));
-                data.add(job.getString("HoDem"));
-                data.add(job.getString("Ten"));
-                data.add(job.getString("Lop"));
-                data.add(job.getString("Diem"));  
-                datalist.add(data);
-                
-            }
-            Vector<String> column = new Vector<>();
-            column.add("ID");
-            column.add("Mã Sinh viên");
-            column.add("Họ Đệm");
-            column.add("Tên");
-            column.add("Lớp");
-            column.add("Điểm");
-            DefaultTableModel model = new DefaultTableModel(datalist,column){
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                    return column != 0 && column != 1 && column != 2 && column != 3 && column != 4;
-            }
-            };
-            tbl_sinhvien.setModel(model);
-            customTableUI();
 
-        }catch (Exception e)
-        {
+    private void loadsinhvien(String id, String idnhom)
+{
+    mycls cls = new mycls();
+    try
+    {
+        // Dữ liệu cố định cho 12 dòng đánh giá
+        String[][] rawData = {
+            {"1", "1", "Hình thành và phát triển ý tưởng nghiên cứu", "15%",
+                "Không có hoặc ít đóng góp",
+                "Có thảo luận và đóng góp theo gợi ý",
+                "Chủ động thảo luận, tự xây mục tiêu",
+                "Chủ động đề xuất ý tưởng mới", ""},
+
+            {"2", "2", "Cấu trúc báo cáo KLTN hợp lý khi thuyết trình", "15%",
+                "Không hoặc ít tham gia đề cương",
+                "Có kế hoạch chưa chi tiết",
+                "Chi tiết, chưa có dự phòng hợp lý",
+                "Chi tiết, có dự phòng hợp lý", ""},
+
+            {"3", "3.1", "Sự tương tác giữa SV và CBHD", "10%",
+                "Không hoặc ít trao đổi với CBHD",
+                "Không chủ động liên hệ với CBHD",
+                "Chủ động gặp CBHD",
+                "Chủ động gặp CBHD và giải quyết vấn đề", ""},
+
+            {"4", "3.2", "Sự tương tác giữa các thành viên nhóm", "10%",
+                "Không hoặc ít trao đổi, phân công, không hoàn thành công việc",
+                "Có tham gia nhưng cần nhiều nhắc nhở",
+                "Chủ động, hoàn thành nhưng còn cần nhắc",
+                "Chủ động, hoàn thành đúng hạn", ""},
+
+            {"5", "3.3", "Hoàn thành nhiệm vụ được phân công", "5%",
+                "Không hoặc luôn cần nhắc nhở",
+                "Hoàn thành không đúng hạn",
+                "Hoàn thành đúng hạn nhưng chưa chủ động",
+                "Chủ động hoàn thành đúng hạn", ""},
+
+            {"6", "4.1", "Thu nhận kết quả và xử lý số liệu", "15%",
+                "Dữ liệu giả tạo >50%",
+                "Thiếu minh chứng hoặc dữ liệu không rõ ràng",
+                "Dữ liệu thu thập hợp lý, có minh chứng",
+                "Trung thực, minh chứng rõ ràng", ""},
+
+            {"7", "4.2", "Thảo luận nghiên cứu", "15%",
+                "Giải thích không phù hợp",
+                "Giải thích chưa so sánh NC liên quan",
+                "Giải thích đúng, kết luận rõ",
+                "So sánh tốt, kết luận hướng đúng mục tiêu", ""},
+
+            {"8", "5.1", "Tóm tắt kết quả nghiên cứu", "5%",
+                "Tóm tắt không phù hợp",
+                "Tóm tắt chưa đầy đủ",
+                "Tóm tắt được nhưng chưa cô đọng",
+                "Tóm tắt chính xác, cô đọng", ""},
+
+            {"9", "5.2", "Kiến nghị", "5%",
+                "Phần lớn không phù hợp",
+                "Một số phù hợp",
+                "Phần lớn phù hợp",
+                "Tất cả phù hợp", ""},
+
+            {"10", "6.1", "Tài liệu tham khảo", "5%",
+                "Sai quy định hình thức",
+                "≥3 lỗi vị trí hoặc số lượng",
+                "1-2 lỗi vị trí/số lượng",
+                "Không phát hiện lỗi", ""},
+
+            {"11", "6.2", "Chú thích hình ảnh, bảng biểu", "5%",
+                "Không chú thích hoặc sai hoàn toàn",
+                "Chưa đúng quy định",
+                "Đủ nhưng chưa chuẩn",
+                "Đúng quy định", ""},
+
+            {"12", "6.3", "Chính tả, định dạng, thuật ngữ", "5%",
+                ">20 lỗi, văn phong không phù hợp",
+                "10-20 lỗi, chưa dùng đúng thuật ngữ",
+                "<10 lỗi, văn phong tạm ổn",
+                "Hầu như không lỗi, đúng văn phong chuyên ngành", ""}
+
+        };
+        String[] mucKeys = {
+                "Muc1", "Muc2", "Muc3.1", "Muc3.2", "Muc3.3",
+                "Muc4.1", "Muc4.2", "Muc5.1", "Muc5.2",
+                "Muc6.1", "Muc6.2", "Muc6.3"
+            };
+
+        // Gọi API để lấy danh sách điểm
+        String thamso = "iddetai=" + id;
+        String url = Constants.API_XEM_DSDIEM + thamso;
+        JSONArray jarr = cls.docapi(url); // giả định mỗi item tương ứng với một tiêu chí
+        JSONObject diemObject = jarr.getJSONObject(0); // nếu chỉ có 1 object tổng hợp
+        // Chuyển thành Vector
+        Vector<Vector<String>> datalist = new Vector<>();
+
+        for (int i = 0; i < rawData.length; i++) {
+            Vector<String> row = new Vector<>();
+            for (int j = 0; j < 8; j++) { // STT, CLO-PI, Nội dung, Tỷ trọng
+                row.add(rawData[i][j]);
+            }
+            // Lấy điểm tương ứng từ API
+            String mucKey = mucKeys[i];
+            String diem = diemObject.optString(mucKey, "");
+            row.add(diem); // Cột điểm thứ 9
+            
+            datalist.add(row);
         
         }
+
+        // Cột tiêu đề
+        Vector<String> column = new Vector<>();
+        column.add("STT");
+        column.add("CLO-PI");
+        column.add("Nội dung đánh giá");
+        column.add("Tỷ trọng (%)");
+        column.add("Mức 1 (0-30%)");
+        column.add("Mức 2 (40-60%)");
+        column.add("Mức 3 (70-80%)");
+        column.add("Mức 4 (90-100%)");
+        column.add("Điểm thành phần /10");
+
+        // Gắn vào bảng
+        DefaultTableModel model = new DefaultTableModel(datalist, column) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // Chỉ cho phép sửa cột điểm
+                return column == 8;
+            }
+        };
+
+        tbl_sinhvien.setModel(model);
+        customTableUI(); // nếu có tuỳ chỉnh
     }
+    catch (Exception e)
+    {
+        JOptionPane.showMessageDialog(this, "Lỗi khi tải phiếu chấm điểm: " + e.getMessage());
+        e.printStackTrace();
+    }
+}
+    
     
     
     /**
@@ -399,6 +578,7 @@ public class myform extends javax.swing.JFrame {
             }
         });
     }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_luu;
