@@ -1,10 +1,7 @@
 <?php
-  $year = date('Y'); // Lấy năm hiện tạ
-  $prefix = substr($year, -2);
-  $random = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
-  $masv =  $prefix.$random;
 
-  $dt = json_decode($data['khoa'], true);
+  $sinhvien = json_decode($data["giangvien"], true);
+  $dt = json_decode($data["khoa"], true);
 ?>
 
 
@@ -133,7 +130,7 @@
     
     <!-- Sinh viên -->
     <li class="nav-item">
-      <a href="/CongNgheMoi/Admin/QuanLySV" class="nav-link active">
+      <a href="/CongNgheMoi/Admin/QuanLySV" class="nav-link">
         <i class="nav-icon fas fa-user-graduate"></i>
         <p>Quản lý sinh viên</p>
       </a>
@@ -141,7 +138,7 @@
     
     <!-- Giáo viên -->
     <li class="nav-item">
-      <a href="/CongNgheMoi/Admin/QuanLyGV" class="nav-link">
+      <a href="/CongNgheMoi/Admin/QuanLyGV" class="nav-link active">
         <i class="nav-icon fas fa-chalkboard-teacher"></i>
         <p>Quản lý giảng viên</p>
       </a>
@@ -175,12 +172,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Quản lý sinh viên</h1>
+            <h1>Quản lý giảng viên</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Quản lý sinh viên</li>
+              <li class="breadcrumb-item active">Quản lý giảng viên</li>
             </ol>
           </div>
         </div>
@@ -200,91 +197,87 @@
             <div class="col-md-10">
                 <div class="form-container">
                     <div class="form-header">
-                        <h2><i class="fas fa-user-graduate me-2"></i>Cập Nhật Thông Tin Sinh Viên</h2>
+                        <h2><i class="fas fa-user-graduate me-2"></i>Cập Nhật Thông Tin Giảng Viên</h2>
                     </div>
                     
                     <div id="successMessage" class="success-message">
-                        <i class="fas fa-check-circle me-2"></i>Thông tin sinh viên đã được cập nhật thành công!
+                        <i class="fas fa-check-circle me-2"></i>Thông tin giảng viên đã được cập nhật thành công!
                     </div>
                     
                     <div id="errorMessage" class="error-message">
                         <i class="fas fa-exclamation-circle me-2"></i>Vui lòng điền đầy đủ thông tin!
                     </div>
                     
-                    <form id="studentForm" action="" method="POST">
+                    <form id="studentForm" action="" method="post">
                         <div class="row">
                             <!-- Cột bên trái -->
-                            <div class="col-md-6">
-                                
+                            <div class="col-md-6">   
+                                <?php
+                                foreach ($sinhvien as $sv) :
+                                    $mssv = $sv['MaGV'];
+                                    $hoDem = $sv['HoDem'];
+                                    $ten = $sv['Ten'];
+                                    $stt = $sv['SDT'];
+                                    $email = $sv['Email'];
+                                    $chuyenNganh = $sv['ChuyenNganh'];
+                                ?>
                                 <div class="form-floating">
                                     <label for="mssv">MSSV</label>
-                                    <input type="text" name="masv" class="form-control" id="mssv" value="<?php echo $masv?>" placeholder="MSSV" readonly>
+                                    <input type="text" class="form-control" id="mssv" value="<?php echo $mssv?>" placeholder="MSSV" readonly>
                                    
                                 </div>
                                 
                                 <div class="form-floating">
                                   <label for="hoDem">Họ đệm</label>
-                                    <input type="text" name="hodem" class="form-control" id="hoDem"  placeholder="Họ đệm">
+                                    <input type="text" name="hodem" class="form-control" id="hoDem" value="<?php echo $hoDem?>" placeholder="Họ đệm">
                                     
                                 </div>
 
                                 <div class="form-floating">
                                     <label for="stt">Số điện thoại</label>
-                                    <input type="text" name="sdt" class="form-control" id="stt"  placeholder="Số điện thoại">
+                                    <input type="text" name="sdt" class="form-control" id="sdt" value="<?php echo $stt?>" placeholder="Số điện thoại">
                                     
                                 </div>
 
-                                <div class="form-floating">
-                                    <label for="stt">Email</label>
-                                    <input type="text" name="email" class="form-control" id="stt"  placeholder="Email">
-                                    
-                                </div>
+                                
                             </div>
                             
                             <!-- Cột bên phải -->
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <label for="ten">Tên</label>
-                                    <input type="text" name="ten" class="form-control" id="ten"  placeholder="Tên">
+                                    <input type="text" name="ten" class="form-control" id="ten" value="<?php echo $ten?>" placeholder="Tên">
+                                   
                                 </div>
                                 
-                                <div class="form-floating">
-                                    <label for="lop">Lớp</label>
-                                    <input type="text" name="lop" class="form-control" id="lop"  placeholder="Lớp">   
-                                </div>
                                 
                                 <div class="form-floating">
                                   <label for="chuyenNganh">Chuyên Ngành</label>
                                     <select name="chuyennganh" class="form-control" style="min-width: 150px;">
-                                          <option value="cn.IDNganh">Chuyên ngành</option>
+                                          <option value="cn.IDNganh" disabled>Chuyên ngành</option>
                                           <?php
                                           foreach ($dt as $khoa):
-                                          echo '<option value="'.$khoa['IDNganh'].'">'.$khoa['ChuyenNganh'].'</option>';
+                                          echo '<option value="'.$khoa['IDNganh'].'" '.($sv['IDNganh'] == $khoa['IDNganh'] ? 'selected' : '').'>'.$khoa['ChuyenNganh'].'</option>';
                                           endforeach;
                                           ?>
                                     </select>
                                       
                                 </div>
-
                                 <div class="form-floating">
-                                    <label for="Nhom">Nhóm</label>
-                                    <select name="nhom" class="form-control" style="min-width: 150px;" readonly>
-                                          <option value="cn.IDNganh" disabled>Nhóm</option>
-                                          <?php
-                                          foreach ($nhom as $idnhom):
-                                          echo '<option value="'.$idnhom['IDNhom'].'">'.$idnhom['IDNhom'].'</option>';
-                                          endforeach;
-                                          ?>
-                                    </select>
+                                    <label for="stt">Email</label>
+                                    <input type="text" name="email" class="form-control" id="stt" value="<?php echo $email?>" placeholder="Email">
+                                    
                                 </div>
-
+                                  <?php
+                                    endforeach; 
+                                  ?>
                                 
                             </div>
                         </div>
                         
                         <div class="form-footer text-center">
-                            <button type="submit" name="btn_them" class="btn btn-primary btn-lg px-5 me-3">
-                                <i class="fas fa-check me-2"></i> Thêm
+                            <button type="submit" name="btn_CapNhat" class="btn btn-primary btn-lg px-5 me-3">
+                                <i class="fas fa-check me-2"></i> Xác nhận
                             </button>
                             <button type="button" id="cancelBtn" class="btn btn-outline-secondary btn-lg px-5">
                                 <i class="fas fa-times me-2"></i> Hủy
@@ -316,56 +309,7 @@
             const successMessage = document.getElementById('successMessage');
             const errorMessage = document.getElementById('errorMessage');
             
-            // // Form submission
-            // studentForm.addEventListener('submit', function(e) {
-            //     e.preventDefault();
-                
-            //     // Get all input fields
-            //     const stt = document.getElementById('stt').value;
-            //     const mssv = document.getElementById('mssv').value;
-            //     const hoDem = document.getElementById('hoDem').value;
-            //     const ten = document.getElementById('ten').value;
-            //     const lop = document.getElementById('lop').value;
-            //     const chuyenNganh = document.getElementById('chuyenNganh').value;
-                
-            //     // Simple validation
-            //     if (!stt || !mssv || !hoDem || !ten || !lop || !chuyenNganh) {
-            //         errorMessage.style.display = 'block';
-            //         successMessage.style.display = 'none';
-                    
-            //         // Hide error message after 3 seconds
-            //         setTimeout(() => {
-            //             errorMessage.style.display = 'none';
-            //         }, 3000);
-                    
-            //         return;
-            //     }
-                
-            //     // Form data object
-            //     const formData = {
-            //         stt,
-            //         mssv,
-            //         hoDem,
-            //         ten,
-            //         lop,
-            //         chuyenNganh
-            //     };
-                
-                // Log form data (in a real application, you would send this to a server)
-                console.log('Form submitted:', formData);
-                
-                // Show success message
-                successMessage.style.display = 'block';
-                errorMessage.style.display = 'none';
-                
-                // Hide success message after 3 seconds
-                setTimeout(() => {
-                    successMessage.style.display = 'none';
-                }, 3000);
-                
-                // Reset form
-                studentForm.reset();
-            });
+            
             
             // Cancel button
             cancelBtn.addEventListener('click', function() {
@@ -386,23 +330,5 @@
                     this.parentElement.style.transform = 'translateY(0)';
                 });
             });
-        // });
+        });
     </script>
-    <?php
-      if (isset ($data['rs']))
-      {
-          if($data["rs"]== 'true')
-          {
-              echo'<script language="javascript">
-                    alert("Thêm sinh viên thành công");	
-                    </script>';
-              header("location: QuanLySV");
-          }
-          else
-          {
-              echo'<script language="javascript">
-                    alert("Thêm sinh viên thất bại");	
-                    </script>';
-          }
-      }
-    ?>

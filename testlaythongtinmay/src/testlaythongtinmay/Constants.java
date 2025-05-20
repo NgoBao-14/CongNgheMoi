@@ -15,6 +15,6 @@ public class Constants {
     public static final String API_REGISTER = API_BASE_URL + "them.php?";
     public static final String API_CHECK_TOKEN = API_BASE_URL + "checktoken.php?token=";
     public static final String API_XEM_DETAI = API_BASE_URL + "xemdetai.php?";
-    public static final String API_XEM_DSSV = API_BASE_URL + "xemdssv.php?";
+    public static final String API_XEM_DSDIEM = API_BASE_URL + "xemdsdiem.php?";
     public static final String API_NHAP_DIEM = API_BASE_URL + "nhapdiem.php?";
 }

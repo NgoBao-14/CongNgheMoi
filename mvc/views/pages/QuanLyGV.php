@@ -1,6 +1,6 @@
 <?php
     $dt = json_decode($data["khoa"], true);
-    $sv = json_decode($data["sinhvien"], true);
+    $gv = json_decode($data["giangvien"], true);
 ?>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -53,7 +53,7 @@
     
     <!-- Sinh viên -->
     <li class="nav-item">
-      <a href="/CongNgheMoi/Admin/QuanLySV" class="nav-link active">
+      <a href="/CongNgheMoi/Admin/QuanLySV" class="nav-link">
         <i class="nav-icon fas fa-user-graduate"></i>
         <p>Quản lý sinh viên</p>
       </a>
@@ -61,7 +61,7 @@
     
     <!-- Giáo viên -->
     <li class="nav-item">
-      <a href="/CongNgheMoi/Admin/QuanLyGV" class="nav-link">
+      <a href="/CongNgheMoi/Admin/QuanLyGV" class="nav-link active">
         <i class="nav-icon fas fa-chalkboard-teacher"></i>
         <p>Quản lý giảng viên</p>
       </a>
@@ -95,12 +95,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Quản lý sinh viên</h1>
+            <h1>Quản lý giảng viên</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Quản lý sinh viên</li>
+              <li class="breadcrumb-item active">Quản lý giảng viên</li>
             </ol>
           </div>
         </div>
@@ -116,11 +116,11 @@
             <div class="card">
               <div class="card-header d-flex justify-content-between align-items-center">
                 <div class="flex-grow-1">
-                  <h3 class="card-title mb-0">Danh sách sinh viên</h3>
-                  <a href="/CongNgheMoi/Admin/ThemSinhVien" class="btn btn-primary btn-sm" style="margin-left: 20px;">Thêm Sinh Viên</a>
+                  <h3 class="card-title mb-0">Danh sách giảng viên</h3>
+                  <a href="/CongNgheMoi/Admin/ThemGiangVien" class="btn btn-primary btn-sm" style="margin-left: 20px;">Thêm Giảng Viên</a>
                 </div>
                 <div class="d-flex align-items-center">
-                <form action="/CongNgheMoi/Admin/QuanLySV" method="POST">
+                <form action="/CongNgheMoi/Admin/QuanLyGV" method="POST">
                 <select name="loc" class="form-select form-select-sm w-auto" style="min-width: 150px;">
                       <option value="cn.IDNganh">Tất cả khoa</option>
                       <?php
@@ -139,10 +139,9 @@
                 <thead>
                   <tr>
                     <th>STT</th>
-                    <th>MSSV</th>
+                    <th>MSGV</th>
                     <th>Họ đệm</th>
                     <th>Tên</th>
-                    <th>Lớp</th>
                     <th>Chuyên Ngành</th>
                     <th></th>
                   </tr>
@@ -150,17 +149,16 @@
                 <tbody>
                   <?php
                   $dem = 1;
-                  foreach ($sv as $index): 
+                  foreach ($gv as $index): 
                   echo '<tr class="bg-light">
                     <td>'.$dem.'</td>
-                    <td>'.$index["MaSV"].'</td>
+                    <td>'.$index["MaGV"].'</td>
                     <td>'.$index["HoDem"].'</td>
                     <td>'.$index["Ten"].'</td>
-                    <td>'.$index["Lop"].'</td>
                     <td>'.$index["ChuyenNganh"].'</td>
                     <td>
-                      <a href="/CongNgheMoi/Admin/CapNhatSV?id='.$index["iduser"].'" class="btn btn-primary btn-sm">Cập nhật</a>
-                      <a href="/CongNgheMoi/mvc/api/xoasinhvien.php?id='.$index["iduser"].'" onclick="return confirm(\'Bạn có chắc chắn muốn xóa sinh viên này không?\')" class="btn btn-danger btn-sm">Xóa</a>
+                      <a href="/CongNgheMoi/Admin/CapNhatGV?id='.$index["iduser"].'" class="btn btn-primary btn-sm">Cập nhật</a>
+                      <a href="/CongNgheMoi/mvc/api/xoagiangvien.php?id='.$index["iduser"].'" onclick="return confirm(\'Bạn có chắc chắn muốn xóa giảng viên này không?\')" class="btn btn-danger btn-sm">Xóa</a>
                   </tr>';
                   $dem++;
                   endforeach;

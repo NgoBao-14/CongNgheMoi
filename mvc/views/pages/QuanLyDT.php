@@ -1,6 +1,6 @@
 <?php
     $dt = json_decode($data["khoa"], true);
-    $sv = json_decode($data["sinhvien"], true);
+    $detai = json_decode($data["detai"], true);
 ?>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -45,7 +45,7 @@
     
     <!-- Danh sách đăng ký -->
     <li class="nav-item">
-      <a href="/CongNgheMoi/Admin/DSDeTai" class="nav-link">
+      <a href="/CongNgheMoi/Admin/DSDeTai" class="nav-link active">
         <i class="nav-icon fas fa-clipboard-list"></i>
         <p>Danh sách đề tài</p>
       </a>
@@ -53,7 +53,7 @@
     
     <!-- Sinh viên -->
     <li class="nav-item">
-      <a href="/CongNgheMoi/Admin/QuanLySV" class="nav-link active">
+      <a href="/CongNgheMoi/Admin/QuanLySV" class="nav-link">
         <i class="nav-icon fas fa-user-graduate"></i>
         <p>Quản lý sinh viên</p>
       </a>
@@ -61,7 +61,7 @@
     
     <!-- Giáo viên -->
     <li class="nav-item">
-      <a href="/CongNgheMoi/Admin/QuanLyGV" class="nav-link">
+      <a href="/CongNgheMoi/Admin/QuanLyGV" class="nav-link ">
         <i class="nav-icon fas fa-chalkboard-teacher"></i>
         <p>Quản lý giảng viên</p>
       </a>
@@ -95,12 +95,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Quản lý sinh viên</h1>
+            <h1>Quản lý đề tài</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Quản lý sinh viên</li>
+              <li class="breadcrumb-item active">Quản lý đề tài</li>
             </ol>
           </div>
         </div>
@@ -115,12 +115,12 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-header d-flex justify-content-between align-items-center">
-                <div class="flex-grow-1">
-                  <h3 class="card-title mb-0">Danh sách sinh viên</h3>
-                  <a href="/CongNgheMoi/Admin/ThemSinhVien" class="btn btn-primary btn-sm" style="margin-left: 20px;">Thêm Sinh Viên</a>
+                <div class="flex-grow-1" >
+                  <h3 class="card-title mb-0">Danh sách để tài</h3>
+                  
                 </div>
                 <div class="d-flex align-items-center">
-                <form action="/CongNgheMoi/Admin/QuanLySV" method="POST">
+                <form action="/CongNgheMoi/Admin/QuanLyGV" method="POST">
                 <select name="loc" class="form-select form-select-sm w-auto" style="min-width: 150px;">
                       <option value="cn.IDNganh">Tất cả khoa</option>
                       <?php
@@ -139,28 +139,34 @@
                 <thead>
                   <tr>
                     <th>STT</th>
-                    <th>MSSV</th>
-                    <th>Họ đệm</th>
-                    <th>Tên</th>
-                    <th>Lớp</th>
+                    <th>Tên đề tài</th>
+                    <th>Mô tả</th>
+                    <th>Giảng viên</th>
                     <th>Chuyên Ngành</th>
+                    <th>Trạng thái đề tài</th>
+                    <th>Ngày đăng ký</th>
+                    <th>Trạng thái đăng ký</th>
+                    <th>Nhóm đăng ký</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
                   <?php
                   $dem = 1;
-                  foreach ($sv as $index): 
+                  foreach ($detai as $index): 
                   echo '<tr class="bg-light">
                     <td>'.$dem.'</td>
-                    <td>'.$index["MaSV"].'</td>
-                    <td>'.$index["HoDem"].'</td>
-                    <td>'.$index["Ten"].'</td>
-                    <td>'.$index["Lop"].'</td>
+                    <td>'.$index["TenDeTai"].'</td>
+                    <td>'.$index["MoTa"].'</td>
+                    <td style="text-align:center;">'.$index["Ten"].'</td>
                     <td>'.$index["ChuyenNganh"].'</td>
+                    <td>'.$index["TrangThaiDeTai"].'</td>
+                    <td style="text-align:center;">'.$index["NgayDK"].'</td>
+                    <td style="text-align:center;">'.$index["TrangThaiDK"].'</td>
+                    <td style="text-align:center;">'.$index["IDNhom"].'</td>
                     <td>
-                      <a href="/CongNgheMoi/Admin/CapNhatSV?id='.$index["iduser"].'" class="btn btn-primary btn-sm">Cập nhật</a>
-                      <a href="/CongNgheMoi/mvc/api/xoasinhvien.php?id='.$index["iduser"].'" onclick="return confirm(\'Bạn có chắc chắn muốn xóa sinh viên này không?\')" class="btn btn-danger btn-sm">Xóa</a>
+                      <a href="/CongNgheMoi/Admin/CapNhatDT?id='.$index["IDDeTai"].'" class="btn btn-primary btn-sm">Cập nhật</a>
+                      <a href="/CongNgheMoi/mvc/api/xoadetai.php?id='.$index["IDDeTai"].'" onclick="return confirm(\'Bạn có chắc chắn muốn xóa giảng viên này không?\')" class="btn btn-danger btn-sm">Xóa</a>
                   </tr>';
                   $dem++;
                   endforeach;

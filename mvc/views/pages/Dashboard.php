@@ -69,12 +69,12 @@
     
     
     <!-- Quản lý hội đồng -->
-    <li class="nav-item">
+    <!-- <li class="nav-item">
       <a href="/CongNgheMoi/Admin/QuanLyNhom" class="nav-link">
         <i class="nav-icon fas fa-users"></i>
         <p>Quản lý nhóm sinh viên</p>
       </a>
-    </li>
+    </li> -->
     
     
     
