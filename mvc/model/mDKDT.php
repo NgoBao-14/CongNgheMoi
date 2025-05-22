@@ -1,11 +1,14 @@
 <?php
 class mDKDT extends DB {
     
-    public function getTTDeTai() {
+    public function getTTDeTai($iduser) {
         $str = "SELECT d.*, CONCAT(u.hodem, ' ', u.ten) AS ten_giang_vien
-                FROM detai d
-                JOIN giangvien gv ON d.IDGV = gv.MaGV
-                JOIN `user` u ON gv.iduser = u.iduser";
+        FROM detai d
+        JOIN giangvien gv ON d.IDGV = gv.MaGV
+        JOIN user u ON gv.iduser = u.iduser
+        WHERE d.IDNganh = (
+            SELECT IDNganh FROM user WHERE iduser = $iduser
+        )";
         $detai = mysqli_query($this->connect, $str);
         $mang = array();
         while ($row = mysqli_fetch_assoc($detai)) {

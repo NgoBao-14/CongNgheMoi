@@ -2,21 +2,28 @@
 class SinhVien extends Controller {
     
     function SayHi(){
-        $this ->view("layoutSV");
+        $iduser= $_SESSION['iduser'];
+        $dt= $this->model("mDKDT");
+        $nhom = $dt->getIDNhomByIDUser($iduser);
+        $this->view("layoutSV", [
+            "nhom" => $nhom
+        ]);
     }
 
     function DeTai(){
+        $iduser= $_SESSION['iduser'];
         $dt= $this->model("mDKDT");
-        $detai = json_decode($dt->getTTDeTai(), true);
+        $detai = json_decode($dt->getTTDeTai($iduser), true);
         //nếu như đã đăng ký đề tài thì không cho đăng ký nữa mà chuyển sang trang DeTaiDK
-        if (isset($_SESSION['iduser'])) {
-            $iduser = $_SESSION['iduser'];
-            $nhom = $dt->getIDNhomByIDUser($iduser);
-            if ($nhom) {
-                header("Location: ./DeTaiDK");
-                exit();
-            }
-        }
+        // if (isset($_SESSION['iduser'])) {
+        //     $iduser = $_SESSION['iduser'];
+        //     $nhom = $dt->getIDNhomByIDUser($iduser);
+        //     if ($nhom) {
+        //         header("Location: ./DeTaiDK");
+        //         exit();
+        //     }
+        // }
+        
         $this->view("layoutDKDT", [
             "Page" => "DeTai",
             "dt" => $detai
@@ -68,10 +75,8 @@ class SinhVien extends Controller {
 
     function DeTaiDK() {
     //giả định iduser
-    $_SESSION['iduser'] = 8;
+    $iduser= $_SESSION['iduser'];
     $dtdk = $this->model("mDKDT");
-    
-    $iduser = $_SESSION['iduser'];
     $idNhom = $dtdk->getIDNhomByIDUser($iduser);
 
     $detaidk = json_decode($dtdk->getTTDeTaiByIDU($iduser), true);
@@ -85,9 +90,8 @@ class SinhVien extends Controller {
     }
 
     function NopBaoCaoTD() {
-    $_SESSION['iduser'] = 8;
+    $iduser= $_SESSION['iduser'];
     $dtdk = $this->model("mDKDT");
-    $iduser = $_SESSION['iduser'];
     $idNhom = $dtdk->getIDNhomByIDUser($iduser);
     
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -158,9 +162,8 @@ class SinhVien extends Controller {
     }
 
     function NopKhoaLuan() {
-    $_SESSION['iduser'] = 8;
+    $iduser= $_SESSION['iduser'];
     $dtdk = $this->model("mDKDT");
-    $iduser = $_SESSION['iduser'];
     $idNhom = $dtdk->getIDNhomByIDUser($iduser);
     
     if ($_SERVER["REQUEST_METHOD"] == "POST") {

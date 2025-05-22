@@ -19,7 +19,7 @@
                 <div class="col-md-3">
                     <div class="sidebar">
                         <div class="welcome-text">Xin chào!</div>
-                        <div class="student-name">Nguyễn Châu Tính</div>
+                        <div class="student-name">Nguyễn Châu Tinh</div>
                         
                         <div class="student-info">
                             <div class="info-row">
@@ -42,9 +42,9 @@
                 
                 <!-- Student Photo -->
                 <div class="col-md-2">
-                    <div class="student-photo-container">
+                    <!-- <div class="student-photo-container">
                         <img src="student-photo.jpg" alt="Ảnh sinh viên" class="student-photo">
-                    </div>
+                    </div> -->
                 </div>
                 
                 <!-- Right Content -->

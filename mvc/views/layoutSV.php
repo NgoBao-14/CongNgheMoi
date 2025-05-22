@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cổng Đăng Ký Học Phần Sinh Viên - IUH</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="./public/css/sinhvien.css"> -->
 </head>
 <body>
     <div class="container p-0">
@@ -13,14 +12,18 @@
         <?php include "blocks/header.php" ?>
 
         <!-- Main Content -->
+<?php
+$ten = $_SESSION['ten'];
+$maSV = $_SESSION['MaSV'];
+echo'
+
         <div class="main-content">
             <div class="row m-0">
                 <!-- Left Sidebar -->
                 <div class="col-md-3">
                     <div class="sidebar">
                         <div class="welcome-text">Xin chào!</div>
-                        <div class="student-name">Nguyễn Châu Tính</div>
-                        
+                        <div class="student-name">' . $ten . '</div>                    
                         <div class="student-info">
                             <div class="info-row">
                                 <div class="info-label">Giới tính:</div>
@@ -28,7 +31,7 @@
                             </div>
                             <div class="info-row">
                                 <div class="info-label">MSSV:</div>
-                                <div class="info-value">21049361</div>
+                                <div class="info-value">'. $maSV .'</div>
                             </div>
                             <div class="info-row">
                                 <div class="info-label">Trạng thái:</div>
@@ -36,7 +39,15 @@
                             </div>
                         </div>
                         
-                        <button class="btn btn-warning logout-btn w-100">Đăng xuất</button>
+                        <!-- <button class="btn btn-warning logout-btn w-100">Đăng xuất</button> -->
+                        <div class="logout-btn">
+                            <a href="/CongNgheMoi/Logout" class="btn btn-warning w-100">Đăng xuất</a>
+                        
+                        <div class="logout-icon">
+                            <i class="bi bi-box-arrow-right"></i>
+                        </div>
+                        </div>';
+        ?>
                     </div>
                 </div>
                 
@@ -50,9 +61,14 @@
                 <!-- Right Content -->
                 <div class="col-md-7">
                     <div class="student-details">
-                        <div class="section-title text-primary">THÔNG TIN SINH VIÊN</div>
-                        <div class="detail-item text-primary"><a href="./DeTai">ĐĂNG KÝ ĐỀ TÀI</a></div>
-                    
+                        <?php
+                        $nhom = $data['nhom'];
+                        if (isset($nhom)) {
+                            echo '<div class="detail-item text-primary"><a href="./DeTaiDK" style="text-decoration: none;">THÔNG TIN ĐỀ TÀI</a></div>';
+                        } else {
+                            echo '<div class="detail-item text-primary"><a href="./DeTai" style="text-decoration: none;">ĐĂNG KÝ ĐỀ TÀI</a></div>';
+                        }
+                        ?>
                         <!-- <div class="detail-item text-primary">CHƯƠNG TRÌNH KHUNG</div> -->
                     </div>
                 </div>

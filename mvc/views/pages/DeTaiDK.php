@@ -5,7 +5,7 @@ $dtdk = $data["dtdk"];
 $nhom = $data["nhom"];
 
 
-echo '    <!DOCTYPE html>
+echo '<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
@@ -20,7 +20,7 @@ echo '    <!DOCTYPE html>
             background-color: #f0f7ff;
         }
         .card {
-            border-radius: 10px;
+            border-radius: 15px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
@@ -53,9 +53,6 @@ echo '    <!DOCTYPE html>
             background-color: #059669;
             color: white;
         }
-        .text-blue-700 {
-            color: #1d4ed8;
-        }
         .status-badge {
             font-size: 0.75rem;
             padding: 0.25rem 0.5rem;
@@ -70,168 +67,184 @@ echo '    <!DOCTYPE html>
             background-color: #f8d7da; 
         }
         .table-responsive {
-            border-radius: 10px;
+            border-radius: 5px;
             overflow: hidden;
         }
         .section-title {
             font-size: 1.25rem;
             font-weight: 700;
             margin-bottom: 1rem;
-            color: #1d4ed8;
+            
+        }
+        .custom-btn {
+            margin-top: 30px;
+            border: 1px solid #007dc9;
+            color: #007dc9;
+            background-color: transparent;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .custom-btn:hover {
+            background-color: #007dc9;
+            color: white;
         }
     </style>
 </head>
 <body>
     <div class="container py-4 border">
-        <h1 class="text-center fw-bold mb-4">XEM LẠI ĐỀ TÀI ĐĂNG KÝ KHÓA LUẬN</h1>
+        <h1 class="text-center fw-bold mb-5">XEM LẠI ĐỀ TÀI ĐĂNG KÝ KHÓA LUẬN</h1>
         
         <!-- Functional Cards -->
-        <div class="row mb-4">
-            <!-- Card 1 -->
-<div class="col-md-6 col-lg-3 mb-3">
-    <div class="card h-100">
-        <div class="card-body">
-            <div class="d-flex justify-content-between mb-3">
-                <div>
-                    <h5 class="card-title fw-bold text-blue-700 mb-0">THÔNG TIN GIẢNG VIÊN HƯỚNG DẪN</h5>
-                </div>
-            </div>
-            <!-- Thông tin giảng viên -->
-            <div class="mt-2">
-                <p class="mb-1"><strong>Họ tên:</strong> Nguyễn Văn A</p>
-                <p class="mb-1"><strong>SĐT:</strong> 0123 456 789</p>
-                <p class="mb-1"><strong>Email:</strong> nguyenvana@example.com</p>
-                <p class="mb-0"><strong>Khoa:</strong> Công nghệ thông tin</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-            
-            <!-- Card 2 -->
-            <div class="col-md-6 col-lg-3 mb-3">
-                <div class="card h-100">
+        <div class="row col">
+            <div class="col-md-3">
+                <div class="card text-center" style="height: 96%;">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between mb-3">
+                        <div class="d-flex justify-content-center mb-3">
                             <div>
-                                <h5 class="card-title fw-bold text-blue-700 mb-0">BÁO CÁO TIẾN ĐỘ</h5>
-                                <p class="card-text">&nbsp;</p>
-                            </div>
-
-                        </div>
-                        <form action="./NopBaoCaoTD">
-                        <button class="btn btn-emerald w-100" name="btnNopBC">Nộp báo cáo</button>
-                        </form>';
-echo'                    </div>
-                </div>
-            </div>
-            
-            <!-- Card 3 -->
-            <div class="col-md-6 col-lg-3 mb-3">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between mb-3">
-                            <div>
-                                <h5 class="card-title fw-bold text-blue-700 mb-0">NỘP QUYỂN KHÓA LUẬN</h5>
-                                <p class="card-text small">Hạn: 2023-12-19 12:00 - 2023-12-31 00:35</p>
+                                <h5 class="card-title fw-bold mb-3">THÔNG TIN GIẢNG VIÊN HƯỚNG DẪN</h5>
                             </div>
                         </div>
-                        <form action="./NopKhoaLuan" >
-                        <button class="btn btn-emerald w-100" name="btnNopKL">Nộp khóa luận</button>
-                        </form>
+                        <!-- Thông tin giảng viên -->
+                        <div class="mt-2 text-start">
+                            <h6 style="color:#9C9C9C;">Họ tên:</h6>
+                            <p class="fw-bolder fs-6">Nguyễn</p>
+                            <h6 style="color:#9C9C9C;">Số điện thoại:</h6>
+                            <p class="fw-bolder fs-6">0123 456 789</p>
+                            <h6 style="color:#9C9C9C;">Email:</h6>
+                            <p class="fw-bolder fs-6">nguyenvana@example.com</p>
+                            <h6 style="color:#9C9C9C;">Khoa:</h6>
+                            <p class="fw-bolder fs-6">Công nghệ thông tin</p>
+                        
+                        </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Card 4 -->
-            <div class="col-md-6 col-lg-3 mb-3">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between mb-3">
-                            <div>
-                                <h5 class="card-title fw-bold text-blue-700 mb-0">ĐĂNG KÝ LỊCH BÁO CÁO</h5>
-                                <p class="card-text">&nbsp;</p>
+            <div class="col-md-9">
+                <div class="row">
+                    <!-- Card 2 -->
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card h-70 text-center">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-center mb-3">
+                                    <div>
+                                        <h5 class="card-title fw-bold mb-0">BÁO CÁO TIẾN ĐỘ</h5>
+                                        <p class="card-text small">&nbsp</p>
+                                    </div>
+                                </div>
+                                <form action="./NopBaoCaoTD">
+                                    <button class="p-1 w-100 custom-btn" name="btnNopBC">Nộp báo cáo</button>
+                                </form>
                             </div>
-                            
                         </div>
-                        <button class="btn btn-emerald w-100">Xem chi tiết</button>
+                    </div>
+                    
+                    <!-- Card 3 -->
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card h-70 text-center">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-center mb-3">
+                                    <div>
+                                        <h5 class="card-title fw-bold mb-0">NỘP QUYỂN KHÓA LUẬN</h5>
+                                        <p class="card-text small">Hạn: 2023-12-19 - 2023-12-31</p>
+                                    </div>
+                                </div>
+                                <form action="./NopKhoaLuan">
+                                <button class="p-1 w-100 custom-btn" name="btnNopKL">Nộp khóa luận</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 4 -->
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card h-70 text-center">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-center mb-3">
+                                    <div>
+                                        <h5 class="card-title fw-bold mb-0">ĐĂNG KÝ LỊCH BÁO CÁO</h5>
+                                        <p class="card-text">&nbsp;</p>
+                                    </div>     
+                                </div>
+                                <button class="p-1 w-100 custom-btn">Xem chi tiết</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        
-        <!-- Thesis Information -->
-        <div class="mb-4">
-            <h2 class="section-title">THÔNG TIN ĐỀ TÀI ĐĂNG KÝ</h2>
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">';
-                    foreach($dtdk as $row){
-                        echo'
-                        <div class="col-md-6 mb-3">
-                            <h6 class="text-muted small">Tên đề tài</h6>
-                            <p class="fw-semibold fs-5">'.htmlspecialchars($row["TenDeTai"]).'</p>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <h6 class="text-muted small">Giảng viên hướng dẫn</h6>
-                            <p class="fw-semibold fs-5">'.htmlspecialchars($row["GiangVienHuongDan"]).'</p>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <h6 class="text-muted small">Trạng thái đề tài</h6>
-                            <span class="status-badge status-rejected">
-                            '.$row["TrangThaiDK"].'
-                            </span>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <h6 class="text-muted small">Niên khóa</h6>
-                            <p class="fw-semibold fs-5">2020-2024</p>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <h6 class="text-muted small">Khoa/Bộ môn</h6>
-                            <p class="fw-semibold fs-5">'.htmlspecialchars($row["ChuyenNganh"]).'</p>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <h6 class="text-muted small">Hội đồng</h6>
-                            <p class="fw-semibold fs-5">Hội đồng khoa CNTT</p>
+                <div class="row">
+                    <!-- Thesis Information -->
+                    <div class="col-12">
+                        <h2 class="section-title">THÔNG TIN ĐỀ TÀI ĐĂNG KÝ</h2>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">';
+                                foreach($dtdk as $row){
+                                    echo'
+                                    <div class="col-md-6 ">
+                                        <h6  style="margin:0;color:#9C9C9C;">Tên đề tài</h6>
+                                        <p class="fw-semibold fs-6">'.htmlspecialchars($row["TenDeTai"]).'</p>
+                                    </div>
+                                    <div class="col-md-6 ">
+                                        <h6  style="margin:0;color:#9C9C9C;">Giảng viên hướng dẫn</h6>
+                                        <p class="fw-semibold fs-6">'.htmlspecialchars($row["GiangVienHuongDan"]).'</p>
+                                    </div>
+                                    <div class="col-md-6 ">
+                                        <h6  style="margin:0;color:#9C9C9C;">Trạng thái đề tài</h6>
+                                        <span class="status-badge status-rejected">
+                                        '.$row["TrangThaiDK"].'
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6 ">
+                                        <h6  style="margin:0;color:#9C9C9C;">Niên khóa</h6>
+                                        <p class="fw-semibold fs-6">2020-2024</p>
+                                    </div>
+                                    <div class="col-md-6 ">
+                                        <h6  style="margin:0;color:#9C9C9C;">Khoa/Bộ môn</h6>
+                                        <p class="fw-semibold fs-6">'.htmlspecialchars($row["ChuyenNganh"]).'</p>
+                                    </div>
+                                    <div class="col-md-6 ">
+                                        <h6 class="text-muted " style="margin:0;">Hội đồng</h6>
+                                        <p class="fw-semibold fs-6">Hội đồng khoa CNTT</p>
+                                    </div>
+                                </div>
+                                <div >
+                                    <button class="btn btn-primary me-2 view-details" data-id="'.$row['IDDeTai'].'"
+                                                        data-title="'.htmlspecialchars($row['TenDeTai'], ENT_QUOTES).'"
+                                                        data-giangvien="'.htmlspecialchars($row['GiangVienHuongDan'], ENT_QUOTES).'"
+                                                        data-mota="'.htmlspecialchars($row['MoTa'], ENT_QUOTES).'"
+                                                        data-yeucau="'.htmlspecialchars($row['YeuCau'], ENT_QUOTES).'"
+                                                        data-sltoida="'.$row['SoLuongTV'].'">
+                                        <i class="bi bi-file-text me-1"></i> Xem chi tiết đề tài
+                                    </button>
+                                    
+                                </div>';
+                                }
+                                echo'
+                            </div>
                         </div>
                     </div>
-                    <div class="mt-3">
-                        <button class="btn btn-primary me-2 view-details" data-id="'.$row['IDDeTai'].'"
-                                            data-title="'.htmlspecialchars($row['TenDeTai'], ENT_QUOTES).'"
-                                            data-giangvien="'.htmlspecialchars($row['GiangVienHuongDan'], ENT_QUOTES).'"
-                                            data-mota="'.htmlspecialchars($row['MoTa'], ENT_QUOTES).'"
-                                            data-yeucau="'.htmlspecialchars($row['YeuCau'], ENT_QUOTES).'"
-                                            data-sltoida="'.$row['SoLuongTV'].'">
-                            <i class="bi bi-file-text me-1"></i> Xem chi tiết đề tài
-                        </button>
-                        <button class="btn btn-danger">
-                            <i class="bi bi-exclamation-circle me-1"></i> Hủy đề tài
-                        </button>
-                    </div>';
-                    }
-                    echo'
                 </div>
             </div>
         </div>
         
         <!-- Group Information -->
-        <div>
+        <div class="mb-">
             <h2 class="section-title">THÔNG TIN NHÓM THỰC HIỆN</h2>
             <div class="card">
                 <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-striped mb-0">
-                            <thead class="bg-light">
+                        <table class="table mb-0">
+                            <thead>
                                 <tr>
-                                    <th class="px-3">STT</th>
-                                    <th class="px-3">MSSV</th>
-                                    <th class="px-3">Họ và tên</th>
-                                    <th class="px-3">Lớp</th>
-                                    <th class="px-3">Email</th>
-                                    <th class="px-3">Vai trò</th>
+                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">STT</td>
+                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">MSSV</td>
+                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">Họ và tên</td>
+                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">Lớp</td>
+                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">Email</td>
+                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">Vai trò</td>
                                 </tr>
                             </thead>
-                            <tbody>';
+                            <tbody >';
                             $stt=1;
                             foreach($nhom as $row){
                                 echo'
@@ -253,6 +266,7 @@ echo'                    </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>';
 echo'             <!-- Project Details Modal -->
             <div class="modal fade" id="projectDetailModal" tabindex="-1" aria-labelledby="projectDetailModalLabel" aria-hidden="true">

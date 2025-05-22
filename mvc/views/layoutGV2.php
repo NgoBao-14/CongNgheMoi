@@ -218,6 +218,13 @@
             <p>Báo cáo khóa luận</p>
             </a>
         </li>
+
+        <li class="nav-item">
+            <a href="/CongNgheMoi/Logout" class="nav-link">
+            <i class="nav-icon fas fa-chalkboard-teacher"></i>
+            <p>Đăng xuất</p>
+            </a>
+        </li>
         </ul>
         </nav>
     </div>
