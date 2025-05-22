@@ -1,0 +1,213 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+/* Header Styles */
+.header {
+    background: linear-gradient(to right, #ffffff, #e6f2ff);
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.logo {
+    width: 100%;
+    height: auto;
+}
+
+.header-text {
+    text-align: center;
+    padding: 10px 0;
+}
+
+.registration-title {
+    background: url('title-bg.png') no-repeat center;
+    background-size: contain;
+    padding: 10px 0;
+    margin-top: 5px;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    background-color: #2196F3;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.welcome-text {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.student-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.student-info {
+    margin-bottom: 20px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.logout-btn {
+    background-color: #FF9800;
+    border: none;
+    color: white;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.logout-btn:hover {
+    background-color: #F57C00;
+    color: white;
+}
+
+/* Student Photo Styles */
+.student-photo-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.student-photo {
+    width: 150px;
+    height: 200px;
+    border: 1px solid #ddd;
+    object-fit: cover;
+}
+
+/* Student Details Styles */
+.student-details {
+    margin-top: 20px;
+    padding: 15px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.detail-item {
+    margin-bottom: 8px;
+}
+
+/* Student Information Section */
+.student-info-section {
+    background-color: white;
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.info-item {
+    margin-bottom: 15px;
+}
+
+.label {
+    font-weight: bold;
+    color: #333;
+}
+
+.value {
+    margin-left: 5px;
+}
+
+/* Footer Styles */
+.footer {
+    background-color: #0d6efd;
+    color: white;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.university-info h5 {
+    margin-bottom: 15px;
+}
+
+.university-info p, .system-info p {
+    margin-bottom: 5px;
+}
+
+.copyright {
+    text-align: center;
+    padding: 10px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    margin-top: 15px;
+}
+
+.all-rights {
+    text-align: center;
+    font-size: 12px;
+    padding-top: 5px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .header-text h3, .header-text h4 {
+        font-size: 16px;
+    }
+    
+    .student-photo {
+        width: 120px;
+        height: 160px;
+    }
+    
+    .sidebar {
+        margin-bottom: 20px;
+    }
+}
+/* --------đăng ký đề tài-------------- */
+.member-container {
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    position: relative;
+    }
+
+  /* Add Member button styling */
+#addMemberBtn {
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+#addMemberBtn:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+    }
+
+  /* Remove Member button styling */
+.remove-member {
+    transition: all 0.3s ease;
+}
+
+.remove-member:hover {
+    background-color: #c82333;
+}
+
+  /* Animation for adding new members */
+@keyframes fadeIn {
+    from {
+    opacity: 0;
+    transform: translateY(10px);
+    }
+    to {
+    opacity: 1;
+    transform: translateY(0);
+    }
+}
+
+.member-container {
+    animation: fadeIn 0.3s ease-out;
+}
