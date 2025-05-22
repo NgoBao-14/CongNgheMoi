@@ -52,7 +52,7 @@
        }
        public function GetDeTaiKhoa()
        {
-        $str = "SELECT * FROM detai dt join chuyennganh cn on dt.ChuyenNganh = cn.IDNganh"; 
+        $str = "SELECT * FROM detai dt join chuyennganh cn on dt.IDNganh = cn.IDNganh"; 
         $result = $this->connect->query($str);
         $data = [];
         while ($row = $result->fetch_assoc()) {
@@ -183,7 +183,7 @@
         }
         public function GetDSDetai()
         {
-            $str = "SELECT * FROM detai dt join chuyennganh cn on dt.ChuyenNganh = cn.IDNganh join giangvien gv on dt.IDGV = gv.iduser join user u on gv.iduser = u.iduser"; 
+            $str = "SELECT * FROM detai dt join chuyennganh cn on dt.IDNganh = cn.IDNganh join giangvien gv on dt.IDGV = gv.iduser join user u on gv.iduser = u.iduser"; 
             $result = $this->connect->query($str);
             $data = [];
             while ($row = $result->fetch_assoc()) {
@@ -193,7 +193,7 @@
         }
         public function GetDeTaiTheoID($id)
         {
-            $str = "SELECT * FROM detai dt join chuyennganh cn on dt.ChuyenNganh = cn.IDNganh join giangvien gv on dt.IDGV = gv.iduser join user u on gv.iduser = u.iduser WHERE dt.IDDeTai = $id"; 
+            $str = "SELECT * FROM detai dt join chuyennganh cn on dt.IDNganh = cn.IDNganh join giangvien gv on dt.IDGV = gv.iduser join user u on gv.iduser = u.iduser WHERE dt.IDDeTai = $id"; 
             $result = $this->connect->query($str);
             $data = [];
             while ($row = $result->fetch_assoc()) {
