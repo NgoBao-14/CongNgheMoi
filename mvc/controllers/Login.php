@@ -18,22 +18,28 @@ class Login extends Controller {
                 $_SESSION['role'] = $r['role'];
                 $_SESSION['phanquyen'] = $r['PhanQuyen'];
                 $_SESSION['idNganh'] = $r['IDNganh'];
+                $_SESSION['PQ'] = $r['PQ'];
 
                 echo "<script>alert('Đăng nhập thành công');</script>";
-
-                // Điều hướng theo vai trò
-                switch ($r['role']) {
-                    case 'giangvien':
-                        header("refresh:0; url='/CongNgheMoi/GiangVien/'");
-                        break;
-                    case 'sinhvien':
-                        header("refresh:0; url='/CongNgheMoi/SinhVien/'");
-                        break;
-                    default:
-                        header("refresh:0; url='/CongNgheMoi'");
-                        break;
+                if($r['PQ'] == '3') {
+                    header("refresh:0; url='/CongNgheMoi/Admin/'");
+                    exit;
                 }
-                exit;
+                else{
+                    // Điều hướng theo vai trò
+                    switch ($r['role']) {
+                        case 'giangvien':
+                            header("refresh:0; url='/CongNgheMoi/GiangVien/'");
+                            break;
+                        case 'sinhvien':
+                            header("refresh:0; url='/CongNgheMoi/SinhVien/'");
+                            break;
+                        default:
+                            header("refresh:0; url='/CongNgheMoi'");
+                            break;
+                    }
+                    exit;}
+                
             } else {
                 echo "<script>alert('Sai tên đăng nhập hoặc mật khẩu');</script>";
                 header("refresh:0; url='Login'");

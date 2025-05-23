@@ -1,6 +1,10 @@
 <?php
     class admin extends Controller{
         public function SayHi(){
+            if($_SESSION["PQ"] != 3){
+                echo "<script>alert('Bạn không có quyền truy cập')</script>";
+                header("refresh: 0; url='/CongNgheMoi'");
+            }
             $admin = $this->model("mAdmin");
             $kq = $admin->GetSinhVien();
             $sinhvien = count(json_decode($kq, true));

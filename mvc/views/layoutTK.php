@@ -1,3 +1,9 @@
+<?php
+    if($_SESSION["PQ"] != 4){
+        echo "<script>alert('Bạn không có quyền truy cập')</script>";
+        header("refresh: 0; url='/CongNgheMoi'");
+    }
+?>
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -189,7 +195,7 @@
         </li>
         <!-- Đề xuất đề tài  -->
         <li class="nav-item">
-            <a href="./DXDeTai" class="nav-link">
+            <a href="/CongNgheMoi/TruongKhoa/DXDeTai" class="nav-link">
             <i class="nav-icon fas fa-chalkboard-teacher"></i>
             <p>Đề xuất đề tài</p>
             </a>
@@ -197,7 +203,7 @@
 
         <!-- Danh sách đăng ký -->
         <li class="nav-item">
-            <a href="./QuanLyDeTai" class="nav-link">
+            <a href="/CongNgheMoi/TruongKhoa/QuanLyDeTai" class="nav-link">
             <i class="nav-icon fas fa-clipboard-list"></i>
             <p>Danh sách đề tài</p>
             </a>
