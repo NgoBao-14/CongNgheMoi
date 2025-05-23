@@ -85,5 +85,12 @@ class mGiangVien extends DB {
         }
         return json_encode($mang);
     }
+
+    public function addDeTai($TenDeTai, $Mota, $IDGV, $IDNganh, $YeuCau, $soLuongTV) {
+        $str = "INSERT INTO detai (TenDeTai, MoTa, IDGV, IDNganh, TrangThaiDeTai, TrangThaiDK, YeuCau, SoLuongTV)
+        VALUES ('$TenDeTai', '$Mota', $IDGV, $IDNganh, 'Chưa duyệt', 'Chưa được đăng ký', '$YeuCau', $soLuongTV)";
+        $result = mysqli_query($this->connect, $str);
+        return $result;
+    }
 }
 ?>

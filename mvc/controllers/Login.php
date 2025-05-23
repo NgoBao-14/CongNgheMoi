@@ -17,6 +17,7 @@ class Login extends Controller {
                 $_SESSION['ten'] = $r['HoDem'] . ' ' . $r['Ten'];
                 $_SESSION['role'] = $r['role'];
                 $_SESSION['phanquyen'] = $r['PhanQuyen'];
+                $_SESSION['idNganh'] = $r['IDNganh'];
 
                 echo "<script>alert('Đăng nhập thành công');</script>";
 

@@ -4,7 +4,7 @@ class mLogin extends DB {
     $sql = "SELECT 
                 tk.iduser, tk.username, tk.password, tk.PQ,
                 pq.PhanQuyen,
-                u.HoDem, u.Ten, u.SDT, u.Email,
+                u.HoDem, u.Ten, u.SDT, u.Email, u.IDNganh,
                 sv.MaSV, sv.Lop,
                 gv.MaGV,
                 CASE 

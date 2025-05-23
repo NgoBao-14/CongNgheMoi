@@ -49,7 +49,7 @@
             $data[] = $row;
         }
         return json_encode($data);
-       }
+    }
        public function GetDeTaiKhoa()
        {
         $str = "SELECT * FROM detai dt join chuyennganh cn on dt.IDNganh = cn.IDNganh"; 

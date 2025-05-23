@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Quản lý khóa luận</title>
 
-    <!-- Google Font: Source Sans Pro -->
+    
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -13,7 +13,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2.0/dist/css/adminlte.min.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <!-- Custom CSS -->
     <link rel="stylesheet" href="styles.css">
     </head>
@@ -158,10 +159,10 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="#" class="brand-link">
+    <div class="brand-link">
         <img src="https://adminlte.io/themes/v3/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">Quản lý khóa luận</span>
-    </a>
+    </div>
 
     <!-- Sidebar -->
     <div class="sidebar">
@@ -171,7 +172,7 @@
             <img src="https://adminlte.io/themes/v3/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-            <a href="#" class="d-block">Giảng Viên</a>
+            <h5 class="d-block">Trưởng khoa</h5>
         </div>
         </div>
 
@@ -181,14 +182,14 @@
         <ul class="nav nav-pills nav-sidebar flex-column" role="menu">
         <!-- Bảng điều khiển -->
         <li class="nav-item">
-            <a href="./" class="nav-link">
+            <a href="./" class="nav-link active">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>Bảng điều khiển</p>
             </a>
         </li>
         <!-- Đề xuất đề tài  -->
         <li class="nav-item">
-            <a href="./DeXuatDeTai" class="nav-link">
+            <a href="./DXDeTai" class="nav-link">
             <i class="nav-icon fas fa-chalkboard-teacher"></i>
             <p>Đề xuất đề tài</p>
             </a>
@@ -196,35 +197,12 @@
 
         <!-- Danh sách đăng ký -->
         <li class="nav-item">
-            <a href="/CongNgheMoi/GiangVien/QuanLyDeTai" class="nav-link">
+            <a href="./QuanLyDeTai" class="nav-link">
             <i class="nav-icon fas fa-clipboard-list"></i>
             <p>Danh sách đề tài</p>
             </a>
         </li>
 
-        <!-- Sinh viên -->
-        <li class="nav-item">
-            <a href="/CongNgheMoi/GiangVien/QuanLyNhom" class="nav-link">
-            <i class="nav-icon fas fa-user-graduate"></i>
-            <p>Quản lý nhóm</p>
-            </a>
-        </li>
-
-        <!-- Giáo viên -->
-        <li class="nav-item">
-            <a href="/CongNgheMoi/GiangVien/TienDoDeTai" class="nav-link">
-            <i class="nav-icon fas fa-chalkboard-teacher"></i>
-            <p>Tiến độ đề tài</p>
-            </a>
-        </li>
-
-        
-        <li class="nav-item">
-            <a href="/CongNgheMoi/GiangVien/QuanLyKhoaLuan" class="nav-link">
-            <i class="nav-icon fas fa-chalkboard-teacher"></i>
-            <p>Báo cáo khóa luận</p>
-            </a>
-        </li>
 
         <li class="nav-item">
             <a href="/CongNgheMoi/Logout" class="nav-link">
@@ -282,6 +260,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
     <!-- Custom JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
     </html>
