@@ -22,7 +22,7 @@ echo'
                 <h2 class="info-box-number">42</h2>
                 <span class="info-box-text">Danh sách đề tài</span>
                 <div class="mt-3">
-                    <a href="./QuanLyDeTai" class="text-white">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="/CongNgheMoi/GiangVien/QuanLyDeTai" class="text-white">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
                 </div>
             </div>
@@ -33,7 +33,7 @@ echo'
                 <h2 class="info-box-number">65</h2>
                 <span class="info-box-text">Tiến độ đề tài</span>
                 <div class="mt-3">
-                    <a href="./TienDoDeTai" class="text-white">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="/CongNgheMoi/GiangVien/TienDoDeTai" class="text-white">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
                 </div>
             </div>
@@ -44,7 +44,7 @@ echo'
                 <h2 class="info-box-number">12</h2>
                 <span class="info-box-text">Quyển khóa luận</span> 
                 <div class="mt-3">
-                    <a href="./QuanLyKhoaLuan" class="text-white">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="/CongNgheMoi/GiangVien/QuanLyKhoaLuan" class="text-white">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
                 </div>
             </div>

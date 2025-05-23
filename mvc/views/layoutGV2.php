@@ -181,7 +181,7 @@
         <ul class="nav nav-pills nav-sidebar flex-column" role="menu">
         <!-- Bảng điều khiển -->
         <li class="nav-item">
-            <a href="./" class="nav-link active">
+            <a href="./" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>Bảng điều khiển</p>
             </a>
@@ -189,7 +189,7 @@
 
         <!-- Danh sách đăng ký -->
         <li class="nav-item">
-            <a href="./QuanLyDeTai" class="nav-link">
+            <a href="/CongNgheMoi/GiangVien/QuanLyDeTai" class="nav-link">
             <i class="nav-icon fas fa-clipboard-list"></i>
             <p>Danh sách đề tài</p>
             </a>
@@ -197,7 +197,7 @@
 
         <!-- Sinh viên -->
         <li class="nav-item">
-            <a href="./QuanLyNhom" class="nav-link">
+            <a href="/CongNgheMoi/GiangVien/QuanLyNhom" class="nav-link">
             <i class="nav-icon fas fa-user-graduate"></i>
             <p>Quản lý nhóm</p>
             </a>
@@ -205,7 +205,7 @@
 
         <!-- Giáo viên -->
         <li class="nav-item">
-            <a href="./TienDoDeTai" class="nav-link">
+            <a href="/CongNgheMoi/GiangVien/TienDoDeTai" class="nav-link">
             <i class="nav-icon fas fa-chalkboard-teacher"></i>
             <p>Tiến độ đề tài</p>
             </a>
@@ -213,7 +213,7 @@
 
         
         <li class="nav-item">
-            <a href="./QuanLyKhoaLuan" class="nav-link">
+            <a href="/CongNgheMoi/GiangVien/QuanLyKhoaLuan" class="nav-link">
             <i class="nav-icon fas fa-chalkboard-teacher"></i>
             <p>Báo cáo khóa luận</p>
             </a>
