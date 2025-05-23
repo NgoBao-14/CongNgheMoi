@@ -64,5 +64,29 @@ class GiangVien extends Controller {
             "khoaluan" => $khoaluan
         ]);
     }
+
+    function DeXuatDeTai(){
+        $IDGV = $_SESSION['iduser'];
+        $dt= $this->model("mGiangVien");
+        if (isset($_POST['btnDeXuat'])) {
+            $TenDeTai = $_POST['TenDeTai'];
+            $Mota = $_POST['Mota'];
+            $IDNganh = $_SESSION['idNganh'];
+            $YeuCau = $_POST['YeuCau'];
+            $soLuongTV = $_POST['soLuongTV'];
+            $detai = json_decode($dt->addDeTai($TenDeTai, $Mota, $IDGV, $IDNganh, $YeuCau, $soLuongTV), true);
+            if ($detai) {
+                echo "<script>alert('Thêm đề tài thành công');</script>";
+                header("refresh:0; url='/CongNgheMoi/GiangVien/DeXuatDeTai'");
+            } else {
+                echo "<script>alert('Thêm đề tài thất bại');</script>";
+            }
+        }
+        $this->view("layoutGV2", [
+            "Page" => "DeXuatDeTai",
+            
+        ]);
+        
+    }
 }
 ?>
