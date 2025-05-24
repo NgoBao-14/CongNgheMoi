@@ -119,6 +119,20 @@ echo'<!DOCTYPE html>
 
 </head>
 <body>
+
+    <div class="col-md-3">
+        <div class="navigation-breadcrumb">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="./DeTaiDK" class="text-decoration-none" style="color:rgb(122, 122, 122);">
+                            <i class="bi bi-arrow-left-circle-fill"></i> Quay lại
+                        </a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
     <div class="container">
         <div class="d-flex align-items-center mb-4">         
         </div>
@@ -194,10 +208,10 @@ echo'                           </div>
                     </div>
 
                     <div class="d-flex justify-content-start mt-4">
-                        <button type="submit" class="btn btn-save me-2">
-                            <i class="bi bi-save me-1"></i> Lưu những thay đổi
+                        <button type="submit" class="btn btn-success me-2">
+                            Lưu những thay đổi
                         </button>
-                        <button type="button" class="btn btn-cancel" onclick="location.reload()">
+                        <button type="button" class="btn btn-danger" onclick="location.reload()">
                             <i class="bi bi-x-circle me-1"></i> Hủy bỏ
                         </button>
                     </div>

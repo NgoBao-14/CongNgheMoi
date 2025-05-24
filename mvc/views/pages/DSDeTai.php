@@ -4,12 +4,15 @@ $perPage = 10;
 $total = count($dt);
 $totalPages = ceil($total / $perPage);
 
+// Trang hiện tại
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $currentPage = max(1, min($currentPage, $totalPages));
 
+// Lấy đề tài cho trang hiện tại
 $startIndex = ($currentPage - 1) * $perPage;
 $dtPage = array_slice($dt, $startIndex, $perPage);
 ?>
+
     <div class="wrapper">
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <ul class="navbar-nav">
@@ -35,17 +38,13 @@ $dtPage = array_slice($dt, $startIndex, $perPage);
     </ul>
     </nav>
 
-
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
     <div class="brand-link">
         <img src="https://adminlte.io/themes/v3/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">Quản lý khóa luận</span>
     </div>
 
- 
     <div class="sidebar">
- 
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
             <img src="https://adminlte.io/themes/v3/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
@@ -55,20 +54,19 @@ $dtPage = array_slice($dt, $startIndex, $perPage);
         </div>
         </div>
 
-
     <div>
         <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" role="menu">
         <!-- Bảng điều khiển -->
         <li class="nav-item">
-            <a href="./" class="nav-link ">
+            <a href="./" class="nav-link ative">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>Bảng điều khiển</p>
             </a>
         </li>
         <!-- Đề xuất đề tài  -->
         <li class="nav-item">
-            <a href="/CongNgheMoi/TruongKhoa/DXDeTai" class="nav-link active">
+            <a href="/CongNgheMoi/TruongKhoa/DXDeTai" class="nav-link">
             <i class="nav-icon fas fa-chalkboard-teacher"></i>
             <p>Duyệt đề tài</p>
             </a>
@@ -76,7 +74,7 @@ $dtPage = array_slice($dt, $startIndex, $perPage);
 
         <!-- Danh sách đăng ký -->
         <li class="nav-item">
-            <a href="/CongNgheMoi/TruongKhoa/DSDeTai" class="nav-link">
+            <a href="/CongNgheMoi/TruongKhoa/DSDeTai" class="nav-link active">
             <i class="nav-icon fas fa-clipboard-list"></i>
             <p>Danh sách đề tài</p>
             </a>
@@ -92,14 +90,12 @@ $dtPage = array_slice($dt, $startIndex, $perPage);
         </ul>
         </nav>
     </div>
-
     </aside>
-
 
     <div class="content-wrapper">
 <div class= "container-fluid">
     <div id="deTaiSection" class="project-section">
-        <h3 class="text-center  my-4">Duyệt đề tài</h3>
+        <h3 class="text-center  my-4">Danh sách đề tài</h3>
         <div class="project-list">
             <table class="table table-bordered">
                 <thead class="table-primary">
@@ -117,7 +113,7 @@ $dtPage = array_slice($dt, $startIndex, $perPage);
                     $coDeTai = false;
 
                     foreach ($dtPage as $row) {
-                        if ($row['TrangThaiDeTai'] === 'Chưa duyệt') {
+                        if ($row['TrangThaiDeTai'] === 'Đã duyệt') {
                             $coDeTai = true;
                             echo '
                             <tr>
@@ -138,14 +134,6 @@ $dtPage = array_slice($dt, $startIndex, $perPage);
                                             data-yeucau="' . htmlspecialchars($row['YeuCau'], ENT_QUOTES) . '"
                                             data-sltoida="' . $row['SoLuongTV'] . '"
                                         >Xem chi tiết</button>
-
-                                        <input type="hidden" name="idDetai" value="' . $row['IDDeTai'] . '">
-                                            <button 
-                                            type="submit" 
-                                            name="btnDuyet" 
-                                            class="btn btn-success btn-sm"
-                                            onclick="return confirm(\'Bạn có chắc chắn muốn duyệt đề tài này?\');"
-                                        >Duyệt</button>
                                     </td>
                                 </form>
                             </tr>';
@@ -154,7 +142,7 @@ $dtPage = array_slice($dt, $startIndex, $perPage);
                     }
 
                     if (!$coDeTai) {
-                        echo '<tr><td colspan="5">Không có đề tài nào cần duyệt</td></tr>';
+                        echo '<tr><td colspan="5">Không có đề tài</td></tr>';
                     }
                     ?>
                 </tbody>
@@ -175,7 +163,6 @@ $dtPage = array_slice($dt, $startIndex, $perPage);
         <?php endif; ?>
     </div>
 </div>
-
 <div class="modal fade" id="projectDetailModal" tabindex="-1" aria-labelledby="projectDetailModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -190,7 +177,6 @@ $dtPage = array_slice($dt, $startIndex, $perPage);
         </div>
     </div>
 </div>
-
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {

@@ -188,7 +188,6 @@
             <div class="container">
                 <div class="d-flex">
                     <a href="#" class="tab-item active">TIN TỨC - SỰ KIỆN</a>
-                    <a href="#" class="tab-item">THÔNG TIN GIỜ HỌC</a>
                 </div>
             </div>
         </div>
@@ -315,7 +314,7 @@
                 <div class="col-lg-4">
                     <div class="login-section">
                         <div class="login-header">
-                            CỔNG THÔNG TIN SINH VIÊN
+                            CỔNG THÔNG TIN
                         </div>
                         <h5 class="text-primary mb-3">ĐĂNG NHẬP HỆ THỐNG</h5>
                         
@@ -327,23 +326,9 @@
                                 <input type="password" id="pass" name="pass" class="form-control" placeholder="Nhập mật khẩu" required>
                             </div>
                             <div class="mb-3">
-                                <!-- <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="graduated">
-                                     <label class="form-check-label" for="graduated">
-                                        Đã tốt nghiệp
-                                    </label>
-                                </div>  -->
                             </div>
                             
-                            <div class="captcha-container d-flex align-items-center justify-content-between">
-                                <div class="d-flex align-items-center">
-                                    <input type="text" class="form-control form-control-sm me-2" placeholder="Nhập mã" style="width: 80px;">
-                                    <i class="bi bi-arrow-clockwise text-primary"></i>
-                                </div>
-                                <div style="background-color: #e9ecef; padding: 5px 10px; border-radius: 4px; font-family: monospace;">
-                                    A7B9X
-                                </div>
-                            </div>
+
                             
                             <button type="submit" name="btndn" class="btn-login">ĐĂNG NHẬP</button>
                             <!-- <button type="button" class="btn-parent">Dành cho phụ huynh</button> -->

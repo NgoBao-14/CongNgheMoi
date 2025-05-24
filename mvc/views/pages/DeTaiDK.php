@@ -89,9 +89,25 @@ echo '<!DOCTYPE html>
             background-color: #007dc9;
             color: white;
         }
+        .disabled-overlay {
+            opacity: 0.5;                
+            pointer-events: none;        
+            filter: grayscale(70%);      
+    }
+
     </style>
 </head>
 <body>
+    <div class="col-md-3">
+        <div class="navigation-breadcrumb">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href=".">Trang chủ</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Thông tin đề tài</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
     <div class="container py-4 border">
         <h1 class="text-center fw-bold mb-5">XEM LẠI ĐỀ TÀI ĐĂNG KÝ KHÓA LUẬN</h1>
         
@@ -105,18 +121,21 @@ echo '<!DOCTYPE html>
                                 <h5 class="card-title fw-bold mb-3">THÔNG TIN GIẢNG VIÊN HƯỚNG DẪN</h5>
                             </div>
                         </div>
-                        <!-- Thông tin giảng viên -->
+                        <!-- Thông tin giảng viên -->';
+                        foreach($dtdk as $row):
+echo'
                         <div class="mt-2 text-start">
                             <h6 style="color:#9C9C9C;">Họ tên:</h6>
-                            <p class="fw-bolder fs-6">Nguyễn</p>
+                            <p class="fw-bolder fs-6">'.htmlspecialchars($row["GiangVienHuongDan"]).'</p>
                             <h6 style="color:#9C9C9C;">Số điện thoại:</h6>
-                            <p class="fw-bolder fs-6">0123 456 789</p>
+                            <p class="fw-bolder fs-6">'.htmlspecialchars($row["SDT"]).'</p>
                             <h6 style="color:#9C9C9C;">Email:</h6>
-                            <p class="fw-bolder fs-6">nguyenvana@example.com</p>
+                            <p class="fw-bolder fs-6">'.htmlspecialchars($row["Email"]).'</p>
                             <h6 style="color:#9C9C9C;">Khoa:</h6>
-                            <p class="fw-bolder fs-6">Công nghệ thông tin</p>
-                        
-                        </div>
+                            <p class="fw-bolder fs-6">'.htmlspecialchars($row["ChuyenNganh"]).'</p>
+                        </div>';
+                        endforeach;
+echo'
                     </div>
                 </div>
             </div>
@@ -158,7 +177,7 @@ echo '<!DOCTYPE html>
                     
                     <!-- Card 4 -->
                     <div class="col-md-6 col-lg-4 mb-3">
-                        <div class="card h-70 text-center">
+                        <div class="card h-70 text-center disabled-overlay"> <!-- thêm class ở đây -->
                             <div class="card-body">
                                 <div class="d-flex justify-content-center mb-3">
                                     <div>
@@ -170,6 +189,7 @@ echo '<!DOCTYPE html>
                             </div>
                         </div>
                     </div>
+
                 </div>
                 <div class="row">
                     <!-- Thesis Information -->
@@ -196,7 +216,7 @@ echo '<!DOCTYPE html>
                                     </div>
                                     <div class="col-md-6 ">
                                         <h6  style="margin:0;color:#9C9C9C;">Niên khóa</h6>
-                                        <p class="fw-semibold fs-6">2020-2024</p>
+                                        <p class="fw-semibold fs-6">2024-2025</p>
                                     </div>
                                     <div class="col-md-6 ">
                                         <h6  style="margin:0;color:#9C9C9C;">Khoa/Bộ môn</h6>
@@ -204,7 +224,7 @@ echo '<!DOCTYPE html>
                                     </div>
                                     <div class="col-md-6 ">
                                         <h6 class="text-muted " style="margin:0;">Hội đồng</h6>
-                                        <p class="fw-semibold fs-6">Hội đồng khoa CNTT</p>
+                                        <p class="fw-semibold fs-6">Hội đồng khoa '.htmlspecialchars($row["ChuyenNganh"]).'</p>
                                     </div>
                                 </div>
                                 <div >

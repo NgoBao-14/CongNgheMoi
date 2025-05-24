@@ -72,17 +72,124 @@
         }
     </style>
 
+    <div class="wrapper">
 
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+
+    <ul class="navbar-nav">
+        <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+        <a href="" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+        <a href="" class="nav-link">Contact</a>
+        </li>
+    </ul>
+
+
+    <ul class="navbar-nav ml-auto">
+        <!-- thu phóng -->
+        <li class="nav-item">
+        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+            <i class="fas fa-expand-arrows-alt"></i>
+        </a>
+        </li>
+    </ul>
+    </nav>
+
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="" class="brand-link">
+        <img src="https://adminlte.io/themes/v3/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">Quản lý khóa luận</span>
+    </a>
+
+
+    <div class="sidebar">
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+            <img src="https://adminlte.io/themes/v3/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+            <a href="" class="d-block">Giảng Viên</a>
+        </div>
+        </div>
+
+    <div>
+        <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" role="menu">
+        <!-- Bảng điều khiển -->
+        <li class="nav-item" >
+            <a href="./" class="nav-link">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>Bảng điều khiển</p>
+            </a>
+        </li>
+        <!-- Đề xuất đề tài  -->
+        <li class="nav-item">
+            <a href="./DeXuatDeTai" class="nav-link" style="background-color:rgb(35, 120, 206);">
+            <i class="nav-icon fas fa-chalkboard-teacher"></i>
+            <p>Đề xuất đề tài</p>
+            </a>
+        </li>
+
+        <!-- Danh sách đăng ký -->
+        <li class="nav-item">
+            <a href="/CongNgheMoi/GiangVien/QuanLyDeTai" class="nav-link">
+            <i class="nav-icon fas fa-clipboard-list"></i>
+            <p>Danh sách đề tài</p>
+            </a>
+        </li>
+
+        <!-- Sinh viên -->
+        <li class="nav-item">
+            <a href="/CongNgheMoi/GiangVien/QuanLyNhom" class="nav-link">
+            <i class="nav-icon fas fa-user-graduate"></i>
+            <p>Quản lý nhóm</p>
+            </a>
+        </li>
+
+        <!-- Giáo viên -->
+        <li class="nav-item">
+            <a href="/CongNgheMoi/GiangVien/TienDoDeTai" class="nav-link">
+            <i class="nav-icon fas fa-chalkboard-teacher"></i>
+            <p>Tiến độ đề tài</p>
+            </a>
+        </li>
+
+        
+        <li class="nav-item">
+            <a href="/CongNgheMoi/GiangVien/QuanLyKhoaLuan" class="nav-link">
+            <i class="nav-icon fas fa-chalkboard-teacher"></i>
+            <p>Báo cáo khóa luận</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="/CongNgheMoi/Logout" class="nav-link">
+            <i class="nav-icon fas fa-chalkboard-teacher"></i>
+            <p>Đăng xuất</p>
+            </a>
+        </li>
+        </ul>
+        </nav>
+    </div>
+
+    </aside>
+
+    <div class="content-wrapper ">
         <div class="row">
-          <div class="col-md-12">
+        <div class="col-md-12">
             <div class="card">
-              <div class="card-header d-flex justify-content-between align-items-center">
-              <div class="container">
+            <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10">
             <div class="form-container">
                 <div class="form-header">
-                    <h2><i class="fas fa-book me-2"></i>Thêm Đề Tài Mới</h2>
+                    <h3>Thêm Đề Tài Mới</h3>
                 </div>
 
                 <div id="successMessage" class="success-message d-none">
@@ -95,7 +202,6 @@
 
                 <form id="deTaiForm" action="" method="post">
                     <div >
-                        
                         <div >
                             <div class="form-floating mb-3">
                                 <label for="TenDeTai">Tên đề tài</label>
@@ -109,7 +215,6 @@
                             </div>
                         </div>
 
-                        
                         <div >
                             <div class="form-floating mb-3">
                                 <label for="YeuCau">Yêu cầu đề tài</label>
@@ -133,28 +238,30 @@
                     </div>
                 </form>
             </div>
-
             </div>
         </div>
     </div>
+            </div>
+            </div>
+        </div>
+        </div>
+            
 
-  <script>
+<script>
         document.addEventListener('DOMContentLoaded', function() {
             const studentForm = document.getElementById('studentForm');
             const cancelBtn = document.getElementById('cancelBtn');
             const successMessage = document.getElementById('successMessage');
             const errorMessage = document.getElementById('errorMessage');
             
-            
-            
-            // Cancel button
+     
             cancelBtn.addEventListener('click', function() {
                 studentForm.reset();
                 successMessage.style.display = 'none';
                 errorMessage.style.display = 'none';
             });
             
-            // Add animation to form fields on focus
+      
             const formInputs = document.querySelectorAll('.form-control');
             formInputs.forEach(input => {
                 input.addEventListener('focus', function() {
