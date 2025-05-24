@@ -32,15 +32,20 @@ class mDKDT extends DB {
     }
 
     public function timSV($MaSV) {
-    $sql = "SELECT * FROM sinhvien WHERE MaSV = '$MaSV'";
-    $result = mysqli_query($this->connect, $sql);
-    return mysqli_fetch_assoc($result);
+        $sql = "SELECT sv.*, 
+        CONCAT(u.HoDem, ' ', u.Ten) AS HoTen,
+        u.IDNganh
+        FROM sinhvien sv 
+        JOIN user u on sv.iduser=u.iduser
+        WHERE MaSV = $MaSV";
+        $result = mysqli_query($this->connect, $sql);
+        return mysqli_fetch_assoc($result);
     }
 
     public function ktSV($MaSV) {
-    $sql = "SELECT idNhom FROM sinhvien WHERE MaSV = '$MaSV' AND IDNhom IS NOT NULL";
-    $result = mysqli_query($this->connect, $sql);
-    return mysqli_num_rows($result) > 0;
+        $sql = "SELECT idNhom FROM sinhvien WHERE MaSV = '$MaSV' AND IDNhom IS NOT NULL";
+        $result = mysqli_query($this->connect, $sql);
+        return mysqli_num_rows($result) > 0;
     }
 
     public function capNhatTTDeTai($IDDeTai, $idNhom) {
@@ -48,23 +53,18 @@ class mDKDT extends DB {
         $result = mysqli_query($this->connect, $sql);
     }
 
-    public function getTTDeTaiByIDU($iduser) {
-        $str = "SELECT 
-    dt.*,
-    CONCAT(uGV.HoDem, ' ', uGV.Ten) AS GiangVienHuongDan,
-    cn.ChuyenNganh,
-    sv.MaSV,
-    CONCAT(uSV.HoDem, ' ', uSV.Ten) AS HoTenSinhVien,
-    sv.Lop,
-    uSV.Email
-    FROM sinhvien sv
-    JOIN nhom n ON sv.IDNhom = n.IDNhom
-    JOIN detai dt ON n.IDDeTai = dt.IDDeTai
-    JOIN giangvien gv ON dt.IDGV = gv.MaGV
-    JOIN user uSV ON sv.iduser = uSV.iduser
-    JOIN user uGV ON gv.iduser = uGV.iduser
-    JOIN chuyennganh cn ON dt.IDNganh = cn.IDNganh
-    WHERE sv.iduser = $iduser";
+    public function layIDNganhUser($iduser) {
+        $sql = "SELECT IDNganh FROM user WHERE iduser = '$iduser'";
+        $result = mysqli_query($this->connect, $sql);
+        $row = mysqli_fetch_assoc($result);
+        return $row['IDNganh'] ?? null;
+    }
+
+    public function TTSV($masv){
+        $str = "SELECT * FROM sinhvien sv
+        JOIN user u on sv.iduser=u.iduser
+        JOIN chuyennganh cn on u.IDNganh= cn.IDNganh
+        WHERE sv.MaSV= $masv";
         $result = mysqli_query($this->connect, $str);
         $mang = array();
         while ($row = mysqli_fetch_assoc($result)) {
@@ -72,13 +72,39 @@ class mDKDT extends DB {
         }
         return json_encode($mang);
     }
-    public function getIDNhomByIDUser($iduser) {
-    $str = "SELECT IDNhom FROM sinhvien WHERE iduser = $iduser";
-    $result = mysqli_query($this->connect, $str);
-    if ($row = mysqli_fetch_assoc($result)) {
-        return $row['IDNhom'];
+
+    public function getTTDeTaiByIDU($iduser) {
+        $str = "SELECT 
+        dt.*,
+        CONCAT(uGV.HoDem, ' ', uGV.Ten) AS GiangVienHuongDan,
+        uGV.SDT, uGV.Email,
+        cn.ChuyenNganh,
+        sv.MaSV,
+        CONCAT(uSV.HoDem, ' ', uSV.Ten) AS HoTenSinhVien,
+        sv.Lop,
+        uSV.Email
+        FROM sinhvien sv
+        JOIN nhom n ON sv.IDNhom = n.IDNhom
+        JOIN detai dt ON n.IDDeTai = dt.IDDeTai
+        JOIN giangvien gv ON dt.IDGV = gv.MaGV
+        JOIN user uSV ON sv.iduser = uSV.iduser
+        JOIN user uGV ON gv.iduser = uGV.iduser
+        JOIN chuyennganh cn ON dt.IDNganh = cn.IDNganh
+        WHERE sv.iduser = $iduser";
+            $result = mysqli_query($this->connect, $str);
+            $mang = array();
+            while ($row = mysqli_fetch_assoc($result)) {
+                $mang[] = $row;
+            }
+            return json_encode($mang);
     }
-    return null;
+    public function getIDNhomByIDUser($iduser) {
+        $str = "SELECT IDNhom FROM sinhvien WHERE iduser = $iduser";
+        $result = mysqli_query($this->connect, $str);
+        if ($row = mysqli_fetch_assoc($result)) {
+            return $row['IDNhom'];
+        }
+        return null;
     }
 
 

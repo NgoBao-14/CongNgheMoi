@@ -23,16 +23,6 @@
         <!-- Main Content -->
         <div class="main-content">
             <div class="row m-0">
-            <div class="col-md-2">
-                <div class="navigation-breadcrumb">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href=".">Trang chủ</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Đăng ký đề tài</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
             <?php require_once "./mvc/views/pages/".$data["Page"].".php" ?>
             </div>
         </div>
@@ -41,6 +31,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script.js"></script>
+    
 </body>
 </html>

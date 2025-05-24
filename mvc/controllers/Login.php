@@ -21,25 +21,26 @@ class Login extends Controller {
                 $_SESSION['PQ'] = $r['PQ'];
 
                 echo "<script>alert('Đăng nhập thành công');</script>";
-                if($r['PQ'] == '3') {
-                    header("refresh:0; url='/CongNgheMoi/Admin/'");
-                    exit;
+
+                // Chuyển hướng theo phân quyền
+                switch ($r['PQ']) {
+                    case '1':
+                        header("refresh:0; url='/CongNgheMoi/GiangVien/'");
+                        break;
+                    case '2':
+                        header("refresh:0; url='/CongNgheMoi/SinhVien/'");
+                        break;
+                    case '3':
+                        header("refresh:0; url='/CongNgheMoi/Admin/'");
+                        break;
+                    case '4':
+                        header("refresh:0; url='/CongNgheMoi/TruongKhoa/'");
+                        break;
+                    default:
+                        header("refresh:0; url='/CongNgheMoi/'");
+                        break;
                 }
-                else{
-                    // Điều hướng theo vai trò
-                    switch ($r['role']) {
-                        case 'giangvien':
-                            header("refresh:0; url='/CongNgheMoi/GiangVien/'");
-                            break;
-                        case 'sinhvien':
-                            header("refresh:0; url='/CongNgheMoi/SinhVien/'");
-                            break;
-                        default:
-                            header("refresh:0; url='/CongNgheMoi'");
-                            break;
-                    }
-                    exit;}
-                
+                exit;
             } else {
                 echo "<script>alert('Sai tên đăng nhập hoặc mật khẩu');</script>";
                 header("refresh:0; url='Login'");
@@ -50,6 +51,5 @@ class Login extends Controller {
         // view hiển thị form đăng nhập
         $this->view("layoutLogin");
     }
-
 }
 ?>

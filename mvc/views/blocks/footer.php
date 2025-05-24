@@ -27,9 +27,7 @@
                 </div>
             </div>
         </div>
-        <div class="copyright">
-            <p>Bản quyền 2018 - Trường Đại học Công nghiệp TP. Hồ Chí Minh</p>
-        </div>
+
         <div class="all-rights">
             <p>© 2023 ASCVN. All rights reserved.</p>
         </div>

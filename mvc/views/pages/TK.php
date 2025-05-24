@@ -1,9 +1,9 @@
 <?php
 echo'
-    <div class="wrapper">
-
+        <div class="wrapper">
+    <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-
+    <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
@@ -16,7 +16,7 @@ echo'
         </li>
     </ul>
 
-
+    <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <!-- thu phóng -->
         <li class="nav-item">
@@ -24,76 +24,58 @@ echo'
             <i class="fas fa-expand-arrows-alt"></i>
         </a>
         </li>
+
     </ul>
     </nav>
+    <!-- /.navbar -->
 
+    <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="" class="brand-link">
+    <div class="brand-link">
         <img src="https://adminlte.io/themes/v3/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">Quản lý khóa luận</span>
-    </a>
+    </div>
 
-
+    <!-- Sidebar -->
     <div class="sidebar">
+        <!-- Sidebar user (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
             <img src="https://adminlte.io/themes/v3/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-            <a href="#" class="d-block">Giảng Viên</a>
+            <h5 class="d-block">Trưởng khoa</h5>
         </div>
         </div>
 
+    <!-- Sidebar Menu -->
     <div>
         <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" role="menu">
         <!-- Bảng điều khiển -->
-        <li class="nav-item" style="background-color:rgb(35, 120, 206);">
-            <a href="./" class="nav-link">
+        <li class="nav-item">
+            <a href="./" class="nav-link active">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>Bảng điều khiển</p>
             </a>
         </li>
         <!-- Đề xuất đề tài  -->
         <li class="nav-item">
-            <a href="./DeXuatDeTai" class="nav-link">
+            <a href="/CongNgheMoi/TruongKhoa/DXDeTai" class="nav-link">
             <i class="nav-icon fas fa-chalkboard-teacher"></i>
-            <p>Đề xuất đề tài</p>
+            <p>Duyệt đề tài</p>
             </a>
         </li>
 
         <!-- Danh sách đăng ký -->
         <li class="nav-item">
-            <a href="/CongNgheMoi/GiangVien/QuanLyDeTai" class="nav-link">
+            <a href="/CongNgheMoi/TruongKhoa/DSDeTai" class="nav-link">
             <i class="nav-icon fas fa-clipboard-list"></i>
             <p>Danh sách đề tài</p>
             </a>
         </li>
 
-        <!-- Sinh viên -->
-        <li class="nav-item">
-            <a href="/CongNgheMoi/GiangVien/QuanLyNhom" class="nav-link">
-            <i class="nav-icon fas fa-user-graduate"></i>
-            <p>Quản lý nhóm</p>
-            </a>
-        </li>
-
-        <!-- Giáo viên -->
-        <li class="nav-item">
-            <a href="/CongNgheMoi/GiangVien/TienDoDeTai" class="nav-link">
-            <i class="nav-icon fas fa-chalkboard-teacher"></i>
-            <p>Tiến độ đề tài</p>
-            </a>
-        </li>
-
-        
-        <li class="nav-item">
-            <a href="/CongNgheMoi/GiangVien/QuanLyKhoaLuan" class="nav-link">
-            <i class="nav-icon fas fa-chalkboard-teacher"></i>
-            <p>Báo cáo khóa luận</p>
-            </a>
-        </li>
 
         <li class="nav-item">
             <a href="/CongNgheMoi/Logout" class="nav-link">
@@ -107,9 +89,8 @@ echo'
     <!-- /.sidebar -->
     </aside>
 
-
+    <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-
     <section class="content-header">
         <div class="container-fluid">
         <div class="row mb-2">
@@ -118,12 +99,12 @@ echo'
             </div>
             <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="./">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
                 <li class="breadcrumb-item active">Dashboard</li>
             </ol>
             </div>
         </div>
-        </div>
+        </div><!-- /.container-fluid -->
     </section>
     <!-- Main content -->
     <section class="content">
@@ -133,9 +114,10 @@ echo'
             <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box bg-primary mb-3">
                 <div class="info-box-content">
-                <span class="info-box-text">Quản lý nhóm</span>
+                <h2 class="info-box-number">150</h2>
+                <span class="info-box-text">Duyệt đề tài</span>
                 <div class="mt-3">
-                    <a href="./QuanLyNhom" class="text-white">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="./DXDeTai" class="text-white">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
                 </div>
             </div>
@@ -143,9 +125,10 @@ echo'
             <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box bg-success mb-3">
                 <div class="info-box-content">
+                <h2 class="info-box-number">42</h2>
                 <span class="info-box-text">Danh sách đề tài</span>
                 <div class="mt-3">
-                    <a href="./QuanLyDeTai" class="text-white">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="./DSDeTai" class="text-white">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
                 </div>
             </div>
@@ -153,9 +136,10 @@ echo'
             <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box bg-warning mb-3">
                 <div class="info-box-content">
+                <h2 class="info-box-number">65</h2>
                 <span class="info-box-text">Tiến độ đề tài</span>
                 <div class="mt-3">
-                    <a href="./TienDoDeTai" class="text-white">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="/CongNgheMoi/GiangVien/TienDoDeTai" class="text-white">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
                 </div>
             </div>
@@ -163,9 +147,10 @@ echo'
             <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box bg-danger mb-3">
                 <div class="info-box-content">
+                <h2 class="info-box-number">12</h2>
                 <span class="info-box-text">Quyển khóa luận</span> 
                 <div class="mt-3">
-                    <a href="./QuanLyKhoaLuan" class="text-white">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="/CongNgheMoi/GiangVien/QuanLyKhoaLuan" class="text-white">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
                 </div>
             </div>
