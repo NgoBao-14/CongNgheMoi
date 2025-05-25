@@ -22,6 +22,15 @@ class Login extends Controller {
 
                 echo "<script>alert('Đăng nhập thành công');</script>";
 
+                if($r['PQ'] == '3') {
+                    header("refresh:0; url='/CongNgheMoi/Admin'");
+                    exit;
+                }
+                if($r['PQ'] == '4') {
+                    header("refresh:0; url='/CongNgheMoi/TruongKhoa'");
+                    exit;
+
+
                 // Chuyển hướng theo phân quyền
                 switch ($r['PQ']) {
                     case '1':
@@ -39,6 +48,7 @@ class Login extends Controller {
                     default:
                         header("refresh:0; url='/CongNgheMoi/'");
                         break;
+
                 }
                 exit;
             } else {

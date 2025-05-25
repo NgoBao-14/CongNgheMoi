@@ -6,7 +6,7 @@ require("../private/JWT.php");
 		public function xuatdanhsachdetai($id)
 		{
 			$link = $this->connect;
-			$sql = "select * from giangvien gv JOIN detai dt on gv.iduser= dt.IDGV JOIN user u on gv.iduser = u.iduser join nhom n on n.IDDeTai=dt.IDDeTai where gv.iduser = '$id'";
+			$sql = "select * from giangvien gv JOIN detai dt on gv.MaGV= dt.IDGV JOIN user u on gv.iduser = u.iduser join nhom n on n.IDDeTai=dt.IDDeTai where gv.iduser = '$id'";
 			$ketqua = mysqli_query($link,$sql);
 			$i = mysqli_num_rows($ketqua);
 			if($i>0)
