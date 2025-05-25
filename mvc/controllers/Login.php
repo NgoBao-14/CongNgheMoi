@@ -29,6 +29,7 @@ class Login extends Controller {
                 if($r['PQ'] == '4') {
                     header("refresh:0; url='/CongNgheMoi/TruongKhoa'");
                     exit;
+                }
 
 
                 // Chuyển hướng theo phân quyền
