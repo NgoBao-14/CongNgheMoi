@@ -22,7 +22,11 @@ class Login extends Controller {
 
                 echo "<script>alert('Đăng nhập thành công');</script>";
                 if($r['PQ'] == '3') {
-                    header("refresh:0; url='/CongNgheMoi/Admin/'");
+                    header("refresh:0; url='/CongNgheMoi/Admin'");
+                    exit;
+                }
+                if($r['PQ'] == '4') {
+                    header("refresh:0; url='/CongNgheMoi/TruongKhoa'");
                     exit;
                 }
                 else{
