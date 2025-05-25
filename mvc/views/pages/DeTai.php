@@ -1,7 +1,17 @@
 <?php
 $dt = $data["dt"];
 
-    echo ' 
+    echo '
+    <div class="col-md-3">
+        <div class="navigation-breadcrumb">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href=".">Trang chủ</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Đăng ký đề tài</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
         <!-- Project Registration Section -->
         <div id="deTaiSection" class="project-section">
             <h3 class="text-center text-primary my-4">ĐĂNG KÝ ĐỀ TÀI</h3>
@@ -70,11 +80,8 @@ echo'             <!-- Project Details Modal -->
                     </div>
                 </div>
             </div>';
-            // tạm bợ thông tin sinh viên giả
-            // $currentStudent = [
-            //     'mssv' => '21049361',
-            //     'hoten' => 'Nguyễn Châu Tính'
-            // ];
+$masv = $_SESSION['MaSV'];
+$hoten = $_SESSION['ten'];
 echo'            <!-- Registration Form (Initially Hidden) -->
             <div id="registrationForm" class="mt-4" style="display: none;">
                 <h4 class="text-primary">Đăng ký nhóm</h4>
@@ -84,23 +91,20 @@ echo'            <!-- Registration Form (Initially Hidden) -->
                     </div>
                     <div class="card-body">
                         <form id="groupRegistrationForm" action="" method="POST">';
-                        $currentStudent = [
-                'mssv' => '21049361',
-                'hoten' => 'Nguyễn Châu Tính'
-            ];
+
 echo'                       <input type="hidden" id="selectedProjectId" name="selectedProjectId">
                             <div class="mb-3">
-                                <h5>Nhóm trưởng</h5>
+                                <h5>Trưởng nhóm</h5>
                                 <div class="row">
                                     <div class="col-md-4">
                                         <label for="leaderMssv" class="form-label">MSSV</label>
                                         <input type="text" class="form-control" id="leaderMssv" name="leaderMssv"
-                                            value="'.$currentStudent['mssv'].'" readonly>
+                                            value="'.$masv.'" readonly>
                                     </div>
                                     <div class="col-md-8">
                                         <label for="leaderName" class="form-label">Họ và tên</label>
                                         <input type="text" class="form-control" id="leaderName"
-                                            value="'.$currentStudent['hoten'].'" readonly>
+                                            value="'.$hoten.'" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -201,18 +205,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const index = memberCount + 1;
         const memberHtml = `
-        <h5>Thành viên ${index}</h5>
+            <h5>Thành viên ${index}</h5>
             <div class="row mb-3">
                 <div class="col-md-4">
-                    <label for="" class="form-label">MSSV</label>
-                    <input type="text" name="members[${index}][mssv]" class="form-control">
+                    <label class="form-label">MSSV</label>
+                    <input type="text" name="members[${index}][mssv]" class="form-control"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                        pattern="\\d+" title="Chỉ nhập số" required>
                 </div>
                 <div class="col-md-8">
-                    <label for="" class="form-label">Họ và tên</label>
-                    <input type="text" name="members[${index}][hoten]" class="form-control">
+                    <label class="form-label">Họ và tên</label>
+                    <input type="text" name="members[${index}][hoten]" class="form-control"
+                        oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ỹ\\s]/g, '')"
+                        pattern="[a-zA-ZÀ-ỹ\\s]+" title="Chỉ nhập chữ cái và khoảng trắng" required>
                 </div>
             </div>
         `;
+
         memberContainer.insertAdjacentHTML("beforeend", memberHtml);
         memberCount++;
     });

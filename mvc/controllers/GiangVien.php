@@ -70,7 +70,7 @@ class GiangVien extends Controller {
     }
 
     function DeXuatDeTai(){
-        $IDGV = $_SESSION['iduser'];
+        $IDGV = $_SESSION['MaGV'];
         $dt= $this->model("mGiangVien");
         if (isset($_POST['btnDeXuat'])) {
             $TenDeTai = $_POST['TenDeTai'];

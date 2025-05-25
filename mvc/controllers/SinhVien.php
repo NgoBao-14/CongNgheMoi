@@ -7,10 +7,13 @@ class SinhVien extends Controller {
             header("refresh: 0; url='/CongNgheMoi'");
         }
         $iduser= $_SESSION['iduser'];
+        $masv = $_SESSION['MaSV'];
         $dt= $this->model("mDKDT");
         $nhom = $dt->getIDNhomByIDUser($iduser);
+        $ttsv = json_decode($dt->TTSV($masv), true);
         $this->view("layoutSV", [
-            "nhom" => $nhom
+            "nhom" => $nhom,
+            "ttsv" => $ttsv
         ]);
     }
 
@@ -18,15 +21,6 @@ class SinhVien extends Controller {
         $iduser= $_SESSION['iduser'];
         $dt= $this->model("mDKDT");
         $detai = json_decode($dt->getTTDeTai($iduser), true);
-        //nếu như đã đăng ký đề tài thì không cho đăng ký nữa mà chuyển sang trang DeTaiDK
-        // if (isset($_SESSION['iduser'])) {
-        //     $iduser = $_SESSION['iduser'];
-        //     $nhom = $dt->getIDNhomByIDUser($iduser);
-        //     if ($nhom) {
-        //         header("Location: ./DeTaiDK");
-        //         exit();
-        //     }
-        // }
         
         $this->view("layoutDKDT", [
             "Page" => "DeTai",
@@ -44,14 +38,34 @@ class SinhVien extends Controller {
         echo "<script>alert('Nhóm trưởng đã thuộc một nhóm khác.');</script>";
         return;
     }
-
-    // Kiểm tra các thành viên còn lại đã thuộc nhóm nào chưa
+    $idnganhUser = $nhomModel->layIDNganhUser($iduser); 
+    // Kiểm tra các thành viên còn lại 
     foreach ($members as $member) {
-        if ($nhomModel->ktSV($member['mssv'])) {
-            echo "<script>alert('Sinh viên {$member['hoten']} đã thuộc một nhóm khác.');</script>";
-            return;
-        }
+    $mssv = $member['mssv'];
+    $hoten = trim($member['hoten']);
+
+    $sv = $nhomModel->timSV($mssv);
+
+    if (!$sv) {
+        echo "<script>alert('MSSV $mssv không tồn tại.');</script>";
+        return;
     }
+
+    if (trim($sv['HoTen']) !== $hoten) {
+        echo "<script>alert('Tên không khớp với MSSV $mssv.');</script>";
+        return;
+    }
+
+    if ($sv['IDNganh'] != $idnganhUser) {
+        echo "<script>alert('Sinh viên $mssv không cùng ngành.');</script>";
+        return;
+    }
+
+    if ($nhomModel->ktSV($mssv)) {
+        echo "<script>alert('Sinh viên $mssv đã thuộc một nhóm khác.');</script>";
+        return;
+    }
+}
 
     // Tạo nhóm mới
     $idNhomMoi = $nhomModel->addNhom($IDDeTai);
@@ -71,7 +85,7 @@ class SinhVien extends Controller {
     $nhomModel->capNhatTTDeTai($IDDeTai, $idNhomMoi);
     echo "<script>
     alert('Đăng ký nhóm thành công!');
-    window.location.href = './DeTaiDK'; // hoặc sử dụng controller tự chuyển hướng
+    window.location.href = './DeTaiDK';
     </script>";
     }
 
@@ -120,13 +134,6 @@ class SinhVien extends Controller {
             }
 
             $target_dir = "public/uploads/";
-            if (!is_dir($target_dir)) {
-                mkdir($target_dir, 0755, true);
-                if (!is_dir($target_dir)) {
-                    echo "<script>alert('Không thể tạo thư mục lưu trữ.');</script>";
-                    return;
-                }
-            }
 
             // Làm sạch tên file
             $base_name = pathinfo($fileBC, PATHINFO_FILENAME);
@@ -192,13 +199,6 @@ class SinhVien extends Controller {
             }
 
             $target_dir = "public/khoaluan/";
-            if (!is_dir($target_dir)) {
-                mkdir($target_dir, 0755, true);
-                if (!is_dir($target_dir)) {
-                    echo "<script>alert('Không thể tạo thư mục lưu trữ.');</script>";
-                    return;
-                }
-            }
 
             // Làm sạch tên file
             $base_name = pathinfo($fileBC, PATHINFO_FILENAME);

@@ -22,8 +22,7 @@
 $ten = $_SESSION['ten'];
 $maSV = $_SESSION['MaSV'];
 echo'
-
-        <div class="main-content">
+        <div class="main-content border">
             <div class="row m-0">
                 <!-- Left Sidebar -->
                 <div class="col-md-3">
@@ -32,8 +31,8 @@ echo'
                         <div class="student-name">' . $ten . '</div>                    
                         <div class="student-info">
                             <div class="info-row">
-                                <div class="info-label">Giới tính:</div>
-                                <div class="info-value">Nam</div>
+                                <div class="info-label">Hoạt động:</div>
+                                <div class="info-value">Online</div>
                             </div>
                             <div class="info-row">
                                 <div class="info-label">MSSV:</div>
@@ -45,7 +44,6 @@ echo'
                             </div>
                         </div>
                         
-                        <!-- <button class="btn btn-warning logout-btn w-100">Đăng xuất</button> -->
                         <div class="logout-btn">
                             <a href="/CongNgheMoi/Logout" class="btn btn-warning w-100">Đăng xuất</a>
                         
@@ -56,15 +54,7 @@ echo'
         ?>
                     </div>
                 </div>
-                
-                <!-- Student Photo -->
-                <div class="col-md-2">
-                    <div class="student-photo-container">
-                        <img src="student-photo.jpg" alt="Ảnh sinh viên" class="student-photo">
-                    </div>
-                </div>
-                
-                <!-- Right Content -->
+
                 <div class="col-md-7">
                     <div class="student-details">
                         <?php
@@ -75,53 +65,48 @@ echo'
                             echo '<div class="detail-item text-primary"><a href="./DeTai" style="text-decoration: none;">ĐĂNG KÝ ĐỀ TÀI</a></div>';
                         }
                         ?>
-                        <!-- <div class="detail-item text-primary">CHƯƠNG TRÌNH KHUNG</div> -->
                     </div>
                 </div>
             </div>
             
-            <!-- Student Information Section -->
             <div class="student-info-section">
                 <h3 class="text-center text-primary my-4">THÔNG TIN SINH VIÊN</h3>
-                
+                <?php
+                $ttsv = $data['ttsv'];
+                foreach($ttsv as $row):
+                echo '
                 <div class="row">
                     <div class="col-md-6">
                         <div class="info-item">
                             <span class="label">Khóa:</span>
-                            <span class="value">2021 - 2022</span>
+                            <span class="value">2024 - 2025</span>
                         </div>
                         <div class="info-item">
                             <span class="label">Bậc đào tạo:</span>
                             <span class="value">Đại học</span>
                         </div>
                         <div class="info-item">
-                            <span class="label">Ngành:</span>
-                            <span class="value">Kỹ thuật phần mềm</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="label">Khoa:</span>
-                            <span class="value">Khoa Công nghệ Thông tin</span>
+                            <span class="label">Chuyên Ngành:</span>
+                            <span class="value">' . $row['ChuyenNganh'] . '</span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="info-item">
                             <span class="label">Lớp:</span>
-                            <span class="value">Đại học Kỹ thuật phần mềm 17B - 7480103</span>
+                            <span class="value">' . $row['Lop'] . '</span>
                         </div>
                         <div class="info-item">
                             <span class="label">Loại hình đào tạo:</span>
                             <span class="value">Chính quy</span>
                         </div>
                         <div class="info-item">
-                            <span class="label">Chuyên ngành:</span>
-                            <span class="value">Kỹ thuật phần mềm</span>
-                        </div>
-                        <div class="info-item">
                             <span class="label">Cơ sở:</span>
                             <span class="value">Cơ sở 1 (Thành phố Hồ Chí Minh)</span>
                         </div>
                     </div>
-                </div>
+                </div>';
+                endforeach;
+                ?>
             </div>
         </div>
         

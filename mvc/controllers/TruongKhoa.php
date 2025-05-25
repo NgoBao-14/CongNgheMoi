@@ -6,11 +6,12 @@ class TruongKhoa extends Controller {
             header("refresh: 0; url='/CongNgheMoi'");
         }
         $this ->view("layoutTK", [
-            "Page" => "GV"
+            "Page" => "TK"
         ]);
     }
 
     function DXDeTai(){
+        
     $iduser = $_SESSION['iduser'];
     $dt= $this->model("mTruongKhoa");
     $detai = json_decode($dt->GetDT($iduser), true);
@@ -22,13 +23,24 @@ class TruongKhoa extends Controller {
         $dt->CapNhatDeTai($idDetai);
         header("Location: ./DXDeTai");
         exit();
-    }
+        }
 
         $this->view("layoutTK", [
             "Page" => "DuyetDeTai",
             "dt" => $detai
         ]);
-        }
+    }
+
+    function DSDeTai(){
+        $iduser = $_SESSION['iduser'];
+        $dt= $this->model("mTruongKhoa");
+        $detai = json_decode($dt->GetDanhSachDeTai($iduser), true);
+        
+        $this->view("layoutTK", [
+            "Page" => "DSDeTai",
+            "dt" => $detai
+        ]);
+    }
 
 }
 ?>
