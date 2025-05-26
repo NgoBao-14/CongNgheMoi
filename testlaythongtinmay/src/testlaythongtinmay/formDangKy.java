@@ -127,8 +127,10 @@ public class formDangKy extends javax.swing.JFrame {
         jLabel8.setText("Bạn phải đăng ký máy để thực hiện tiếp");
 
         txt_id.setEditable(false);
+        txt_id.setUI(null);
 
         txt_name.setEditable(false);
+        txt_name.setUI(null);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
