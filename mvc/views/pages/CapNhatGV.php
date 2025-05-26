@@ -2,6 +2,7 @@
 
   $sinhvien = json_decode($data["giangvien"], true);
   $dt = json_decode($data["khoa"], true);
+  $chucvu = json_decode($data["chucvu"], true);
 ?>
 
 
@@ -228,7 +229,7 @@
                                     $chuyenNganh = $sv['ChuyenNganh'];
                                 ?>
                                 <div class="form-floating">
-                                    <label for="mssv">MSSV</label>
+                                    <label for="mssv">MSGV</label>
                                     <input type="text" class="form-control" id="mssv" value="<?php echo $mssv?>" placeholder="MSSV" readonly>
                                    
                                 </div>
@@ -245,6 +246,21 @@
                                     
                                 </div>
 
+                                <div class="form-floating">
+                                  <label for="chuyenNganh">Chức vụ</label>
+                                  <select name="chucvu" class="form-control" style="min-width: 150px;">
+                                    <option value="" disabled selected>Chức vụ</option>
+                                    <?php
+                                    foreach ($chucvu as $cv):
+                                        $idpq = $cv['idpq'];
+                                        if ($idpq == 2 || $idpq == 3) continue; // Bỏ qua các idpq không mong muốn
+
+                                        $selected = ($sv['idpq'] == $idpq) ? 'selected' : '';
+                                        echo '<option value="'.$idpq.'" '.$selected.'>'.$cv['PhanQuyen'].'</option>';
+                                    endforeach;
+                                    ?>
+                                </select>  
+                                </div>
                                 
                             </div>
                             
@@ -266,8 +282,7 @@
                                           echo '<option value="'.$khoa['IDNganh'].'" '.($sv['IDNganh'] == $khoa['IDNganh'] ? 'selected' : '').'>'.$khoa['ChuyenNganh'].'</option>';
                                           endforeach;
                                           ?>
-                                    </select>
-                                      
+                                    </select>  
                                 </div>
                                 <div class="form-floating">
                                     <label for="stt">Email</label>

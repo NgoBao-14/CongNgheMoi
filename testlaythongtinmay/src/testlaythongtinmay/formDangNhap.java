@@ -263,13 +263,13 @@ public class formDangNhap extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(this, "Bạn không có quyền truy cập");
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Bạn không có quyền truy cập");
                 }
             }
             
         }catch(Exception e)
         {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Bạn không có quyền truy cập");
         }
 
     }//GEN-LAST:event_btn_dnActionPerformed

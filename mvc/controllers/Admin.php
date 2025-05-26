@@ -129,6 +129,7 @@
             $id = $_REQUEST['id'];
             $giangvien = $admin->GetThongTinGVTheoID($id);
             $khoa = $admin->GetKhoa();
+            $chucvu = $admin->GetChucVu();
             if(isset($_POST['btn_CapNhat']))
             {
                 $hodem = $_POST['hodem'];
@@ -136,9 +137,11 @@
                 $idnganh = $_POST['chuyennganh'];
                 $email = $_POST['email'];
                 $sdt = $_POST['sdt'];
-                if($admin->UpdateGV($id,$hodem,$ten,$idnganh,$sdt,$email))
+                $cv = $_POST['chucvu'];
+                if($admin->UpdateGV($id,$hodem,$ten,$idnganh,$sdt,$email,$cv))
                 {
-                    header("location: CapNhatGV?id=$id");
+                    echo "<script>alert('Cập nhật thành công')</script>";
+                    header("location: QuanLyGV");
                 }
             }
             $this->view("layoutadmin", [
@@ -146,12 +149,14 @@
                 "id" => $id,
                 "giangvien" => $giangvien,
                 "khoa" => $khoa,
+                "chucvu" => $chucvu,
             ]);
         }
         function ThemGiangVien()
         {
             $admin = $this->model("mAdmin");
             $khoa = $admin->GetKhoa();
+            $chucvu = $admin->GetChucVu();
             if(isset($_POST['btn_them']))
             {
                 $msgv = $_POST['msgv'];
@@ -160,19 +165,22 @@
                 $idnganh = $_POST['chuyennganh'];
                 $email = $_POST['email'];
                  $sdt = $_POST['sdt'];
-                if($admin->ThemGiangVien($msgv,$hodem,$ten,$idnganh,$sdt,$email))
+                $cv = $_POST['chucvu'];
+                if($admin->ThemGiangVien($msgv,$hodem,$ten,$idnganh,$sdt,$email, $cv))
                 {
                     $rs = true;
                 }
                 $this->view("layoutadmin", [
                     "Page" => "ThemGiangVien",
                     "khoa" => $khoa,
+                    "chucvu" => $chucvu,
                     "rs" => $rs,
                 ]);
             }
             $this->view("layoutadmin", [
                 "Page" => "ThemGiangVien",
                 "khoa" => $khoa,
+                "chucvu" => $chucvu,
             ]);
         }
         function DSDeTai()

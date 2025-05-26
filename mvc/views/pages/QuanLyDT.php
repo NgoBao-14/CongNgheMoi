@@ -166,7 +166,7 @@
                     <td style="text-align:center;">'.$index["IDNhom"].'</td>
                     <td>
                       <a href="/CongNgheMoi/Admin/CapNhatDT?id='.$index["IDDeTai"].'" class="btn btn-primary btn-sm">Cập nhật</a>
-                      <a href="/CongNgheMoi/mvc/api/xoadetai.php?id='.$index["IDDeTai"].'" onclick="return confirm(\'Bạn có chắc chắn muốn xóa giảng viên này không?\')" class="btn btn-danger btn-sm">Xóa</a>
+                      <a href="/CongNgheMoi/mvc/api/xoadetai.php?id='.$index["IDDeTai"].'" onclick="return confirm(\'Bạn có chắc chắn muốn xóa đề tài này không?\')" class="btn btn-danger btn-sm">Xóa</a>
                   </tr>';
                   $dem++;
                   endforeach;
