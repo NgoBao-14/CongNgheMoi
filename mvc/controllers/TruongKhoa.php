@@ -18,9 +18,10 @@ class TruongKhoa extends Controller {
 
     if (isset($_POST['btnDuyet'])) {
         $idDetai = $_POST['idDetai'];
-        $tenDeTai = $_POST['tenDeTai']; // Lấy tên đề tài từ form
+        $tenDeTai = $_POST['TenDeTai']; // Lấy tên đề tài từ form
 
         $dt->CapNhatDeTai($idDetai);
+        $dt->AddDiemDeTai($idDetai);
         header("Location: ./DXDeTai");
         exit();
         }
@@ -38,6 +39,17 @@ class TruongKhoa extends Controller {
         
         $this->view("layoutTK", [
             "Page" => "DSDeTai",
+            "dt" => $detai
+        ]);
+    }
+
+    function DiemKhoaLuanCacNhom(){
+        $iduser = $_SESSION['iduser'];
+        $dt= $this->model("mTruongKhoa");
+        $detai = json_decode($dt->GetDanhSachDeTaiDaDangKy($iduser), true);
+        
+        $this->view("layoutTK", [
+            "Page" => "DSDeTaiDaDangKy",
             "dt" => $detai
         ]);
     }

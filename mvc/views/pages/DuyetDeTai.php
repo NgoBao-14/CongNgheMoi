@@ -82,6 +82,13 @@ $dtPage = array_slice($dt, $startIndex, $perPage);
             </a>
         </li>
 
+        <!-- Danh sách đề tài đã đăng ký -->
+        <li class="nav-item">
+            <a href="./DiemKhoaLuanCacNhom" class="nav-link">
+            <i class="nav-icon fas fa-list-alt"></i>
+            <p>Điểm khóa luận</p>
+            </a>
+        </li>
 
         <li class="nav-item">
             <a href="/CongNgheMoi/Logout" class="nav-link">
@@ -106,9 +113,9 @@ $dtPage = array_slice($dt, $startIndex, $perPage);
                     <tr>
                         <th width="5%">STT</th>
                         <th width="15%">Mã đề tài</th>
-                        <th width="40%">Tên đề tài</th>
-                        <th width="15%">Giảng viên hướng dẫn</th>
-                        <th width="25%">Thao tác</th>
+                        <th width="30%">Tên đề tài</th>
+                        <th width="20%">Giảng viên hướng dẫn</th>
+                        <th width="15%">Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -140,6 +147,7 @@ $dtPage = array_slice($dt, $startIndex, $perPage);
                                         >Xem chi tiết</button>
 
                                         <input type="hidden" name="idDetai" value="' . $row['IDDeTai'] . '">
+                                        <input type="hidden" name="TenDeTai" value="' . $row['TenDeTai'] . '">
                                             <button 
                                             type="submit" 
                                             name="btnDuyet" 
@@ -154,7 +162,7 @@ $dtPage = array_slice($dt, $startIndex, $perPage);
                     }
 
                     if (!$coDeTai) {
-                        echo '<tr><td colspan="5">Không có đề tài nào cần duyệt</td></tr>';
+                        echo '<tr><td colspan="5">Không có đề tài cần duyệt</td></tr>';
                     }
                     ?>
                 </tbody>
