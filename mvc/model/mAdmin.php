@@ -62,7 +62,7 @@
        }
        public function GetDeTaiTheoKhoa($id)
        {
-        $str = "SELECT * FROM detai dt join chuyennganh cn on dt.ChuyenNganh = cn.IDNganh WHERE cn.IDNganh = $id"; 
+        $str = "SELECT * FROM detai dt join chuyennganh cn on dt.IDNganh = cn.IDNganh WHERE cn.IDNganh = $id"; 
         $result = $this->connect->query($str);
         $data = [];
         while ($row = $result->fetch_assoc()) {

@@ -225,11 +225,17 @@
     <Component class="javax.swing.JTextField" name="txt_id">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
+        <Property name="UI" type="javax.swing.plaf.TextUI" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="null"/>
+        </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txt_name">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
+        <Property name="UI" type="javax.swing.plaf.TextUI" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="null"/>
+        </Property>
       </Properties>
     </Component>
   </SubComponents>
