@@ -3,6 +3,7 @@
   $prefix = substr($year, -2);
   $random = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
   $masv =  $prefix.$random;
+  $chucvu = json_decode($data['chucvu'], true);
 
   $dt = json_decode($data['khoa'], true);
 ?>
@@ -232,6 +233,22 @@
                                     <label for="stt">Số điện thoại</label>
                                     <input type="text" name="sdt" class="form-control" id="stt"  placeholder="Số điện thoại">
                                     
+                                </div>
+
+                                <div class="form-floating">
+                                  <label for="chuyenNganh">Chức vụ</label>
+                                  <select name="chucvu" class="form-control" style="min-width: 150px;">
+                                    <option value="" disabled selected>Chức vụ</option>
+                                    <?php
+                                    foreach ($chucvu as $cv):
+                                        $idpq = $cv['idpq'];
+                                        if ($idpq == 2 || $idpq == 3) continue; // Bỏ qua các idpq không mong muốn
+
+                                        $selected = ($sv['idpq'] == $idpq) ? 'selected' : '';
+                                        echo '<option value="'.$idpq.'" '.$selected.'>'.$cv['PhanQuyen'].'</option>';
+                                    endforeach;
+                                    ?>
+                                </select>  
                                 </div>
 
                                 

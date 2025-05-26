@@ -126,6 +126,10 @@ public class formDangKy extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel8.setText("Bạn phải đăng ký máy để thực hiện tiếp");
 
+        txt_id.setEditable(false);
+
+        txt_name.setEditable(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(

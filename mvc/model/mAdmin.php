@@ -129,7 +129,7 @@
        }
        public function GetThongTinGV()
        {
-        $str = "SELECT * FROM user u JOIN giangvien gv ON u.iduser=gv.iduser join chuyennganh cn on u.IDNganh=cn.IDNganh"; 
+        $str = "SELECT * FROM user u JOIN giangvien gv ON u.iduser=gv.iduser join chuyennganh cn on u.IDNganh=cn.IDNganh join taikhoan tk on u.iduser=tk.iduser join phanquyen pq on tk.PQ=pq.idPQ"; 
         $result = $this->connect->query($str);
         $data = [];
         while ($row = $result->fetch_assoc()) {
@@ -139,7 +139,7 @@
        }
        public function GetThongTinGVTheoKhoa($id)
        {
-        $str = "SELECT * FROM user u JOIN giangvien gv ON u.iduser=gv.iduser join chuyennganh cn on u.IDNganh=cn.IDNganh WHERE cn.IDNganh = $id"; 
+        $str = "SELECT * FROM user u JOIN giangvien gv ON u.iduser=gv.iduser join chuyennganh cn on u.IDNganh=cn.IDNganh join taikhoan tk on u.iduser=tk.iduser join phanquyen pq on tk.PQ=pq.idPQ WHERE cn.IDNganh = $id"; 
         $result = $this->connect->query($str);
         $data = [];
         while ($row = $result->fetch_assoc()) {
@@ -149,7 +149,7 @@
        }
        public function GetThongTinGVTheoID($id)
         {
-        $str = "SELECT * FROM user u JOIN giangvien gv ON u.iduser=gv.iduser join chuyennganh cn on u.IDNganh=cn.IDNganh WHERE u.iduser = $id"; 
+        $str = "SELECT * FROM user u JOIN giangvien gv ON u.iduser=gv.iduser join chuyennganh cn on u.IDNganh=cn.IDNganh join taikhoan tk on u.iduser=tk.iduser join phanquyen pq on tk.PQ=pq.idPQ WHERE u.iduser = $id"; 
         $result = $this->connect->query($str);
         $data = [];
         while ($row = $result->fetch_assoc()) {
@@ -157,21 +157,23 @@
         }
         return json_encode($data);
         }
-        public function UpdateGV($iduser,$hodem,$ten,$idnganh,$sdt,$email)
+        public function UpdateGV($iduser,$hodem,$ten,$idnganh,$sdt,$email,$chucvu)
         {
         $str1 = "Update user set HoDem='$hodem', Ten='$ten', IDNganh='$idnganh', SDT='$sdt', Email='$email' where iduser = $iduser";
+        $str2 = "Update taikhoan set PQ ='$chucvu' where iduser = '$iduser'";
         $tblPTTT1 = mysqli_query($this->connect, $str1);
-        if ($tblPTTT1) {
+        $tblPTTT2 = mysqli_query($this->connect, $str2);
+        if ($tblPTTT1 && $tblPTTT2) {
             return true;
         } else {
             return false;
         }
         }
-        public function ThemGiangVien($msgv,$hodem,$ten,$idnganh,$sdt,$email)
+        public function ThemGiangVien($msgv,$hodem,$ten,$idnganh,$sdt,$email,$chucvu)
         {
             $str1 = "INSERT INTO user (HoDem, Ten, IDNganh, SDT, Email) VALUES ('$hodem', '$ten', '$idnganh', '$sdt', '$email')";
             $str2 = "INSERT INTO giangvien (iduser, MaGV) VALUES (LAST_INSERT_ID() ,'$msgv')";
-            $str3 = "INSERT INTO taikhoan (iduser,username,PQ) VALUES (LAST_INSERT_ID(),'$msgv', '1')";
+            $str3 = "INSERT INTO taikhoan (iduser,username,PQ) VALUES (LAST_INSERT_ID(),'$msgv', '$chucvu')";
             $tblPTTT1 = mysqli_query($this->connect, $str1);
             $tblPTTT2 = mysqli_query($this->connect, $str2);
             $tblPTTT3 = mysqli_query($this->connect, $str3);
@@ -183,7 +185,7 @@
         }
         public function GetDSDetai()
         {
-            $str = "SELECT * FROM detai dt join chuyennganh cn on dt.IDNganh = cn.IDNganh join giangvien gv on dt.IDGV = gv.iduser join user u on gv.iduser = u.iduser"; 
+            $str = "SELECT * FROM detai dt join chuyennganh cn on dt.IDNganh = cn.IDNganh join giangvien gv on dt.IDGV = gv.MaGV join user u on gv.iduser = u.iduser"; 
             $result = $this->connect->query($str);
             $data = [];
             while ($row = $result->fetch_assoc()) {
@@ -193,7 +195,7 @@
         }
         public function GetDeTaiTheoID($id)
         {
-            $str = "SELECT * FROM detai dt join chuyennganh cn on dt.IDNganh = cn.IDNganh join giangvien gv on dt.IDGV = gv.iduser join user u on gv.iduser = u.iduser WHERE dt.IDDeTai = $id"; 
+            $str = "SELECT * FROM detai dt join chuyennganh cn on dt.IDNganh = cn.IDNganh join giangvien gv on dt.IDGV = gv.MaGV join user u on gv.iduser = u.iduser WHERE dt.IDDeTai = $id"; 
             $result = $this->connect->query($str);
             $data = [];
             while ($row = $result->fetch_assoc()) {
@@ -210,6 +212,16 @@
             } else {
                 return false;
             }
+        }
+        public function GetChucVu()
+        {
+            $str = "SELECT * FROM phanquyen order by PhanQuyen";
+            $result = $this->connect->query($str);
+            $data = [];
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
+            return json_encode($data);
         }
   
     }

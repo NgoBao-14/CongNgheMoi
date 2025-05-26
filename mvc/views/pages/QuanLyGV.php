@@ -143,6 +143,7 @@
                     <th>Họ đệm</th>
                     <th>Tên</th>
                     <th>Chuyên Ngành</th>
+                    <th>Chức vụ</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -156,6 +157,7 @@
                     <td>'.$index["HoDem"].'</td>
                     <td>'.$index["Ten"].'</td>
                     <td>'.$index["ChuyenNganh"].'</td>
+                    <td>'.$index["PhanQuyen"].'</td>
                     <td>
                       <a href="/CongNgheMoi/Admin/CapNhatGV?id='.$index["iduser"].'" class="btn btn-primary btn-sm">Cập nhật</a>
                       <a href="/CongNgheMoi/mvc/api/xoagiangvien.php?id='.$index["iduser"].'" onclick="return confirm(\'Bạn có chắc chắn muốn xóa giảng viên này không?\')" class="btn btn-danger btn-sm">Xóa</a>

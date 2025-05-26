@@ -368,6 +368,8 @@ public class myform extends javax.swing.JFrame {
         {
             JSONArray jarr = new JSONArray();
             String id = txt_id.getText();
+            id = cls.mahoa(id);
+            id = id.replace("+", "%2B");
             String thamso = "id="+id+"";
             String url = Constants.API_XEM_DETAI+thamso;
             jarr = cls.docapi(url);
@@ -490,6 +492,8 @@ public class myform extends javax.swing.JFrame {
             };
 
         // Gọi API để lấy danh sách điểm
+        id = cls.mahoa(id);
+        id = id.replace("+", "%2B");
         String thamso = "iddetai=" + id;
         String url = Constants.API_XEM_DSDIEM + thamso;
         JSONArray jarr = cls.docapi(url); // giả định mỗi item tương ứng với một tiêu chí
