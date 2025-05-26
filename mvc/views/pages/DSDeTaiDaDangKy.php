@@ -66,7 +66,7 @@ $dtPage = array_slice($dt, $startIndex, $perPage);
         </li>
         <!-- Đề xuất đề tài  -->
         <li class="nav-item">
-            <a href="/CongNgheMoi/TruongKhoa/DXDeTai" class="nav-link">
+            <a href="./DXDeTai" class="nav-link">
             <i class="nav-icon fas fa-chalkboard-teacher"></i>
             <p>Duyệt đề tài</p>
             </a>
@@ -74,7 +74,7 @@ $dtPage = array_slice($dt, $startIndex, $perPage);
 
         <!-- Danh sách đăng ký -->
         <li class="nav-item">
-            <a href="/CongNgheMoi/TruongKhoa/DSDeTai" class="nav-link active">
+            <a href="./DSDeTai" class="nav-link ">
             <i class="nav-icon fas fa-clipboard-list"></i>
             <p>Danh sách đề tài</p>
             </a>
@@ -82,14 +82,13 @@ $dtPage = array_slice($dt, $startIndex, $perPage);
 
         <!-- Danh sách đề tài đã đăng ký -->
         <li class="nav-item">
-            <a href="./DiemKhoaLuanCacNhom" class="nav-link">
+            <a href="./DiemKhoaLuanCacNhom" class="nav-link active">
             <i class="nav-icon fas fa-list-alt"></i>
             <p>Điểm khóa luận</p>
             </a>
         </li>
-
         <li class="nav-item">
-            <a href="/CongNgheMoi/Logout" class="nav-link">
+            <a href="/CongNgheMoi/Logout" class="nav-link ">
             <i class="nav-icon fas fa-chalkboard-teacher"></i>
             <p>Đăng xuất</p>
             </a>
@@ -102,7 +101,7 @@ $dtPage = array_slice($dt, $startIndex, $perPage);
     <div class="content-wrapper">
 <div class= "container-fluid">
     <div id="deTaiSection" class="project-section">
-        <h3 class="text-center  my-4">Danh sách đề tài</h3>
+        <h3 class="text-center  my-4">Danh sách điểm khóa luận theo đề tài</h3>
         <div class="project-list">
             <table class="table table-bordered">
                 <thead class="table-primary">
@@ -111,7 +110,9 @@ $dtPage = array_slice($dt, $startIndex, $perPage);
                         <th width="10%">Mã đề tài</th>
                         <th width="30%">Tên đề tài</th>
                         <th width="20%">Giảng viên hướng dẫn</th>
-                        <th width="15%">Thao tác</th>
+                        <th width="10%">Nhóm</th>
+                        <th width="10%">Điểm</th>
+                        <th width="25%">Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -120,7 +121,7 @@ $dtPage = array_slice($dt, $startIndex, $perPage);
                     $coDeTai = false;
 
                     foreach ($dtPage as $row) {
-                        if ($row['TrangThaiDeTai'] === 'Đã duyệt') {
+                        if ($row['TrangThaiDeTai'] === 'Đã duyệt' && $row['TrangThaiDK'] === 'Đã đăng ký') {
                             $coDeTai = true;
                             echo '
                             <tr>
@@ -129,6 +130,8 @@ $dtPage = array_slice($dt, $startIndex, $perPage);
                                     <td>' . $row['IDDeTai'] . '</td>
                                     <td>' . htmlspecialchars($row['TenDeTai']) . '</td>
                                     <td>' . htmlspecialchars($row['ten_giang_vien']) . '</td>
+                                    <td>' . ($row['IDNhom']) . '</td>
+                                    <td>' . ($row['tongdiem'] ? $row['tongdiem'] : 'Chưa có điểm') . '</td>
                                     <td>
                                         <button 
                                             type="button"

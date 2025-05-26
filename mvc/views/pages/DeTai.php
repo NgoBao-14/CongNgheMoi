@@ -30,7 +30,7 @@ $dt = $data["dt"];
                     <tbody>';
                             $i = 1;
                             foreach($dt as $row){
-                                if($row['TrangThaiDK']==='Chưa được đăng ký'){
+                                if($row['TrangThaiDK']==='Chưa được đăng ký' && $row['TrangThaiDeTai']==='Đã duyệt'){
                                 echo '<tr>
                                 <td>'.$i.'</td>
                                 <td>'.$row['IDDeTai'].'</td>

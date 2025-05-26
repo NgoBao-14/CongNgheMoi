@@ -20,9 +20,15 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+    <Style>
+        .disabled-overlay {
+            opacity: 0.5;                
+            pointer-events: none;        
+            filter: grayscale(70%);      
+    }
+    </Style>
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="styles.css">
+    
     </head>
     <body class="hold-transition">
     <!-- Site wrapper -->
