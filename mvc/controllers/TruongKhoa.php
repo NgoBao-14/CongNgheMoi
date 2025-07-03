@@ -54,5 +54,16 @@ class TruongKhoa extends Controller {
         ]);
     }
 
+    function HoiDongBaoVe(){
+        $iduser = $_SESSION['iduser'];
+        $dt= $this->model("mTruongKhoa");
+        
+        
+        $this->view("layoutTK", [
+            "Page" => "HoiDOngBaoVe"
+        
+        ]);
+    }
+
 }
 ?>
