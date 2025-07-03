@@ -43,9 +43,9 @@ $dtPage = array_slice($dt, $startIndex, $perPage);
         <span class="brand-text font-weight-light">Quản lý khóa luận</span>
     </div>
 
- 
+
     <div class="sidebar">
- 
+
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
             <img src="https://adminlte.io/themes/v3/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
@@ -87,6 +87,14 @@ $dtPage = array_slice($dt, $startIndex, $perPage);
             <a href="./DiemKhoaLuanCacNhom" class="nav-link">
             <i class="nav-icon fas fa-list-alt"></i>
             <p>Điểm khóa luận</p>
+            </a>
+        </li>
+        
+        <!-- Hội đồng bảo vệ -->
+        <li class="nav-item">
+            <a href="/CongNgheMoi/TruongKhoa/HoiDongBaoVe" class="nav-link">
+            <i class="nav-icon fas fa-clipboard-list"></i>
+            <p>Hội đồng bảo vệ</p>
             </a>
         </li>
 

@@ -88,6 +88,14 @@ $dtPage = array_slice($dt, $startIndex, $perPage);
             </a>
         </li>
 
+        <!-- Hội đồng bảo vệ -->
+        <li class="nav-item">
+            <a href="/CongNgheMoi/TruongKhoa/HoiDongBaoVe" class="nav-link">
+            <i class="nav-icon fas fa-clipboard-list"></i>
+            <p>Hội đồng bảo vệ</p>
+            </a>
+        </li>
+        
         <li class="nav-item">
             <a href="/CongNgheMoi/Logout" class="nav-link">
             <i class="nav-icon fas fa-chalkboard-teacher"></i>
