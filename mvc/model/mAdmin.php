@@ -52,7 +52,8 @@
     }
        public function GetDeTaiKhoa()
        {
-            $url = $this->api."getDeTaiKhoa.php";
+            $param = "?key=".$_ENV['API_KEY']."";
+            $url = $this->api."getDeTaiKhoa.php".$param;
             $results=$this->docjson($url);
             return json_encode($results);
        }
@@ -176,7 +177,7 @@
         }
         public function GetDeTaiTheoID($id)
         {
-            $param = "?id=$id";
+            $param = "?key=".$_ENV['API_KEY']."&id=$id";
             $url = $this->api."getDeTaiTheoID.php".$param;
 
                 $results=$this->docjson($url);

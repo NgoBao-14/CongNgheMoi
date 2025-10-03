@@ -11,5 +11,8 @@ class Controller{
         require_once "./mvc/views/".$view.".php";
     }
 
+
+
+    
 }
 ?>
