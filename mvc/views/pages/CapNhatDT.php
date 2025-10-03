@@ -3,6 +3,7 @@
   $sinhvien = json_decode($data["detai"], true);
   $dt = json_decode($data["khoa"], true);
   $nhomtt = json_decode($data["nhom"], true);
+
 ?>
 
 
@@ -231,7 +232,7 @@
                                     $nhom = $sv['IDNhom'];
                                     $hodem = $sv['HoDem'];
                                     $ten = $sv['Ten'];
-                                    $chuyenNganh = $sv['ChuyenNganh'];
+                                    $chuyenNganh = $sv['IDNganh'];
                                     $yeucau = $sv['YeuCau'];
                                     $soluongTV = $sv['SoLuongTV'];
 
@@ -248,7 +249,7 @@
                                     <select name="trangthaidetai" class="form-control" style="min-width: 150px;">
                                           <option value="cn.IDNganh" disabled>Trạng thái</option>
                                           <option value="Đã duyệt" <?php echo $sv['TrangThaiDeTai'] == 'Đã duyệt' ? 'selected' : ''  ?> >Đã duyệt</option>
-                                          <option value="Chờ duyệt" <?php echo $sv['TrangThaiDeTai'] == 'Chờ duyệt' ? 'selected' : ''  ?> >Chờ duyệt</option>
+                                          <option value="Chưa duyệt" <?php echo $sv['TrangThaiDeTai'] == 'Chưa duyệt' ? 'selected' : ''  ?> >Chưa duyệt</option>
                                     </select>
                                 </div>
 
@@ -312,7 +313,7 @@
                                     <select name="trangthaidk" class="form-control" style="min-width: 150px;">
                                           <option value="cn.IDNganh" disabled>Trạng thái</option>
                                           <option value="Đã được đăng ký" <?php echo $sv['TrangThaiDK'] == 'Đã được đăng ký' ? 'selected' : ''  ?>>Đã được đăng ký</option>
-                                          <option value="Chờ sinh viên đăng ký" <?php echo $sv['TrangThaiDK'] == 'Chờ sinh viên đăng ký' ? 'selected' : ''  ?>>Chờ sinh viên đăng ký</option>
+                                          <option value="Chưa được đăng ký" <?php echo $sv['TrangThaiDK'] == 'Chưa được đăng ký' ? 'selected' : ''  ?>>Chưa được đăng ký</option>
                                     </select>
                                 </div>
 

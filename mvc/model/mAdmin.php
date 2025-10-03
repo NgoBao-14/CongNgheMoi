@@ -52,53 +52,42 @@
     }
        public function GetDeTaiKhoa()
        {
-        $str = "SELECT * FROM detai dt join chuyennganh cn on dt.IDNganh = cn.IDNganh"; 
-        $result = $this->connect->query($str);
-        $data = [];
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
-        }
-        return json_encode($data);
+            $url = $this->api."getDeTaiKhoa.php";
+            $results=$this->docjson($url);
+            return json_encode($results);
        }
+   
        public function GetDeTaiTheoKhoa($id)
        {
-        $str = "SELECT * FROM detai dt join chuyennganh cn on dt.IDNganh = cn.IDNganh WHERE cn.IDNganh = $id"; 
-        $result = $this->connect->query($str);
-        $data = [];
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
-        }
-        return json_encode($data);
+        $param = "?id=$id";
+        $url = $this->api."getDeTaiTheoKhoa.php".$param;
+
+            $results=$this->docjson($url);
+            return json_encode($results);
        }
        public function GetThongTinSV()
        {
-        $str = "SELECT * FROM user u JOIN sinhvien sv ON u.iduser=sv.iduser join chuyennganh cn on u.IDNganh=cn.IDNganh"; 
-        $result = $this->connect->query($str);
-        $data = [];
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
-        }
-        return json_encode($data);
+        $param = "";
+        $url = $this->api."getThongTinSV.php".$param;
+
+            $results=$this->docjson($url);
+            return json_encode($results);
        }
        public function GetThongTinSVTheoKhoa($id)
        {
-        $str = "SELECT * FROM user u JOIN sinhvien sv ON u.iduser=sv.iduser join chuyennganh cn on u.IDNganh=cn.IDNganh WHERE cn.IDNganh = $id"; 
-        $result = $this->connect->query($str);
-        $data = [];
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
-        }
-        return json_encode($data);
+        $param = "?id=$id";
+        $url = $this->api."getThongTinSVTheoKhoa.php".$param;
+
+            $results=$this->docjson($url);
+            return json_encode($results);
        }
        public function GetThongTinSVTheoID($id)
        {
-        $str = "SELECT * FROM user u JOIN sinhvien sv ON u.iduser=sv.iduser join chuyennganh cn on u.IDNganh=cn.IDNganh WHERE u.iduser = $id"; 
-        $result = $this->connect->query($str);
-        $data = [];
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
-        }
-        return json_encode($data);
+        $param = "?id=$id";
+        $url = $this->api."getThongTinSinhVienTheoID.php".$param;
+
+            $results=$this->docjson($url);
+            return json_encode($results);
        }
        public function UpdateSV($iduser,$lop,$idnhom,$hodem,$ten,$idnganh,$sdt,$email)
        {
@@ -129,33 +118,27 @@
        }
        public function GetThongTinGV()
        {
-        $str = "SELECT * FROM user u JOIN giangvien gv ON u.iduser=gv.iduser join chuyennganh cn on u.IDNganh=cn.IDNganh join taikhoan tk on u.iduser=tk.iduser join phanquyen pq on tk.PQ=pq.idPQ"; 
-        $result = $this->connect->query($str);
-        $data = [];
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
-        }
-        return json_encode($data);
+        $param = "";
+        $url = $this->api."getThongTinGV.php".$param;
+
+            $results=$this->docjson($url);
+            return json_encode($results);
        }
        public function GetThongTinGVTheoKhoa($id)
        {
-        $str = "SELECT * FROM user u JOIN giangvien gv ON u.iduser=gv.iduser join chuyennganh cn on u.IDNganh=cn.IDNganh join taikhoan tk on u.iduser=tk.iduser join phanquyen pq on tk.PQ=pq.idPQ WHERE cn.IDNganh = $id"; 
-        $result = $this->connect->query($str);
-        $data = [];
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
-        }
-        return json_encode($data);
+        $param = "?id=$id";
+        $url = $this->api."getThongTinGVTheoKhoa.php".$param;
+
+            $results=$this->docjson($url);
+            return json_encode($results);
        }
        public function GetThongTinGVTheoID($id)
         {
-        $str = "SELECT * FROM user u JOIN giangvien gv ON u.iduser=gv.iduser join chuyennganh cn on u.IDNganh=cn.IDNganh join taikhoan tk on u.iduser=tk.iduser join phanquyen pq on tk.PQ=pq.idPQ WHERE u.iduser = $id"; 
-        $result = $this->connect->query($str);
-        $data = [];
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
-        }
-        return json_encode($data);
+            $param = "?id=$id";
+            $url = $this->api."getThongTinGVTheoID.php".$param;
+
+                $results=$this->docjson($url);
+                return json_encode($results);
         }
         public function UpdateGV($iduser,$hodem,$ten,$idnganh,$sdt,$email,$chucvu)
         {
@@ -185,27 +168,23 @@
         }
         public function GetDSDetai()
         {
-            $str = "SELECT * FROM detai dt join chuyennganh cn on dt.IDNganh = cn.IDNganh join giangvien gv on dt.IDGV = gv.MaGV join user u on gv.iduser = u.iduser"; 
-            $result = $this->connect->query($str);
-            $data = [];
-            while ($row = $result->fetch_assoc()) {
-                $data[] = $row;
-            }
-            return json_encode($data);
+           $param = "";
+            $url = $this->api."getDSDetai.php".$param;
+
+                $results=$this->docjson($url);
+                return json_encode($results);
         }
         public function GetDeTaiTheoID($id)
         {
-            $str = "SELECT * FROM detai dt join chuyennganh cn on dt.IDNganh = cn.IDNganh join giangvien gv on dt.IDGV = gv.MaGV join user u on gv.iduser = u.iduser WHERE dt.IDDeTai = $id"; 
-            $result = $this->connect->query($str);
-            $data = [];
-            while ($row = $result->fetch_assoc()) {
-                $data[] = $row;
-            }
-            return json_encode($data);
+            $param = "?id=$id";
+            $url = $this->api."getDeTaiTheoID.php".$param;
+
+                $results=$this->docjson($url);
+                return json_encode($results);
         }
         public function UpdateDeTai($id,$tendetai,$mota,$idnganh,$trangthaidetai,$ngaydangky,$trangthaidk,$idnhom,$yeucau,$soluong)
         {
-            $str1 = "Update detai set TenDeTai='$tendetai', MoTa='$mota', ChuyenNganh='$idnganh',TrangThaiDeTai='$trangthaidetai',NgayDK='$ngaydangky',TrangThaiDK='$trangthaidk',IDNhom='$idnhom',YeuCau='$yeucau',SoLuongTV='$soluong'  where IDDeTai = $id";
+            $str1 = "Update detai set TenDeTai='$tendetai', MoTa='$mota', IDNganh='$idnganh',TrangThaiDeTai='$trangthaidetai',NgayDK='$ngaydangky',TrangThaiDK='$trangthaidk',IDNhom='$idnhom',YeuCau='$yeucau',SoLuongTV='$soluong'  where IDDeTai = $id";
             $tblPTTT1 = mysqli_query($this->connect, $str1);
             if ($tblPTTT1) {
                 return true;

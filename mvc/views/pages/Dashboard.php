@@ -207,11 +207,11 @@
               <table class="table table-borderless">
                 <thead>
                   <tr>
-                    <th>STT</th>
-                    <th>Tên đề tài</th>
-                    <th>Khoa</th>
-                    <th>Trạng thái</th>
-                    <th>Mô tả</th>
+                    <th style="text-align: center;">STT</th>
+                    <th style="text-align: center;">Tên đề tài</th>
+                    <th style="text-align: center;" >Khoa</th>
+                    <th style="text-align: center;">Trạng thái</th>
+                    <th style="text-align: center;">Mô tả</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -223,9 +223,9 @@
                   echo '<tr class="'.$class.'">
                     <td>'.$dem.'</td>
                     <td>'.$index["TenDeTai"].'</td>
-                    <td>'.$index["ChuyenNganh"].'</td>
+                    <td>'.$index["chuyennganh"].'</td>
                     <td>'.$index["TrangThaiDeTai"].'</td>
-                    <td style="white-space: normal;">'.$index["MoTa"].'</td>
+                    <td style="white-space: normal;">'.$index["mota"].'</td>
                   </tr>';
                   $dem++;
                   $i++;

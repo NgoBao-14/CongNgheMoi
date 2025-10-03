@@ -201,7 +201,7 @@
             <div class="col-md-10">
                 <div class="form-container">
                     <div class="form-header">
-                        <h2><i class="fas fa-user-graduate me-2"></i>Cập Nhật Thông Tin Sinh Viên</h2>
+                        <h2><i class="fas fa-user-graduate me-2"></i>Thêm Thông Tin Giảng Viên</h2>
                     </div>
                     
                     <div id="successMessage" class="success-message">
@@ -231,7 +231,7 @@
 
                                 <div class="form-floating">
                                     <label for="stt">Số điện thoại</label>
-                                    <input type="text" name="sdt" class="form-control" id="stt"  placeholder="Số điện thoại">
+                                    <input type="number" name="sdt" class="form-control" id="stt"  placeholder="Số điện thoại">
                                     
                                 </div>
 

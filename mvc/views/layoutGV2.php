@@ -32,10 +32,7 @@
     <!-- /.content -->
     </div>
 
-    <footer class="main-footer">
-    <strong>Copyright &copy; 2023-2024 <a href="#">Quản lý khóa luận</a>.</strong>
-    All rights reserved.
-    </footer>
+    
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
