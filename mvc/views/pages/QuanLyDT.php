@@ -157,7 +157,7 @@
                   echo '<tr class="bg-light">
                     <td>'.$dem.'</td>
                     <td>'.$index["TenDeTai"].'</td>
-                    <td>'.$index["MoTa"].'</td>
+                    <td style = "max-width: 200px;">'.$index["MoTa"].'</td>
                     <td style="text-align:center;">'.$index["Ten"].'</td>
                     <td>'.$index["ChuyenNganh"].'</td>
                     <td>'.$index["TrangThaiDeTai"].'</td>

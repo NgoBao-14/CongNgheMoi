@@ -239,7 +239,352 @@ require("../private/JWT.php");
 			
 			
 		}
-			
+
+		public function getDeTaiKhoa()
+		{
+			$sql = "SELECT * FROM detai dt join chuyennganh cn on dt.IDNganh = cn.IDNganh";
+			$link = $this->connect;
+			$ketqua = mysqli_query($link,$sql);
+			$i = mysqli_num_rows($ketqua);
+			if($i>0)
+			{
+				$dulieu = array();
+				while($row = mysqli_fetch_array($ketqua))
+				{
+					$IDDeTai = $row["IDDeTai"];
+					$TenDeTai = $row["TenDeTai"];
+					$TrangThaiDeTai = $row["TrangThaiDeTai"];
+					$chuyennganh = $row["ChuyenNganh"];
+					$mota = $row ["MoTa"];
+					$dulieu[] = array('IDDeTai'=>$IDDeTai,
+									  'TenDeTai'=>$TenDeTai,
+									  'TrangThaiDeTai'=>$TrangThaiDeTai,
+									  'chuyennganh'=>$chuyennganh,
+									  'mota'=>$mota,
+									);
+					
+				}
+				header("content-Type:application/json; charset=UTF-8");
+				echo json_encode($dulieu);
+				
+			}
+		}
+
+		public function GetDeTaiTheoKhoa($id)
+		{
+			$sql = "SELECT * FROM detai dt join chuyennganh cn on dt.IDNganh = cn.IDNganh WHERE cn.IDNganh = '$id'";
+			$link = $this->connect;
+			$ketqua = mysqli_query($link,$sql);
+			$i = mysqli_num_rows($ketqua);
+			if($i>0)
+			{
+				$dulieu = array();
+				while($row = mysqli_fetch_array($ketqua))
+				{
+					$IDDeTai = $row["IDDeTai"];
+					$TenDeTai = $row["TenDeTai"];
+					$TrangThaiDeTai = $row["TrangThaiDeTai"];
+					$chuyennganh = $row["ChuyenNganh"];
+					$mota = $row ["MoTa"];
+					$dulieu[] = array('IDDeTai'=>$IDDeTai,
+									  'TenDeTai'=>$TenDeTai,
+									  'TrangThaiDeTai'=>$TrangThaiDeTai,
+									  'chuyennganh'=>$chuyennganh,
+									  'mota'=>$mota,
+									);
+					
+				}
+				header("content-Type:application/json; charset=UTF-8");
+				echo json_encode($dulieu);
+				
+			}
+		}
+		
+		public function getThongTinSV()
+		{
+			$sql = "SELECT * FROM user u JOIN sinhvien sv ON u.iduser=sv.iduser join chuyennganh cn on u.IDNganh=cn.IDNganh";
+			$link = $this->connect;
+			$ketqua = mysqli_query($link,$sql);
+			$i = mysqli_num_rows($ketqua);
+			if($i>0)
+			{
+				$dulieu = array();
+				while($row = mysqli_fetch_array($ketqua))
+				{
+					$iduser = $row["iduser"];
+					$MaSV = $row["MaSV"];
+					$HoDem = $row["HoDem"];
+					$Ten = $row["Ten"];
+					$Lop = $row["Lop"];
+					$ChuyenNganh = $row["ChuyenNganh"];
+					$dulieu[] = array('MaSV'=>$MaSV,
+									  'HoDem'=>$HoDem,
+									  'Ten'=>$Ten,
+									  'Lop'=>$Lop,
+									  'ChuyenNganh'=>$ChuyenNganh,
+									  'iduser'=>$iduser
+									);
+					
+				}
+				header("content-Type:application/json; charset=UTF-8");
+				echo json_encode($dulieu);
+				
+			}
+		}
+		public function getThongTinSVTheoKhoa($id)
+		{
+			$sql = "SELECT * FROM user u JOIN sinhvien sv ON u.iduser=sv.iduser join chuyennganh cn on u.IDNganh=cn.IDNganh WHERE cn.IDNganh = $id";
+			$link = $this->connect;
+			$ketqua = mysqli_query($link,$sql);
+			$i = mysqli_num_rows($ketqua);
+			if($i>0)
+			{
+				$dulieu = array();
+				while($row = mysqli_fetch_array($ketqua))
+				{
+					$iduser = $row["iduser"];
+					$MaSV = $row["MaSV"];
+					$HoDem = $row["HoDem"];
+					$Ten = $row["Ten"];
+					$Lop = $row["Lop"];
+					$ChuyenNganh = $row["ChuyenNganh"];
+					$dulieu[] = array('MaSV'=>$MaSV,
+									  'HoDem'=>$HoDem,
+									  'Ten'=>$Ten,
+									  'Lop'=>$Lop,
+									  'ChuyenNganh'=>$ChuyenNganh,
+									  'iduser'=>$iduser
+									);
+					
+				}
+				header("content-Type:application/json; charset=UTF-8");
+				echo json_encode($dulieu);
+				
+			}
+		}
+		public function getThongTinSVTheoID($id)
+		{
+			$sql = "SELECT * FROM user u JOIN sinhvien sv ON u.iduser=sv.iduser join chuyennganh cn on u.IDNganh=cn.IDNganh WHERE u.iduser = $id";
+			$link = $this->connect;
+			$ketqua = mysqli_query($link,$sql);
+			$i = mysqli_num_rows($ketqua);
+			if($i>0)
+			{
+				$dulieu = array();
+				while($row = mysqli_fetch_array($ketqua))
+				{
+					$iduser = $row["iduser"];
+					$MaSV = $row["MaSV"];
+					$HoDem = $row["HoDem"];
+					$Ten = $row["Ten"];
+					$Lop = $row["Lop"];
+					$SDT = $row["SDT"];	
+					$email = $row["Email"];
+					$ChuyenNganh = $row["ChuyenNganh"];
+					$dulieu[] = array('MaSV'=>$MaSV,
+									  'HoDem'=>$HoDem,
+									  'Ten'=>$Ten,
+									  'Lop'=>$Lop,
+									  'ChuyenNganh'=>$ChuyenNganh,
+									  'iduser'=>$iduser,
+									  'SDT'=>$SDT,
+									  'Email'=>$email
+									);
+					
+				}
+				header("content-Type:application/json; charset=UTF-8");
+				echo json_encode($dulieu);
+				
+			}
+		}
+
+		public function getThongTinGV()
+		{
+			$sql = "SELECT * FROM user u JOIN giangvien gv ON u.iduser=gv.iduser join chuyennganh cn on u.IDNganh=cn.IDNganh join taikhoan tk on u.iduser=tk.iduser join phanquyen pq on tk.PQ=pq.idPQ";
+			$link = $this->connect;
+			$ketqua = mysqli_query($link,$sql);
+			$i = mysqli_num_rows($ketqua);
+			if($i>0)
+			{
+				$dulieu = array();
+				while($row = mysqli_fetch_array($ketqua))
+				{
+					$iduser = $row["iduser"];
+					$MaGV = $row["MaGV"];
+					$HoDem = $row["HoDem"];
+					$Ten = $row["Ten"];
+					$ChuyenNganh = $row["ChuyenNganh"];
+					$PhanQuyen = $row["PhanQuyen"];
+					$dulieu[] = array(
+									  'MaGV'=>$MaGV,
+									  'HoDem'=>$HoDem,
+									  'Ten'=>$Ten,
+									  'ChuyenNganh'=>$ChuyenNganh,
+									  'PhanQuyen'=>$PhanQuyen,
+									  'iduser'=>$iduser
+									);
+					
+				}
+				header("content-Type:application/json; charset=UTF-8");
+				echo json_encode($dulieu);
+				
+			}
+		}
+		public function getThongTinGVTheoKhoa($id)
+		{
+			$sql = "SELECT * FROM user u JOIN giangvien gv ON u.iduser=gv.iduser join chuyennganh cn on u.IDNganh=cn.IDNganh join taikhoan tk on u.iduser=tk.iduser join phanquyen pq on tk.PQ=pq.idPQ WHERE cn.IDNganh = $id";
+			$link = $this->connect;
+			$ketqua = mysqli_query($link,$sql);
+			$i = mysqli_num_rows($ketqua);
+			if($i>0)
+			{
+				$dulieu = array();
+				while($row = mysqli_fetch_array($ketqua))
+				{
+					$iduser = $row["iduser"];
+					$MaGV = $row["MaGV"];
+					$HoDem = $row["HoDem"];
+					$Ten = $row["Ten"];
+					$ChuyenNganh = $row["ChuyenNganh"];
+					$PhanQuyen = $row["PhanQuyen"];
+					$dulieu[] = array(
+									  'MaGV'=>$MaGV,
+									  'HoDem'=>$HoDem,
+									  'Ten'=>$Ten,
+									  'ChuyenNganh'=>$ChuyenNganh,
+									  'PhanQuyen'=>$PhanQuyen,
+									  'iduser'=>$iduser
+									);
+					
+				}
+				header("content-Type:application/json; charset=UTF-8");
+				echo json_encode($dulieu);
+				
+			}
+		}
+		public function getThongTinGVTheoID($id)
+		{
+			$sql = "SELECT * FROM user u JOIN giangvien gv ON u.iduser=gv.iduser join chuyennganh cn on u.IDNganh=cn.IDNganh join taikhoan tk on u.iduser=tk.iduser join phanquyen pq on tk.PQ=pq.idPQ WHERE u.iduser = $id";
+			$link = $this->connect;
+			$ketqua = mysqli_query($link,$sql);
+			$i = mysqli_num_rows($ketqua);
+			if($i>0)
+			{
+				$dulieu = array();
+				while($row = mysqli_fetch_array($ketqua))
+				{
+					$iduser = $row["iduser"];
+					$MaGV = $row["MaGV"];
+					$HoDem = $row["HoDem"];
+					$Ten = $row["Ten"];
+					$SDT = $row["SDT"];	
+					$email = $row["Email"];
+					$ChuyenNganh = $row["ChuyenNganh"];
+					$PhanQuyen = $row["PhanQuyen"];
+					$dulieu[] = array(
+									  'MaGV'=>$MaGV,
+									  'HoDem'=>$HoDem,
+									  'Ten'=>$Ten,
+									  'ChuyenNganh'=>$ChuyenNganh,
+									  'PhanQuyen'=>$PhanQuyen,
+									  'iduser'=>$iduser,
+									  'SDT'=>$SDT,
+									  'Email'=>$email
+									);
+					
+				}
+				header("content-Type:application/json; charset=UTF-8");
+				echo json_encode($dulieu);
+				
+			}
+		}
+
+		public function getDSDetai()
+		{
+			$sql = "SELECT * FROM detai dt join chuyennganh cn on dt.IDNganh = cn.IDNganh join giangvien gv on dt.IDGV = gv.MaGV join user u on gv.iduser = u.iduser"; 
+			$link = $this->connect;
+			$ketqua = mysqli_query($link,$sql);
+			$i = mysqli_num_rows($ketqua);
+			if($i>0)
+			{
+				$dulieu = array();
+				while($row = mysqli_fetch_array($ketqua))
+				{
+					$TenDeTai = $row["TenDeTai"];
+					$MoTa = $row["MoTa"];
+					$Ten = $row["Ten"];
+					$ChuyenNganh = $row["ChuyenNganh"];
+					$TrangThaiDeTai = $row["TrangThaiDeTai"];
+					$NgayDK = $row["NgayDK"];
+					$TrangThaiDK = $row["TrangThaiDK"];
+					$IDNhom = $row["IDNhom"];
+					$IDDeTai = $row["IDDeTai"];
+					$dulieu[] = array(	
+									  'TenDeTai'=>$TenDeTai,
+									  'MoTa'=>$MoTa,
+									  'Ten'=>$Ten,
+									  'ChuyenNganh'=>$ChuyenNganh,
+									  'TrangThaiDeTai'=>$TrangThaiDeTai,
+									  'NgayDK'=>$NgayDK,
+									  'TrangThaiDK'=>$TrangThaiDK,
+									  'IDNhom'=>$IDNhom,
+									  'IDDeTai'=>$IDDeTai
+
+									);
+					
+				}
+				header("content-Type:application/json; charset=UTF-8");
+				echo json_encode($dulieu);
+				
+			}
+		}
+		public function getDeTaiTheoID($id)
+		{
+			$sql="SELECT *,dt.IDNganh FROM detai dt join chuyennganh cn on dt.IDNganh = cn.IDNganh join giangvien gv on dt.IDGV = gv.MaGV join user u on gv.iduser = u.iduser WHERE dt.IDDeTai = $id";
+			$link = $this->connect;
+			$ketqua = mysqli_query($link,$sql);
+			$i = mysqli_num_rows($ketqua);
+			if($i>0)
+			{
+				$dulieu = array();
+				while($row = mysqli_fetch_array($ketqua))
+				{
+					$TenDeTai = $row["TenDeTai"];
+					$MoTa = $row["MoTa"];
+					$Ten = $row["Ten"];
+					$ChuyenNganh = $row["ChuyenNganh"];
+					$TrangThaiDeTai = $row["TrangThaiDeTai"];
+					$NgayDK = $row["NgayDK"];
+					$TrangThaiDK = $row["TrangThaiDK"];
+					$IDNhom = $row["IDNhom"];
+					$IDDeTai = $row["IDDeTai"];
+					$HoDem = $row["HoDem"];
+					$YeuCau = $row["YeuCau"];
+					$SoLuongTV = $row["SoLuongTV"];
+					$IDNganh = $row["IDNganh"];
+					$dulieu[] = array(	
+									  'TenDeTai'=>$TenDeTai,
+									  'MoTa'=>$MoTa,
+									  'Ten'=>$Ten,
+									  'ChuyenNganh'=>$ChuyenNganh,
+									  'TrangThaiDeTai'=>$TrangThaiDeTai,
+									  'NgayDK'=>$NgayDK,
+									  'TrangThaiDK'=>$TrangThaiDK,
+									  'IDNhom'=>$IDNhom,
+									  'IDDeTai'=>$IDDeTai,
+									  'HoDem'=>$HoDem,
+									  'YeuCau'=>$YeuCau,
+									  'SoLuongTV'=>$SoLuongTV,
+									  'IDNganh'=>$IDNganh
+
+									);
+					
+				}
+				header("content-Type:application/json; charset=UTF-8");
+				echo json_encode($dulieu);
+				
+			}
+		}			
 	}
 	
 

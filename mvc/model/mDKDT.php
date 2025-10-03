@@ -49,7 +49,7 @@ class mDKDT extends DB {
     }
 
     public function capNhatTTDeTai($IDDeTai, $idNhom) {
-        $sql = "UPDATE detai SET TrangThaiDK = 'Đã đăng ký', IDNhom ='$idNhom' WHERE IDDeTai = '$IDDeTai'";
+        $sql = "UPDATE detai SET TrangThaiDK = 'Đã đăng ký', IDNhom ='$idNhom', NgayDK = NOW() WHERE IDDeTai = '$IDDeTai'";
         $result = mysqli_query($this->connect, $sql);
     }
 

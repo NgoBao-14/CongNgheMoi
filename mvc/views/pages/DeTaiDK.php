@@ -165,7 +165,7 @@ echo'
                                 <div class="d-flex justify-content-center mb-3">
                                     <div>
                                         <h5 class="card-title fw-bold mb-0">NỘP QUYỂN KHÓA LUẬN</h5>
-                                        <p class="card-text small">Hạn: 2023-12-19 - 2023-12-31</p>
+                                        <p class="card-text small">Hạn: 2025-12-19 - 2025-12-31</p>
                                     </div>
                                 </div>
                                 <form action="./NopKhoaLuan">
