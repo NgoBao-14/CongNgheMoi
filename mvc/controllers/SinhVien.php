@@ -21,9 +21,9 @@ class SinhVien extends Controller {
         $iduser= $_SESSION['iduser'];
         $dt= $this->model("mDKDT");
         $detai = json_decode($dt->getTTDeTai($iduser), true);
-        
-        $this->view("layoutDKDT", [
-            "Page" => "DeTai",
+        // page cũ DeTai, layoutDKDT
+        $this->view("layoutSV2", [
+            "Page" => "DanhSachDeTai",
             "dt" => $detai
         ]);
 
