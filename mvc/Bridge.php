@@ -14,4 +14,6 @@ require_once $rootPath . "/core/DB.php";
 
 // Connect Pagination
 require_once $rootPath . "/core/Pagination.php";
+
+require_once $rootPath . "/core/Auth.php";
 ?>
