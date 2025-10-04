@@ -1,5 +1,5 @@
 <?php
-$dt = $data["dt"];
+$dt = json_decode($data['dt'], true);
 
     echo '
     <div class="col-md-3">

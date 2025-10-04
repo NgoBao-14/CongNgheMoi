@@ -20,10 +20,10 @@ class SinhVien extends Controller {
     function DeTai(){
         $iduser= $_SESSION['iduser'];
         $dt= $this->model("mDKDT");
-        $detai = json_decode($dt->getTTDeTai($iduser), true);
+        $detai = $dt->getTTDeTai($iduser);
         // page cũ DeTai, layoutDKDT
-        $this->view("layoutSV2", [
-            "Page" => "DanhSachDeTai",
+        $this->view("layoutDKDT", [
+            "Page" => "DeTai",
             "dt" => $detai
         ]);
 
