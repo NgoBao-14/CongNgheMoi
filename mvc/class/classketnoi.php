@@ -585,7 +585,182 @@ require("../private/JWT.php");
 				
 			}
 		}			
-	}
-	
 
+		public function getTTDeTai($iduser) {
+        $sql = "SELECT d.*, CONCAT(u.hodem, ' ', u.ten) AS ten_giang_vien
+        FROM detai d
+        JOIN giangvien gv ON d.IDGV = gv.MaGV
+        JOIN user u ON gv.iduser = u.iduser
+        WHERE d.IDNganh = (
+            SELECT IDNganh FROM user WHERE iduser = $iduser
+        )";
+		$link = $this->connect;
+		$ketqua = mysqli_query($link,$sql);
+		$i = mysqli_num_rows($ketqua);
+		if($i>0)
+		{
+			$dulieu = array();
+			while($row = mysqli_fetch_array($ketqua))
+			{
+				$IDDeTai = $row["IDDeTai"];
+				$TenDeTai = $row["TenDeTai"];
+				$MoTa = $row["MoTa"];
+				$ten_giang_vien = $row["ten_giang_vien"];
+				$IDNganh = $row["IDNganh"];
+				$TrangThaiDeTai = $row["TrangThaiDeTai"];
+				$TrangThaiDK = $row["TrangThaiDK"];
+				$MoTa = $row["MoTa"];
+				$YeuCau = $row["YeuCau"];
+				$SoLuongTV = $row["SoLuongTV"];
+				$dulieu[] = array('IDDeTai'=>$IDDeTai,
+								  'TenDeTai'=>$TenDeTai,
+								  'MoTa'=>$MoTa,
+								  'ten_giang_vien'=>$ten_giang_vien,
+								  'IDNganh'=>$IDNganh,
+								  'TrangThaiDeTai'=>$TrangThaiDeTai,
+								  'YeuCau'=>$YeuCau,
+								  'TrangThaiDK'=>$TrangThaiDK,
+								  'SoLuongTV'=>$SoLuongTV
+								);
+    }
+			header("content-Type:application/json; charset=UTF-8");
+			echo json_encode($dulieu);
+	}
+		}
+// 
+	public function addNhom($IDDeTai)
+	{
+		$sql = "INSERT INTO nhom (IDDeTai) VALUES ($IDDeTai)";
+		$link = $this->connect;
+		$ketqua = mysqli_query($link, $sql);
+		if ($ketqua) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+// 
+	public function addSVNhom($MaSV, $IDNhom)
+	{
+		$sql = "UPDATE sinhvien SET IDNhom = '$IDNhom' WHERE MaSV = '$MaSV'";
+		$link = $this->connect;
+		$ketqua = mysqli_query($link, $sql);
+		if ($ketqua) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+// 
+	public function timSV($MaSV)
+	{
+		$sql = "SELECT sv.*, 
+        CONCAT(u.HoDem, ' ', u.Ten) AS HoTen,
+        u.IDNganh
+        FROM sinhvien sv 
+        JOIN user u on sv.iduser=u.iduser
+        WHERE MaSV = $MaSV";
+		$link = $this->connect;
+		$ketqua = mysqli_query($link, $sql);
+		$i = mysqli_num_rows($ketqua);
+		if ($i > 0) {
+			$dulieu = array();
+			while ($row = mysqli_fetch_array($ketqua)) {
+				$MaSV = $row["MaSV"];
+				$HoTen = $row["HoTen"];
+				$Lop = $row["Lop"];
+				$IDNganh = $row["IDNganh"];
+				$dulieu[] = array(
+					'MaSV' => $MaSV,
+					'HoTen' => $HoTen,
+					'Lop' => $Lop,
+					'IDNganh' => $IDNganh
+				);
+			}
+			header("content-Type:application/json; charset=UTF-8");
+			echo json_encode($dulieu);
+		} else {
+			return false;
+		}
+	}
+// 
+	public function ktSV($MaSV)
+	{
+		$sql = "SELECT idNhom FROM sinhvien WHERE MaSV = '$MaSV' AND IDNhom IS NOT NULL";
+		$link = $this->connect;
+		$ketqua = mysqli_query($link, $sql);
+		$i = mysqli_num_rows($ketqua);
+		if ($i > 0) {
+			$dulieu = array();
+			while ($row = mysqli_fetch_array($ketqua)) {
+				$IDNhom = $row["IDNhom"];
+				$dulieu[] = array(
+					'IDNhom' => $IDNhom
+				);
+			}
+			header("content-Type:application/json; charset=UTF-8");
+			echo json_encode($dulieu);
+	}
+}
+// 
+	public function capNhatTTDeTai($IDDeTai, $idNhom)
+	{
+		$sql = "UPDATE detai SET TrangThaiDK = 'Đã đăng ký', IDNhom ='$idNhom', NgayDK = NOW() WHERE IDDeTai = '$IDDeTai'";
+		$link = $this->connect;
+		$ketqua = mysqli_query($link, $sql);
+		if ($ketqua) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+// 
+	public function layIDNganhUser($iduser)
+	{
+		$sql = "SELECT IDNganh FROM user WHERE iduser = '$iduser'";
+		$link = $this->connect;
+		$ketqua = mysqli_query($link, $sql);
+		$i = mysqli_num_rows($ketqua);
+		if ($i > 0) {
+			$dulieu = array();
+			while ($row = mysqli_fetch_array($ketqua)) {
+				$IDNganh = $row["IDNganh"];
+				$dulieu[] = array(
+					'IDNganh' => $IDNganh
+				);
+			}
+			header("content-Type:application/json; charset=UTF-8");
+			echo json_encode($dulieu);
+		} else {
+			return false;
+		}
+	}
+
+// giang vien de xuat de tai
+	public function addDeTai($TenDeTai, $MoTa, $IDGV, $IDNganh, $YeuCau, $SoLuongTV)
+	{
+		$sql = "INSERT INTO detai (TenDeTai, MoTa, IDGV, IDNganh, YeuCau, SoLuongTV, TrangThaiDeTai, TrangThaiDK) 
+				VALUES ('$TenDeTai', '$MoTa', '$IDGV', '$IDNganh', '$YeuCau', '$SoLuongTV', 'Chờ duyệt', 'Chưa đăng ký')";
+		$link = $this->connect;
+		$ketqua = mysqli_query($link, $sql);
+		if ($ketqua) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+//duyet de tai
+	public function duyetDeTai($IDDeTai)
+	{
+		$sql = "UPDATE `detai` SET TrangThaiDeTai = 'Đã duyệt' WHERE IDDeTai = $IDDeTai";
+		$link = $this->connect;
+		$ketqua = mysqli_query($link, $sql);
+		if ($ketqua) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
 ?>
