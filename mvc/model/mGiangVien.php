@@ -27,7 +27,7 @@ class mGiangVien extends DB {
         FROM detai dt
         JOIN giangvien gv ON dt.IDGV = gv.MaGV
         JOIN user u ON gv.IDUser = u.IDUser
-        WHERE u.IDUser = $iduser
+        WHERE u.IDUser = $iduser and dt.TrangThaiDeTai = 'Đã duyệt'
         ";
         $detai = mysqli_query($this->connect, $str);
         $mang = array();
