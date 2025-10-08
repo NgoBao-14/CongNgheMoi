@@ -12,7 +12,7 @@ class GiangVien extends Controller {
     }
 
     function QuanLyNhom(){
-        $_SESSION['iduser'] = 3;
+        // $_SESSION['iduser'] = 3;
         $iduser = $_SESSION['iduser'];
         $dt= $this->model("mGiangVien");
         $detai = json_decode($dt->getDanhSachNhom($iduser), true);
@@ -34,7 +34,7 @@ class GiangVien extends Controller {
     }
 
     function QuanLyDeTai(){
-        $_SESSION['iduser'] = 3;
+        // $_SESSION['iduser'];
         $iduser = $_SESSION['iduser'];
         $dt= $this->model("mGiangVien");
         $detai = json_decode($dt->getDSDeTai($iduser), true);
@@ -46,7 +46,7 @@ class GiangVien extends Controller {
     }
 
     function TienDoDeTai(){
-        $_SESSION['iduser'] = 3;
+        // $_SESSION['iduser'] = 3;
         $iduser = $_SESSION['iduser'];
         $dt= $this->model("mGiangVien");
         $baocao = json_decode($dt->getTTBaoCao($iduser), true);
@@ -58,7 +58,7 @@ class GiangVien extends Controller {
     }
 
     function QuanLyKhoaLuan(){
-        $_SESSION['iduser'] = 3;
+        // $_SESSION['iduser'] = 3;
         $iduser = $_SESSION['iduser'];
         $dt= $this->model("mGiangVien");
         $khoaluan = json_decode($dt->getTTKhoaLuan($iduser), true);

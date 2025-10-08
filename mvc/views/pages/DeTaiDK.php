@@ -144,7 +144,7 @@ echo'
                     <!-- Card 2 -->
                     <div class="col-md-6 col-lg-4 mb-3">
                         <div class="card h-70 text-center">
-                            <div class="card-body">
+                            <div class="card-body disabled-overlay">
                                 <div class="d-flex justify-content-center mb-3">
                                     <div>
                                         <h5 class="card-title fw-bold mb-0">BÁO CÁO TIẾN ĐỘ</h5>
@@ -161,7 +161,7 @@ echo'
                     <!-- Card 3 -->
                     <div class="col-md-6 col-lg-4 mb-3">
                         <div class="card h-70 text-center">
-                            <div class="card-body">
+                            <div class="card-body disabled-overlay">
                                 <div class="d-flex justify-content-center mb-3">
                                     <div>
                                         <h5 class="card-title fw-bold mb-0">NỘP QUYỂN KHÓA LUẬN</h5>
