@@ -60,26 +60,30 @@ echo'
             <p>Bảng điều khiển</p>
             </a>
         </li>
-        <!-- Đề xuất đề tài  -->
+
+        <!-- CHỨC NĂNG TRƯỞNG KHOA -->
+        <li class="nav-header">QUẢN LÝ TRƯỞNG KHOA</li>
+        
+        <!-- Duyệt đề tài  -->
         <li class="nav-item">
             <a href="/CongNgheMoi/TruongKhoa/DXDeTai" class="nav-link">
-            <i class="nav-icon fas fa-chalkboard-teacher"></i>
+            <i class="nav-icon fas fa-check-circle"></i>
             <p>Duyệt đề tài</p>
             </a>
         </li>
 
-        <!-- Danh sách đăng ký -->
+        <!-- Danh sách đề tài -->
         <li class="nav-item">
             <a href="/CongNgheMoi/TruongKhoa/DSDeTai" class="nav-link">
-            <i class="nav-icon fas fa-clipboard-list"></i>
+            <i class="nav-icon fas fa-list-alt"></i>
             <p>Danh sách đề tài</p>
             </a>
         </li>
 
-        <!-- Danh sách đề tài đã đăng ký -->
+        <!-- Điểm khóa luận các nhóm -->
         <li class="nav-item">
             <a href="./DiemKhoaLuanCacNhom" class="nav-link">
-            <i class="nav-icon fas fa-list-alt"></i>
+            <i class="nav-icon fas fa-star"></i>
             <p>Điểm khóa luận</p>
             </a>
         </li>
@@ -87,14 +91,58 @@ echo'
         <!-- Hội đồng bảo vệ -->
         <li class="nav-item">
             <a href="/CongNgheMoi/TruongKhoa/HoiDongBaoVe" class="nav-link">
-            <i class="nav-icon fas fa-clipboard-list"></i>
+            <i class="nav-icon fas fa-users"></i>
             <p>Hội đồng bảo vệ</p>
             </a>
         </li>
 
+        <!-- CHỨC NĂNG GIẢNG VIÊN (KẾ THỪA) -->
+        <li class="nav-header">CHỨC NĂNG GIẢNG VIÊN</li>
+
+        <!-- Đề xuất đề tài -->
+        <li class="nav-item">
+            <a href="/CongNgheMoi/TruongKhoa/DeXuatDeTai" class="nav-link">
+            <i class="nav-icon fas fa-lightbulb"></i>
+            <p>Đề xuất đề tài</p>
+            </a>
+        </li>
+
+        <!-- Quản lý đề tài của mình -->
+        <li class="nav-item">
+            <a href="/CongNgheMoi/TruongKhoa/QuanLyDeTai" class="nav-link">
+            <i class="nav-icon fas fa-clipboard-list"></i>
+            <p>Đề tài của tôi</p>
+            </a>
+        </li>
+
+        <!-- Quản lý nhóm -->
+        <li class="nav-item">
+            <a href="/CongNgheMoi/TruongKhoa/QuanLyNhom" class="nav-link">
+            <i class="nav-icon fas fa-user-graduate"></i>
+            <p>Quản lý nhóm</p>
+            </a>
+        </li>
+
+        <!-- Tiến độ đề tài -->
+        <li class="nav-item">
+            <a href="/CongNgheMoi/TruongKhoa/TienDoDeTai" class="nav-link">
+            <i class="nav-icon fas fa-tasks"></i>
+            <p>Tiến độ đề tài</p>
+            </a>
+        </li>
+
+        <!-- Báo cáo khóa luận -->
+        <li class="nav-item">
+            <a href="/CongNgheMoi/TruongKhoa/QuanLyKhoaLuan" class="nav-link">
+            <i class="nav-icon fas fa-file-alt"></i>
+            <p>Báo cáo khóa luận</p>
+            </a>
+        </li>
+
+        <!-- Đăng xuất -->
         <li class="nav-item">
             <a href="/CongNgheMoi/Logout" class="nav-link">
-            <i class="nav-icon fas fa-chalkboard-teacher"></i>
+            <i class="nav-icon fas fa-sign-out-alt"></i>
             <p>Đăng xuất</p>
             </a>
         </li>
@@ -124,94 +172,182 @@ echo'
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
+        <style>
+            .stat-card {
+                background: white;
+                border-radius: 15px;
+                padding: 25px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+                transition: all 0.3s ease;
+                border-left: 4px solid;
+                position: relative;
+                overflow: hidden;
+            }
+            .stat-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            }
+            .stat-card::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                opacity: 0.1;
+                transform: translate(30%, -30%);
+            }
+            .stat-card.primary {
+                border-left-color: #4e73df;
+            }
+            .stat-card.primary::before {
+                background: #4e73df;
+            }
+            .stat-card.success {
+                border-left-color: #1cc88a;
+            }
+            .stat-card.success::before {
+                background: #1cc88a;
+            }
+            .stat-card.danger {
+                border-left-color: #e74a3c;
+            }
+            .stat-card.danger::before {
+                background: #e74a3c;
+            }
+            .stat-card.warning {
+                border-left-color: #f6c23e;
+            }
+            .stat-card.warning::before {
+                background: #f6c23e;
+            }
+            .stat-icon {
+                font-size: 2.5rem;
+                opacity: 0.3;
+                position: absolute;
+                right: 20px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            .stat-title {
+                font-size: 0.85rem;
+                color: #858796;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: 10px;
+            }
+            .stat-value {
+                font-size: 1.8rem;
+                font-weight: 700;
+                color: #5a5c69;
+                margin-bottom: 15px;
+            }
+            .stat-link {
+                color: #4e73df;
+                text-decoration: none;
+                font-weight: 600;
+                font-size: 0.9rem;
+                transition: all 0.3s ease;
+            }
+            .stat-link:hover {
+                color: #2e59d9;
+                transform: translateX(5px);
+            }
+        </style>
+        
         <!-- Info boxes -->
         <div class="row">
-            <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box bg-primary mb-3">
-                <div class="info-box-content">
-                
-                <span class="info-box-text">Duyệt đề tài</span>
-                <div class="mt-3">
-                    <a href="./DXDeTai" class="text-white">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-                </div>
-            </div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box bg-success mb-3">
-                <div class="info-box-content">
-                
-                <span class="info-box-text">Danh sách đề tài</span>
-                <div class="mt-3">
-                    <a href="./DSDeTai" class="text-white">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
+            <div class="col-12 col-sm-6 col-md-3 mb-4">
+                <div class="stat-card primary">
+                    <i class="fas fa-check-circle stat-icon text-primary"></i>
+                    <div class="stat-title">Duyệt đề tài</div>
+                    <div class="stat-value">--</div>
+                    <a href="./DXDeTai" class="stat-link">
+                        Xem chi tiết <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
                 </div>
             </div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box bg-danger mb-3 ">
-                <div class="info-box-content">
-                <span class="info-box-text">Điểm khóa luận</span> 
-                <div class="mt-3">
-                    <a href="./DiemKhoaLuanCacNhom" class="text-white">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-                </div>
-            </div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box bg-warning mb-3 disabled-overlay">
-                <div class="info-box-content">
-                <span class="info-box-text">Ngày báo cáo</span>
-                <div class="mt-3">
-                    <a href="./" class="text-white">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
+            
+            <div class="col-12 col-sm-6 col-md-3 mb-4">
+                <div class="stat-card success">
+                    <i class="fas fa-list-alt stat-icon text-success"></i>
+                    <div class="stat-title">Danh sách đề tài</div>
+                    <div class="stat-value">--</div>
+                    <a href="./DSDeTai" class="stat-link">
+                        Xem chi tiết <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
                 </div>
             </div>
+            
+            <div class="col-12 col-sm-6 col-md-3 mb-4">
+                <div class="stat-card danger">
+                    <i class="fas fa-star stat-icon text-danger"></i>
+                    <div class="stat-title">Điểm khóa luận</div>
+                    <div class="stat-value">--</div>
+                    <a href="./DiemKhoaLuanCacNhom" class="stat-link">
+                        Xem chi tiết <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-12 col-sm-6 col-md-3 mb-4">
+                <div class="stat-card warning">
+                    <i class="fas fa-lightbulb stat-icon text-warning"></i>
+                    <div class="stat-title">Đề xuất đề tài</div>
+                    <div class="stat-value">--</div>
+                    <a href="./DeXuatDeTai" class="stat-link">
+                        Xem chi tiết <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
             </div>
         </div>
         
         <!-- Recent Activity -->
         <div class="row">
-            <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                <h3 class="card-title">Hoạt động gần đây</h3>
+            <div class="col-md-6 mb-4">
+                <div class="card" style="border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: none;">
+                    <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 15px 15px 0 0; padding: 20px;">
+                        <h5 class="mb-0"><i class="fas fa-history me-2"></i>Hoạt động gần đây</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center py-5">
+                            <i class="fas fa-inbox" style="font-size: 3rem; color: #e3e6f0; margin-bottom: 15px;"></i>
+                            <p class="text-muted mb-0">Không có hoạt động gần đây</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body p-0">
-                <ul class="products-list product-list-in-card pl-2 pr-2">
-                    <p class="text-center mt-4 mb-4 text-muted">Không có hoạt động gần đây</p>
-                </ul>
-                </div>
-                <div class="card-footer text-center">
-                
-                </div>
-            </div>
             </div>
             
-            <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                <h3 class="card-title">Lịch bảo vệ sắp tới</h3>
+            <div class="col-md-6 mb-4">
+                <div class="card" style="border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: none;">
+                    <div class="card-header" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border-radius: 15px 15px 0 0; padding: 20px;">
+                        <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Lịch bảo vệ sắp tới</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead style="background: #f8f9fc;">
+                                    <tr>
+                                        <th style="border: none; padding: 15px;">Sinh viên</th>
+                                        <th style="border: none; padding: 15px;">Đề tài</th>
+                                        <th style="border: none; padding: 15px;">Ngày</th>
+                                        <th style="border: none; padding: 15px;">Phòng</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="4" class="text-center py-5">
+                                            <i class="fas fa-calendar-times" style="font-size: 3rem; color: #e3e6f0; margin-bottom: 15px; display: block;"></i>
+                                            <span class="text-muted">Không có lịch bảo vệ sắp tới</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body p-0">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Sinh viên</th>
-                        <th>Đề tài</th>
-                        <th>Ngày</th>
-                        <th>Phòng</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td colspan="4" class="text-center text-muted mt-4 mb-4">Không có lịch bảo vệ sắp tới!</td>
-                    </tbody>
-                </table>
-                </div>
-                <div class="card-footer text-center">
-                </div>
-            </div>
             </div>
         </div>
         </div>
