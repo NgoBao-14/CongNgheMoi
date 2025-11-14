@@ -247,7 +247,7 @@ public class formDangNhap extends javax.swing.JFrame {
                         this.setVisible(false);
                         this.dispose();
                     }
-                    else if(response == 102 && pq == 1)
+                    else if(response == 102 && pq == 1 )
                     {
                         String token = jon.getString("token");
                         long time = jon.getLong("time");

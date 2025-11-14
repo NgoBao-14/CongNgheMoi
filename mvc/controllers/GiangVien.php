@@ -2,7 +2,7 @@
 class GiangVien extends Controller {
     
     function SayHi(){
-        if($_SESSION["PQ"] != 1){
+        if($_SESSION["PQ"] != 1 && $_SESSION["PQ"] != 4){
             echo "<script>alert('Bạn không có quyền truy cập')</script>";
             header("refresh: 0; url='/CongNgheMoi'");
         }

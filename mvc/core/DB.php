@@ -7,7 +7,7 @@ class DB{
     protected $password = "123456";
     protected $dbname = "thongtinmay";
 
-    public $api = "http://localhost:1111/CongNgheMoi/mvc/api/";
+    public $api = "http://localhost:8080/CongNgheMoi/mvc/api/";
 
     function __construct(){
         $this->connect = mysqli_connect($this->servername, $this->username, $this->password);
