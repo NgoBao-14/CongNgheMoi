@@ -1,412 +1,198 @@
 <?php
-  $year = date('Y'); // Lấy năm hiện tạ
-  $prefix = substr($year, -2);
-  $random = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
-  $masv =  $prefix.$random;
-  $chucvu = json_decode($data['chucvu'], true);
+require_once "./mvc/views/components/sidebarAdmin.php";
+$year = date('Y');
+$prefix = substr($year, -2);
+$random = str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
+$msgv = $prefix . $random;
+$dt = json_decode($data['khoa'], true);
+$chucvu = json_decode($data['chucvu'], true);
+$rs = isset($data['rs']) ? $data['rs'] : false;
 
-  $dt = json_decode($data['khoa'], true);
-?>
-
-
-<style>
+echo '
+<div class="content-wrapper">
+    <style>
+        .page-header {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #E2E8F0;
+        }
         
         .form-container {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            margin-top: 20px;
-            transition: all 0.3s ease;
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 1px solid #E2E8F0;
         }
-        .form-container:hover {
-            box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
-        }
-        .form-header {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #0d6efd;
-            border-bottom: 2px solid #e9ecef;
-            padding-bottom: 15px;
-        }
-        .form-footer {
-            border-top: 2px solid #e9ecef;
-            padding-top: 20px;
-            margin-top: 20px;
-        }
-        .btn-primary {
-            background-color: #0d6efd;
-            border-color: #0d6efd;
-            transition: all 0.3s ease;
-        }
-        .btn-primary:hover {
-            background-color: #0b5ed7;
-            border-color: #0a58ca;
-            transform: translateY(-2px);
-        }
-        .btn-outline-secondary {
-            transition: all 0.3s ease;
-        }
-        .btn-outline-secondary:hover {
-            transform: translateY(-2px);
-        }
-        .form-control:focus {
-            border-color: #0d6efd;
-            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-        }
+        
         .form-label {
-            font-weight: 500;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 0.5rem;
+            display: block;
         }
-        .success-message {
-            display: none;
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 20px;
-            text-align: center;
+        
+        .form-control, .form-select {
+            border-radius: 0.5rem !important;
+            border: 1px solid #E2E8F0 !important;
+            padding: 0.625rem 0.875rem !important;
+            font-size: 0.875rem !important;
+            transition: all 0.2s;
+            width: 100%;
+            background-color: white !important;
+            background-image: none !important;
         }
-        .error-message {
-            display: none;
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 20px;
-            text-align: center;
+        
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 16 16\'%3e%3cpath fill=\'none\' stroke=\'%23334155\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M2 5l6 6 6-6\'/%3e%3c/svg%3e") !important;
+            background-repeat: no-repeat !important;
+            background-position: right 0.75rem center !important;
+            background-size: 16px 12px !important;
+            padding-right: 2.5rem !important;
         }
-        .form-floating {
-            margin-bottom: 20px;
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #4F46E5 !important;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+            outline: none !important;
+        }
+        
+        .form-control:read-only {
+            background-color: #F8FAFC !important;
+            color: #64748B !important;
+        }
+        
+        .btn-submit {
+            background: #4F46E5;
+            color: white;
+            border: none;
+            padding: 0.625rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        
+        .btn-submit:hover {
+            background: #4338CA;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+        
+        .btn-cancel {
+            background: #F8FAFC;
+            color: #64748B;
+            border: 1px solid #E2E8F0;
+            padding: 0.625rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        
+        .btn-cancel:hover {
+            background: #F1F5F9;
+            color: #334155;
+        }
+        
+        .required {
+            color: #EF4444;
         }
     </style>
 
+    <div class="container-fluid p-4">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="h3 fw-bold mb-2" style="color: #0F172A;">Thêm giảng viên mới</h1>
+            <p class="text-muted mb-0">Điền thông tin để thêm giảng viên vào hệ thống</p>
+        </div>';
 
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
-    <a href="#" class="brand-link">
-      <img src="https://adminlte.io/themes/v3/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">Quản lý khóa luận</span>
-    </a>
+if ($rs) {
+    echo '
+        <div class="alert alert-success" style="border-radius: 0.75rem; border-left: 4px solid #10B981;">
+            <i class="fas fa-check-circle me-2"></i>
+            <strong>Thành công!</strong> Đã thêm giảng viên mới vào hệ thống.
+        </div>';
+}
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Sidebar user (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="https://adminlte.io/themes/v3/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-        </div>
-        <div class="info">
-          <a href="#" class="d-block">Admin</a>
-        </div>
-      </div>
-
-      <!-- SidebarSearch Form -->
-      <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-          <div class="input-group-append">
-            <button class="btn btn-sidebar">
-              <i class="fas fa-search fa-fw"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-<!-- Sidebar Menu -->
-<nav class="mt-2">
-  <ul class="nav nav-pills nav-sidebar flex-column" role="menu">
-    <!-- Bảng điều khiển -->
-    <li class="nav-item">
-      <a href="/CongNgheMoi/Admin/" class="nav-link">
-        <i class="nav-icon fas fa-tachometer-alt"></i>
-        <p>Dashboard</p>
-      </a>
-    </li>
-    
-    <!-- Danh sách đăng ký -->
-    <li class="nav-item">
-      <a href="/CongNgheMoi/Admin/DSDeTai" class="nav-link">
-        <i class="nav-icon fas fa-clipboard-list"></i>
-        <p>Danh sách đề tài</p>
-      </a>
-    </li>
-    
-    <!-- Sinh viên -->
-    <li class="nav-item">
-      <a href="/CongNgheMoi/Admin/QuanLySV" class="nav-link ">
-        <i class="nav-icon fas fa-user-graduate"></i>
-        <p>Quản lý sinh viên</p>
-      </a>
-    </li>
-    
-    <!-- Giáo viên -->
-    <li class="nav-item">
-      <a href="/CongNgheMoi/Admin/QuanLyGV" class="nav-link active">
-        <i class="nav-icon fas fa-chalkboard-teacher"></i>
-        <p>Quản lý giảng viên</p>
-      </a>
-    </li>
-    
-    
-    <!-- Quản lý hội đồng -->
-    <!-- <li class="nav-item">
-      <a href="/CongNgheMoi/Admin/QuanLyNhom" class="nav-link">
-        <i class="nav-icon fas fa-users"></i>
-        <p>Quản lý nhóm sinh viên</p>
-      </a>
-    </li> -->
-  <!-- Cài đặt hệ thống -->
-  <li class="nav-item">
-            <a href="/CongNgheMoi/Logout" class="nav-link">
-            <i class="nav-icon fas fa-chalkboard-teacher"></i>
-            <p>Đăng xuất</p>
-            </a>
-        </li>
-  </ul>
-</nav>
-    </div>
-    <!-- /.sidebar -->
-  </aside>
-
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-<section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Quản lý sinh viên</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Quản lý sinh viên</li>
-            </ol>
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
-
-    <!-- Main content -->
-    
-        
-        <!-- Charts Row -->
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-header d-flex justify-content-between align-items-center">
-              <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-10">
-                <div class="form-container">
-                    <div class="form-header">
-                        <h2><i class="fas fa-user-graduate me-2"></i>Thêm Thông Tin Giảng Viên</h2>
+echo '
+        <!-- Form -->
+        <div class="form-container">
+            <form method="POST" action="">
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <label class="form-label">Mã giảng viên <span class="required">*</span></label>
+                        <input type="text" name="msgv" class="form-control" value="' . $msgv . '" readonly>
+                        <small class="text-muted">Tự động tạo</small>
                     </div>
                     
-                    <div id="successMessage" class="success-message">
-                        <i class="fas fa-check-circle me-2"></i>Thông tin sinh viên đã được cập nhật thành công!
+                    <div class="col-md-4">
+                        <label class="form-label">Họ đệm <span class="required">*</span></label>
+                        <input type="text" name="hodem" class="form-control" placeholder="Nguyễn Văn" required>
                     </div>
                     
-                    <div id="errorMessage" class="error-message">
-                        <i class="fas fa-exclamation-circle me-2"></i>Vui lòng điền đầy đủ thông tin!
+                    <div class="col-md-4">
+                        <label class="form-label">Tên <span class="required">*</span></label>
+                        <input type="text" name="ten" class="form-control" placeholder="A" required>
                     </div>
-                    
-                    <form id="studentForm" action="" method="POST">
-                        <div class="row">
-                            <!-- Cột bên trái -->
-                            <div class="col-md-6">
-                                
-                                <div class="form-floating">
-                                    <label for="mssv">MSGV</label>
-                                    <input type="text" name="msgv" class="form-control" id="mssv" value="<?php echo $masv?>" placeholder="MSSV" readonly>
-                                   
-                                </div>
-                                
-                                <div class="form-floating">
-                                  <label for="hoDem">Họ đệm</label>
-                                    <input type="text" name="hodem" class="form-control" id="hoDem"  placeholder="Họ đệm">
-                                    
-                                </div>
-
-                                <div class="form-floating">
-                                    <label for="stt">Số điện thoại</label>
-                                    <input type="number" name="sdt" class="form-control" id="stt"  placeholder="Số điện thoại">
-                                    
-                                </div>
-
-                                <div class="form-floating">
-                                  <label for="chuyenNganh">Chức vụ</label>
-                                  <select name="chucvu" class="form-control" style="min-width: 150px;">
-                                    <option value="" disabled selected>Chức vụ</option>
-                                    <?php
-                                    foreach ($chucvu as $cv):
-                                        $idpq = $cv['idpq'];
-                                        if ($idpq == 2 || $idpq == 3) continue; // Bỏ qua các idpq không mong muốn
-
-                                        $selected = ($sv['idpq'] == $idpq) ? 'selected' : '';
-                                        echo '<option value="'.$idpq.'" '.$selected.'>'.$cv['PhanQuyen'].'</option>';
-                                    endforeach;
-                                    ?>
-                                </select>  
-                                </div>
-
-                                
-                            </div>
-                            
-                            <!-- Cột bên phải -->
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <label for="ten">Tên</label>
-                                    <input type="text" name="ten" class="form-control" id="ten"  placeholder="Tên">
-                                </div>
-                                
-                                
-                                
-                                <div class="form-floating">
-                                  <label for="chuyenNganh">Chuyên Ngành</label>
-                                    <select name="chuyennganh" class="form-control" style="min-width: 150px;">
-                                          <option value="cn.IDNganh">Chuyên ngành</option>
-                                          <?php
-                                          foreach ($dt as $khoa):
-                                          echo '<option value="'.$khoa['IDNganh'].'">'.$khoa['ChuyenNganh'].'</option>';
-                                          endforeach;
-                                          ?>
-                                    </select>
-                                      
-                                </div>
-
-                                <div class="form-floating">
-                                    <label for="stt">Email</label>
-                                    <input type="text" name="email" class="form-control" id="stt"  placeholder="Email">
-                                    
-                                </div>
-
-                                
-                            </div>
-                        </div>
-                        
-                        <div class="form-footer text-center">
-                            <button type="submit" name="btn_them" class="btn btn-primary btn-lg px-5 me-3">
-                                <i class="fas fa-check me-2"></i> Thêm
-                            </button>
-                            <button type="button" id="cancelBtn" class="btn btn-outline-secondary btn-lg px-5">
-                                <i class="fas fa-times me-2"></i> Hủy
-                            </button>
-                        </div>
-                    </form>
                 </div>
-            </div>
+                
+                <div class="row g-4 mt-2">
+                    <div class="col-md-6">
+                        <label class="form-label">Chức vụ <span class="required">*</span></label>
+                        <select name="chucvu" class="form-select" required>
+                            <option value="">Chọn chức vụ</option>';
+                            if (is_array($chucvu)) {
+                                foreach ($chucvu as $row) {
+                                    $idCV = isset($row['idCV']) ? $row['idCV'] : '';
+                                    $tenCV = isset($row['ChucVu']) ? $row['ChucVu'] : '';
+                                    echo '<option value="' . htmlspecialchars($idCV) . '">' . htmlspecialchars($tenCV) . '</option>';
+                                }
+                            }
+echo '                  </select>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label class="form-label">Chuyên ngành <span class="required">*</span></label>
+                        <select name="chuyennganh" class="form-select" required>
+                            <option value="">Chọn chuyên ngành</option>';
+                            if (is_array($dt)) {
+                                foreach ($dt as $row) {
+                                    $idNganh = isset($row['IDNganh']) ? $row['IDNganh'] : '';
+                                    $tenNganh = isset($row['ChuyenNganh']) ? $row['ChuyenNganh'] : '';
+                                    echo '<option value="' . htmlspecialchars($idNganh) . '">' . htmlspecialchars($tenNganh) . '</option>';
+                                }
+                            }
+echo '                  </select>
+                    </div>
+                </div>
+                
+                <div class="row g-4 mt-2">
+                    <div class="col-md-6">
+                        <label class="form-label">Số điện thoại <span class="required">*</span></label>
+                        <input type="tel" name="sdt" class="form-control" placeholder="0912345678" required pattern="[0-9]{10}">
+                        <small class="text-muted">10 chữ số</small>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label class="form-label">Email <span class="required">*</span></label>
+                        <input type="email" name="email" class="form-control" placeholder="giangvien@email.com" required>
+                    </div>
+                </div>
+                
+                <div class="d-flex gap-2 justify-content-end mt-4 pt-4" style="border-top: 1px solid #E2E8F0;">
+                    <a href="/CongNgheMoi/Admin/QuanLyGV" class="btn btn-cancel">
+                        <i class="fas fa-times me-2"></i>Hủy
+                    </a>
+                    <button type="submit" name="btn_them" class="btn btn-submit">
+                        <i class="fas fa-check me-2"></i>Thêm giảng viên
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
-            </div>
-          </div>
-        </div>
-        
-        
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-
-  <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const studentForm = document.getElementById('studentForm');
-            const cancelBtn = document.getElementById('cancelBtn');
-            const successMessage = document.getElementById('successMessage');
-            const errorMessage = document.getElementById('errorMessage');
-            
-            // // Form submission
-            // studentForm.addEventListener('submit', function(e) {
-            //     e.preventDefault();
-                
-            //     // Get all input fields
-            //     const stt = document.getElementById('stt').value;
-            //     const mssv = document.getElementById('mssv').value;
-            //     const hoDem = document.getElementById('hoDem').value;
-            //     const ten = document.getElementById('ten').value;
-            //     const lop = document.getElementById('lop').value;
-            //     const chuyenNganh = document.getElementById('chuyenNganh').value;
-                
-            //     // Simple validation
-            //     if (!stt || !mssv || !hoDem || !ten || !lop || !chuyenNganh) {
-            //         errorMessage.style.display = 'block';
-            //         successMessage.style.display = 'none';
-                    
-            //         // Hide error message after 3 seconds
-            //         setTimeout(() => {
-            //             errorMessage.style.display = 'none';
-            //         }, 3000);
-                    
-            //         return;
-            //     }
-                
-            //     // Form data object
-            //     const formData = {
-            //         stt,
-            //         mssv,
-            //         hoDem,
-            //         ten,
-            //         lop,
-            //         chuyenNganh
-            //     };
-                
-                // Log form data (in a real application, you would send this to a server)
-                console.log('Form submitted:', formData);
-                
-                // Show success message
-                successMessage.style.display = 'block';
-                errorMessage.style.display = 'none';
-                
-                // Hide success message after 3 seconds
-                setTimeout(() => {
-                    successMessage.style.display = 'none';
-                }, 3000);
-                
-                // Reset form
-                studentForm.reset();
-            });
-            
-            // Cancel button
-            cancelBtn.addEventListener('click', function() {
-                studentForm.reset();
-                successMessage.style.display = 'none';
-                errorMessage.style.display = 'none';
-            });
-            
-            // Add animation to form fields on focus
-            const formInputs = document.querySelectorAll('.form-control');
-            formInputs.forEach(input => {
-                input.addEventListener('focus', function() {
-                    this.parentElement.style.transform = 'translateY(-5px)';
-                    this.parentElement.style.transition = 'transform 0.3s ease';
-                });
-                
-                input.addEventListener('blur', function() {
-                    this.parentElement.style.transform = 'translateY(0)';
-                });
-            });
-        // });
-    </script>
-    <?php
-      if (isset ($data['rs']))
-      {
-          if($data["rs"]== 'true')
-          {
-              echo'<script language="javascript">
-                    alert("Thêm giảng viên thành công");	
-                    </script>';
-              header("location: QuanLySV");
-          }
-          else
-          {
-              echo'<script language="javascript">
-                    alert("Thêm giảng viên thất bại");	
-                    </script>';
-          }
-      }
-    ?>
+</div>';
+?>

@@ -6,15 +6,16 @@ class App{
     protected $params = [];
 
     function __construct(){
-        $arr = $this->UrlProcess();
+        try {
+            $arr = $this->UrlProcess();
 
-        // Controller
-        if(isset($arr[0]) && file_exists("./mvc/controllers/".$arr[0].".php") ){
-            $this->controller = $arr[0];
-            unset($arr[0]);
-        }
-        require_once "./mvc/controllers/". $this->controller .".php";
-        $this->controller = new $this->controller;
+            // Controller
+            if(isset($arr[0]) && file_exists("./mvc/controllers/".$arr[0].".php") ){
+                $this->controller = $arr[0];
+                unset($arr[0]);
+            }
+            require_once "./mvc/controllers/". $this->controller .".php";
+            $this->controller = new $this->controller;
 
         // Action
         if(isset($arr[1]) && method_exists($this->controller, $arr[1])){
@@ -22,10 +23,17 @@ class App{
             unset($arr[1]);
         }
 
-        // Params
-        $this->params = $arr ? array_values($arr) : [];
+            // Params
+            $this->params = $arr ? array_values($arr) : [];
 
-        call_user_func_array([$this->controller, $this->action], $this->params);
+            call_user_func_array([$this->controller, $this->action], $this->params);
+        } catch (Exception $e) {
+            // Log lỗi và hiển thị trang 404
+            error_log("Application error: " . $e->getMessage());
+            http_response_code(404);
+            require_once "./mvc/views/pages/404.php";
+            exit;
+        }
     }
 
     function UrlProcess(){

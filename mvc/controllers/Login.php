@@ -2,13 +2,20 @@
 class Login extends Controller {
     public function SayHi() {
         if (isset($_POST['btndn'])) {
-            $user = $_POST['username'];
-            $pass = md5($_POST['pass']);
+            try {
+                // Validate và sanitize input
+                $user = trim($_POST['username']);
+                $pass = md5($_POST['pass']);
 
-            $p = $this->model("mLogin");
-            $login = $p->GetDN($user, $pass);
+                // Kiểm tra input rỗng
+                if (empty($user) || empty($_POST['pass'])) {
+                    throw new Exception("Vui lòng nhập đầy đủ thông tin");
+                }
 
-            if ($login && $r = $login->fetch_assoc()) {
+                $p = $this->model("mLogin");
+                $login = $p->GetDN($user, $pass);
+
+                if ($login && $r = $login->fetch_assoc()) {
                 // Thiết lập session
                 $_SESSION['iduser'] = $r['iduser'];
                 $_SESSION['username'] = $r['username'];
@@ -41,10 +48,16 @@ class Login extends Controller {
                         break;
 
                 }
-                exit;
-            } else {
-                echo "<script>alert('Sai tên đăng nhập hoặc mật khẩu');</script>";
-                header("refresh:0; url='Login'");
+                    exit;
+                } else {
+                    echo "<script>alert('Sai tên đăng nhập hoặc mật khẩu');</script>";
+                    header("refresh:0; url='Login'");
+                    exit;
+                }
+            } catch (Exception $e) {
+                // Log lỗi và chuyển đến trang 404
+                error_log("Login error: " . $e->getMessage());
+                header("Location: /CongNgheMoi/Error404");
                 exit;
             }
         }

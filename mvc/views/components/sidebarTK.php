@@ -3,76 +3,115 @@ $active = isset($data['active']) ? $data['active'] : '';
 echo '
 <style>
     :root {
-        --primary-color: #4e73df;
-        --primary-dark: #2e59d9;
-        --sidebar-bg: #1a1d29;
-        --sidebar-hover: #2a2d3a;
+        --primary: #4F46E5;
+        --primary-dark: #4338CA;
+        --primary-light: #6366F1;
+        --sidebar-bg: #0F172A;
+        --sidebar-hover: #1E293B;
+        --text-light: #94A3B8;
+        --text-white: #F8FAFC;
+    }
+    
+    body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
     
     .main-sidebar {
-        background: linear-gradient(180deg, var(--sidebar-bg) 0%, #0f1116 100%) !important;
-        box-shadow: 0 0 30px rgba(0,0,0,0.3);
+        background: var(--sidebar-bg) !important;
+        border-right: 1px solid rgba(255,255,255,0.05);
+        box-shadow: none;
     }
     
     .brand-link {
-        background: rgba(255,255,255,0.05) !important;
-        border-bottom: 1px solid rgba(255,255,255,0.1) !important;
-        padding: 1rem !important;
+        background: transparent !important;
+        border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+        padding: 1.5rem 1.25rem !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    
+    .brand-image {
+        width: 45px;
+        height: 45px;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
     }
     
     .brand-text {
-        font-weight: 600 !important;
-        font-size: 1.1rem !important;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        font-weight: 700 !important;
+        font-size: 1.25rem !important;
+        color: var(--text-white) !important;
+        margin-top: 0.75rem;
+        letter-spacing: -0.02em;
     }
     
     .user-panel {
-        border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+        border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+        padding: 1.25rem 1rem !important;
+        margin: 0 !important;
+    }
+    
+    .user-panel .image img {
+        border: 2px solid var(--primary);
+        width: 40px;
+        height: 40px;
     }
     
     .user-panel .info a {
-        color: #fff !important;
+        color: var(--text-white) !important;
         font-weight: 600;
+        font-size: 0.95rem;
     }
     
     .nav-header {
-        color: #858796 !important;
-        font-size: 0.75rem !important;
+        color: var(--text-light) !important;
+        font-size: 0.65rem !important;
         font-weight: 700 !important;
-        letter-spacing: 1px;
-        margin-top: 1rem !important;
+        letter-spacing: 0.1em;
+        margin-top: 1.5rem !important;
+        padding: 0.5rem 1.25rem !important;
+        text-transform: uppercase;
     }
     
     .nav-sidebar .nav-link {
-        color: rgba(255,255,255,0.8) !important;
-        border-radius: 8px !important;
-        margin: 0.2rem 0.5rem !important;
-        padding: 0.7rem 1rem !important;
-        transition: all 0.3s ease !important;
+        color: var(--text-light) !important;
+        border-radius: 0.5rem !important;
+        margin: 0.15rem 0.75rem !important;
+        padding: 0.75rem 1rem !important;
+        transition: all 0.2s ease !important;
+        font-size: 0.875rem;
+        font-weight: 500;
     }
     
     .nav-sidebar .nav-link:hover {
         background: var(--sidebar-hover) !important;
-        color: #fff !important;
-        transform: translateX(5px);
+        color: var(--text-white) !important;
+        transform: translateX(3px);
     }
     
     .nav-sidebar .nav-link.active {
-        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%) !important;
-        color: #fff !important;
-        box-shadow: 0 4px 15px rgba(78, 115, 223, 0.4);
+        background: var(--primary) !important;
+        color: var(--text-white) !important;
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        font-weight: 600;
+    }
+    
+    .nav-sidebar .nav-link i {
+        width: 20px;
+        text-align: center;
+        margin-right: 0.75rem;
+        font-size: 0.9rem;
     }
     
     .main-header {
         background: #fff !important;
-        border-bottom: 1px solid #e3e6f0 !important;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05) !important;
+        border-bottom: 1px solid #E2E8F0 !important;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
     }
     
     .content-wrapper {
-        background: #f8f9fc !important;
+        background: #F8FAFC !important;
     }
 </style>
 
