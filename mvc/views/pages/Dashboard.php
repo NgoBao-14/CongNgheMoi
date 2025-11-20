@@ -1,242 +1,323 @@
 <?php
-    $dt = json_decode($data['khoa'], true);
-    $detaikhoa = json_decode($data['detaikhoa'], true);
-?>
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
-    <a href="#" class="brand-link">
-      <img src="https://adminlte.io/themes/v3/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">Quản lý khóa luận</span>
-    </a>
+require_once "./mvc/views/components/sidebarAdmin.php";
+$dt = json_decode($data['khoa'], true);
+$detaikhoa = json_decode($data['detaikhoa'], true);
+$sinhvien = $data['sinhvien'];
+$giangvien = $data['giangvien'];
+$detai = $data['detai'];
+$nhom = $data['nhom'];
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Sidebar user (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="https://adminlte.io/themes/v3/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-        </div>
-        <div class="info">
-          <a href="#" class="d-block">Admin</a>
-        </div>
-      </div>
-
-      <!-- SidebarSearch Form -->
-      <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-          <div class="input-group-append">
-            <button class="btn btn-sidebar">
-              <i class="fas fa-search fa-fw"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-<!-- Sidebar Menu -->
-<nav class="mt-2">
-  <ul class="nav nav-pills nav-sidebar flex-column" role="menu">
-    <!-- Bảng điều khiển -->
-    <li class="nav-item">
-      <a href="/CongNgheMoi/Admin/" class="nav-link active">
-        <i class="nav-icon fas fa-tachometer-alt"></i>
-        <p>Dashboard</p>
-      </a>
-    </li>
-    
-    <!-- Danh sách đăng ký -->
-    <li class="nav-item">
-      <a href="/CongNgheMoi/Admin/DSDeTai" class="nav-link">
-        <i class="nav-icon fas fa-clipboard-list"></i>
-        <p>Danh sách đề tài</p>
-      </a>
-    </li>
-    
-    <!-- Sinh viên -->
-    <li class="nav-item">
-      <a href="/CongNgheMoi/Admin/QuanLySV" class="nav-link">
-        <i class="nav-icon fas fa-user-graduate"></i>
-        <p>Quản lý sinh viên</p>
-      </a>
-    </li>
-    
-    <!-- Giáo viên -->
-    <li class="nav-item">
-      <a href="/CongNgheMoi/Admin/QuanLyGV" class="nav-link">
-        <i class="nav-icon fas fa-chalkboard-teacher"></i>
-        <p>Quản lý giảng viên</p>
-      </a>
-    </li>
-    
-    
-    <!-- Quản lý hội đồng -->
-    <!-- <li class="nav-item">
-      <a href="/CongNgheMoi/Admin/QuanLyNhom" class="nav-link">
-        <i class="nav-icon fas fa-users"></i>
-        <p>Quản lý nhóm sinh viên</p>
-      </a>
-    </li> -->
-    
-    
-    
-    <!-- Cài đặt hệ thống -->
-    <!-- <li class="nav-item">
-      <a href="#" class="nav-link">
-        <i class="nav-icon fas fa-cog"></i>
-        <p>Cài đặt hệ thống</p>
-      </a>
-    </li> -->
-    <li class="nav-item">
-            <a href="/CongNgheMoi/Logout" class="nav-link">
-            <i class="nav-icon fas fa-chalkboard-teacher"></i>
-            <p>Đăng xuất</p>
-            </a>
-        </li>
-  </ul>
-
-</nav>
-    </div>
-    <!-- /.sidebar -->
-  </aside>
-
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-<section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Dashboard</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard</li>
-            </ol>
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <!-- Info boxes -->
-        <div class="row">
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box bg-primary mb-3">
-              <div class="info-box-content">
-                <h2 class="info-box-number"><?php echo $data['sinhvien'];?></h2>
-                <span class="info-box-text">Sinh viên</span>
-                <div class="info-box-icon">
-                  <i class="fas fa-user-graduate"></i>
-                </div>
-                <div class="mt-3">
-                  <a href="#" class="text-white">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box bg-success mb-3">
-              <div class="info-box-content">
-                <h2 class="info-box-number"><?php echo $data['giangvien'];?></h2>
-                <span class="info-box-text">Giảng viên</span>
-                <div class="info-box-icon">
-                  <i class="fas fa-chalkboard-teacher"></i>
-                </div>
-                <div class="mt-3">
-                  <a href="#" class="text-white">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box bg-warning mb-3">
-              <div class="info-box-content">
-                <h2 class="info-box-number"><?php echo $data['detai'];?></h2>
-                <span class="info-box-text">Đề tài</span>
-                <div class="info-box-icon">
-                  <i class="fas fa-tasks"></i>
-                </div>
-                <div class="mt-3">
-                  <a href="#" class="text-white">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box bg-danger mb-3">
-              <div class="info-box-content">
-                <h2 class="info-box-number"><?php echo $data['nhom'];?></h2>
-                <span class="info-box-text">Nhóm</span> 
-                <div class="info-box-icon">
-                  <i class="fas fa-users"></i>
-                </div>
-                <div class="mt-3">
-                  <a href="#" class="text-white">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+echo '
+<div class="content-wrapper">
+    <style>
+        .stats-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.75rem;
+            border: 1px solid #E2E8F0;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
         
-        <!-- Charts Row -->
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-header d-flex justify-content-between align-items-center">
-                <div class="flex-grow-1">
-                  <h3 class="card-title mb-0">Thống kê đề tài theo khoa</h3>
-                </div>
-                <div class="d-flex align-items-center">
-                <form action="/CongNgheMoi/Admin" method="POST">
-                <select name="loc" class="form-select form-select-sm w-auto" style="min-width: 150px;">
-                      <option value="cn.IDNganh">Tất cả khoa</option>
-                      <?php
-                      foreach ($dt as $khoa):
-                      echo '<option value="'.$khoa['IDNganh'].'">'.$khoa['ChuyenNganh'].'</option>';
-                      endforeach;
-                      ?>
-                </select>
-                <input type="submit" name="btnLoc" value="Lọc" class="btn btn-primary btn-sm" style="margin-left: 8px;">
-                </form>
-                </div>
-              </div>
+        .stats-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+            border-color: #CBD5E1;
+        }
+        
+        .stats-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+        }
+        
+        .stats-card.blue::before { background: #3B82F6; }
+        .stats-card.green::before { background: #10B981; }
+        .stats-card.orange::before { background: #F59E0B; }
+        .stats-card.purple::before { background: #8B5CF6; }
+        
+        .stats-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stats-icon.blue { background: #EFF6FF; color: #3B82F6; }
+        .stats-icon.green { background: #ECFDF5; color: #10B981; }
+        .stats-icon.orange { background: #FFFBEB; color: #F59E0B; }
+        .stats-icon.purple { background: #F5F3FF; color: #8B5CF6; }
+        
+        .stats-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #64748B;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stats-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #0F172A;
+            line-height: 1;
+        }
+        
+        .page-header {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid #E2E8F0;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 1rem;
+            border: 1px solid #E2E8F0;
+            overflow: hidden;
+        }
+        
+        .chart-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #E2E8F0;
+        }
+        
+        .quick-action {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid #E2E8F0;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .quick-action:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+            border-color: #4F46E5;
+        }
+        
+        .quick-action-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin: 0 auto 1rem;
+        }
+        
+        .section-title {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: #64748B;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+    </style>
 
-              <div class="card-body">
-              <table class="table table-borderless">
-                <thead>
-                  <tr>
-                    <th style="text-align: center;">STT</th>
-                    <th style="text-align: center;">Tên đề tài</th>
-                    <th style="text-align: center;" >Khoa</th>
-                    <th style="text-align: center;">Trạng thái</th>
-                    <th style="text-align: center;">Mô tả</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                  $dem = 1;
-                  $i = 0;
-                  foreach ($detaikhoa as $index ):
-                  $class = ($i % 2 == 0) ? 'bg-light' : 'bg-blue';  
-                  echo '<tr class="'.$class.'">
-                    <td>'.$dem.'</td>
-                    <td>'.$index["TenDeTai"].'</td>
-                    <td>'.$index["chuyennganh"].'</td>
-                    <td>'.$index["TrangThaiDeTai"].'</td>
-                    <td style="white-space: normal;">'.$index["mota"].'</td>
-                  </tr>';
-                  $dem++;
-                  $i++;
-                  endforeach;
-                  ?>
-                </tbody>
-              </table>
-              </div>
+    <div class="container-fluid p-4">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h1 class="h3 fw-bold mb-2" style="color: #0F172A;">Dashboard</h1>
+                    <p class="text-muted mb-0">Tổng quan hệ thống quản lý khóa luận tốt nghiệp</p>
+                </div>
+                <div class="text-end">
+                    <div class="text-muted" style="font-size: 0.875rem;">
+                        <i class="fas fa-calendar me-2"></i>' . date('d/m/Y') . '
+                    </div>
+                    <div class="text-muted mt-1" style="font-size: 0.875rem;">
+                        <i class="fas fa-clock me-2"></i>' . date('H:i') . '
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+
+        <!-- Stats Cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="stats-card blue">
+                    <div class="stats-icon blue">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="stats-label">Sinh viên</div>
+                    <div class="stats-value">' . $sinhvien . '</div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="stats-card green">
+                    <div class="stats-icon green">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <div class="stats-label">Giảng viên</div>
+                    <div class="stats-value">' . $giangvien . '</div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="stats-card orange">
+                    <div class="stats-icon orange">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="stats-label">Đề tài</div>
+                    <div class="stats-value">' . $detai . '</div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="stats-card purple">
+                    <div class="stats-icon purple">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stats-label">Nhóm</div>
+                    <div class="stats-value">' . $nhom . '</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="fw-bold mb-1" style="color: #0F172A;">Thống kê đề tài theo khoa</h5>
+                                <p class="text-muted mb-0" style="font-size: 0.875rem;">Phân bố đề tài khóa luận theo chuyên ngành</p>
+                            </div>
+                            <form method="POST">
+                                <select name="loc" class="form-select" style="min-width: 200px; border-radius: 0.5rem;" onchange="this.form.submit()">
+                                    <option value="">Tất cả khoa</option>';
+                                    foreach ($dt as $row) {
+                                        echo '<option value="' . $row['IDNganh'] . '">' . $row['ChuyenNganh'] . '</option>';
+                                    }
+echo '                          </select>
+                                <input type="hidden" name="btnLoc" value="1">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <canvas id="detaiChart" style="max-height: 350px;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="section-title">Thao tác nhanh</div>
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <a href="/CongNgheMoi/Admin/ThemSinhVien" class="text-decoration-none">
+                    <div class="quick-action">
+                        <div class="quick-action-icon" style="background: #EFF6FF; color: #3B82F6;">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <h6 class="fw-bold mb-1" style="color: #0F172A;">Thêm sinh viên</h6>
+                        <p class="text-muted mb-0" style="font-size: 0.875rem;">Thêm sinh viên mới</p>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <a href="/CongNgheMoi/Admin/ThemGiangVien" class="text-decoration-none">
+                    <div class="quick-action">
+                        <div class="quick-action-icon" style="background: #ECFDF5; color: #10B981;">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h6 class="fw-bold mb-1" style="color: #0F172A;">Thêm giảng viên</h6>
+                        <p class="text-muted mb-0" style="font-size: 0.875rem;">Thêm giảng viên mới</p>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <a href="/CongNgheMoi/Admin/QuanLySV" class="text-decoration-none">
+                    <div class="quick-action">
+                        <div class="quick-action-icon" style="background: #FFFBEB; color: #F59E0B;">
+                            <i class="fas fa-list"></i>
+                        </div>
+                        <h6 class="fw-bold mb-1" style="color: #0F172A;">Danh sách SV</h6>
+                        <p class="text-muted mb-0" style="font-size: 0.875rem;">Quản lý sinh viên</p>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <a href="/CongNgheMoi/Admin/DSDeTai" class="text-decoration-none">
+                    <div class="quick-action">
+                        <div class="quick-action-icon" style="background: #F5F3FF; color: #8B5CF6;">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h6 class="fw-bold mb-1" style="color: #0F172A;">Quản lý đề tài</h6>
+                        <p class="text-muted mb-0" style="font-size: 0.875rem;">Xem đề tài</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const ctx = document.getElementById("detaiChart").getContext("2d");
+    const detaiData = ' . json_encode($detaikhoa) . ';
+    
+    const labels = detaiData.map(item => item.ChuyenNganh);
+    const data = detaiData.map(item => item.SoLuongDeTai);
+    
+    new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Số lượng đề tài",
+                data: data,
+                backgroundColor: "#4F46E5",
+                borderRadius: 8,
+                barThickness: 40
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: "#0F172A",
+                    padding: 12,
+                    titleFont: { size: 13, weight: "600" },
+                    bodyFont: { size: 12 },
+                    cornerRadius: 8
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1, font: { size: 11 } },
+                    grid: { color: "#F1F5F9" }
+                },
+                x: {
+                    ticks: { font: { size: 11 } },
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+});
+</script>';
+?>

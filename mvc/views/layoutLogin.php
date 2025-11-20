@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <style>
         body {
-            background-color: #f8f9fa;
+            background-color: #Fatal error: Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'c4ca4238a0b923820dcc509a6f75849b'' at line 17 in C:\xampp\htdocs\CongNgheMoi\mvc\model\mLogin.php:21 Stack trace: #0 C:\xampp\htdocs\CongNgheMoi\mvc\model\mLogin.php(21): mysqli_query(Object(mysqli), 'SELECT \r\n ...') #1 C:\xampp\htdocs\CongNgheMoi\mvc\controllers\Login.php(9): mLogin->GetDN('' or 1=1 --', 'c4ca4238a0b9238...') #2 C:\xampp\htdocs\CongNgheMoi\mvc\core\App.php(28): Login->SayHi() #3 C:\xampp\htdocs\CongNgheMoi\index.php(7): App->__construct() #4 {main} thrown in C:\xampp\htdocs\CongNgheMoi\mvc\model\mLogin.php on line 21;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .header-tabs {

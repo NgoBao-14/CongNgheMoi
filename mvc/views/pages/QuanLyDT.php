@@ -1,189 +1,204 @@
 <?php
-    $dt = json_decode($data["khoa"], true);
-    $detai = json_decode($data["detai"], true);
-?>
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
-    <a href="#" class="brand-link">
-      <img src="https://adminlte.io/themes/v3/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">Quản lý khóa luận</span>
-    </a>
+require_once "./mvc/views/components/sidebarAdmin.php";
+$dt = json_decode($data["khoa"], true);
+$detai = json_decode($data["detai"], true);
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Sidebar user (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="https://adminlte.io/themes/v3/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-        </div>
-        <div class="info">
-          <a href="#" class="d-block">Admin</a>
-        </div>
-      </div>
+echo '
+<div class="content-wrapper">
+    <style>
+        .page-header {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #E2E8F0;
+        }
+        
+        .filter-section {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #E2E8F0;
+        }
+        
+        .table-container {
+            background: white;
+            border-radius: 1rem;
+            border: 1px solid #E2E8F0;
+            overflow: hidden;
+        }
+        
+        .data-table {
+            margin: 0;
+        }
+        
+        .data-table thead {
+            background: #F8FAFC;
+            border-bottom: 2px solid #E2E8F0;
+        }
+        
+        .data-table thead th {
+            padding: 1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #64748B;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: none;
+        }
+        
+        .data-table tbody td {
+            padding: 1rem;
+            font-size: 0.875rem;
+            color: #334155;
+            border-bottom: 1px solid #F1F5F9;
+            vertical-align: middle;
+        }
+        
+        .data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .data-table tbody tr:hover {
+            background: #F8FAFC;
+        }
+        
+        .badge-custom {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        
+        .badge-custom i {
+            font-size: 0.7rem;
+        }
+        
+        .btn-action {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border: none;
+            transition: all 0.2s;
+        }
+        
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .empty-state {
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+    </style>
 
-      <!-- SidebarSearch Form -->
-      <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-          <div class="input-group-append">
-            <button class="btn btn-sidebar">
-              <i class="fas fa-search fa-fw"></i>
-            </button>
-          </div>
+    <div class="container-fluid p-4">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h3 fw-bold mb-2" style="color: #0F172A;">Quản lý đề tài</h1>
+                    <p class="text-muted mb-0">Danh sách và thông tin đề tài khóa luận</p>
+                </div>
+            </div>
         </div>
-      </div>
-<!-- Sidebar Menu -->
-<nav class="mt-2">
-  <ul class="nav nav-pills nav-sidebar flex-column" role="menu">
-    <!-- Bảng điều khiển -->
-    <li class="nav-item">
-      <a href="/CongNgheMoi/Admin/" class="nav-link">
-        <i class="nav-icon fas fa-tachometer-alt"></i>
-        <p>Dashboard</p>
-      </a>
-    </li>
-    
-    <!-- Danh sách đăng ký -->
-    <li class="nav-item">
-      <a href="/CongNgheMoi/Admin/DSDeTai" class="nav-link active">
-        <i class="nav-icon fas fa-clipboard-list"></i>
-        <p>Danh sách đề tài</p>
-      </a>
-    </li>
-    
-    <!-- Sinh viên -->
-    <li class="nav-item">
-      <a href="/CongNgheMoi/Admin/QuanLySV" class="nav-link">
-        <i class="nav-icon fas fa-user-graduate"></i>
-        <p>Quản lý sinh viên</p>
-      </a>
-    </li>
-    
-    <!-- Giáo viên -->
-    <li class="nav-item">
-      <a href="/CongNgheMoi/Admin/QuanLyGV" class="nav-link ">
-        <i class="nav-icon fas fa-chalkboard-teacher"></i>
-        <p>Quản lý giảng viên</p>
-      </a>
-    </li>
-    
-    
-    <!-- Quản lý hội đồng -->
-    <!-- <li class="nav-item">
-      <a href="/CongNgheMoi/Admin/QuanLyNhom" class="nav-link">
-        <i class="nav-icon fas fa-users"></i>
-        <p>Quản lý nhóm sinh viên</p>
-      </a>
-    </li> -->
-  <!-- Cài đặt hệ thống -->
-  <li class="nav-item">
-            <a href="/CongNgheMoi/Logout" class="nav-link">
-            <i class="nav-icon fas fa-chalkboard-teacher"></i>
-            <p>Đăng xuất</p>
-            </a>
-        </li>
-  </ul>
-</nav>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <form method="POST" class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold" style="font-size: 0.875rem; color: #64748B;">Lọc theo khoa</label>
+                    <select name="loc" class="form-select" style="border-radius: 0.5rem;" onchange="this.form.submit()">
+                        <option value="">Tất cả khoa</option>';
+                        foreach ($dt as $row) {
+                            echo '<option value="' . $row['IDNganh'] . '">' . $row['ChuyenNganh'] . '</option>';
+                        }
+echo '              </select>
+                    <input type="hidden" name="btnLoc" value="1">
+                </div>
+                <div class="col-md-8 text-end">
+                    <span class="badge-custom" style="background: #FFFBEB; color: #F59E0B;">
+                        <i class="fas fa-book me-2"></i>' . count($detai) . ' đề tài
+                    </span>
+                </div>
+            </form>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <div class="table-responsive">
+                <table class="table data-table">
+                    <thead>
+                        <tr>
+                            <th width="4%">STT</th>
+                            <th width="8%">Mã ĐT</th>
+                            <th width="28%">Tên đề tài</th>
+                            <th width="15%">Giảng viên</th>
+                            <th width="13%">Chuyên ngành</th>
+                            <th width="10%">Trạng thái</th>
+                            <th width="8%">Nhóm</th>
+                            <th width="7%">SL TV</th>
+                            <th width="7%"></th>
+                        </tr>
+                    </thead>
+                    <tbody>';
+                    
+$i = 1;
+if (!empty($detai)) {
+    foreach ($detai as $row) {
+        $trangThai = $row['TrangThaiDeTai'];
+        
+        // Style cho trạng thái với icon
+        if ($trangThai == 'Đã duyệt') {
+            $badgeStyle = 'background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%); color: #059669; border: 1px solid #A7F3D0; box-shadow: 0 2px 4px rgba(16, 185, 129, 0.1);';
+            $icon = '<i class="fas fa-check-circle" style="margin-right: 4px;"></i>';
+        } else {
+            $badgeStyle = 'background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); color: #D97706; border: 1px solid #FDE68A; box-shadow: 0 2px 4px rgba(245, 158, 11, 0.1);';
+            $icon = '<i class="fas fa-clock" style="margin-right: 4px;"></i>';
+        }
+        
+        echo '
+        <tr>
+            <td class="fw-semibold">' . $i++ . '</td>
+            <td><span class="badge-custom" style="background: #EFF6FF; color: #3B82F6;">' . $row['IDDeTai'] . '</span></td>
+            <td class="fw-semibold">' . htmlspecialchars($row['TenDeTai']) . '</td>
+            <td><span style="font-size: 0.8125rem;">' . htmlspecialchars(isset($row['ten_giang_vien']) ? $row['ten_giang_vien'] : 'N/A') . '</span></td>
+            <td><span style="font-size: 0.8125rem;">' . htmlspecialchars($row['ChuyenNganh']) . '</span></td>
+            <td><span class="badge-custom" style="' . $badgeStyle . ' font-weight: 600;">' . $icon . $trangThai . '</span></td>
+            <td>' . (isset($row['IDNhom']) && $row['IDNhom'] ? '<span class="badge-custom" style="background: #F5F3FF; color: #8B5CF6;">Nhóm ' . $row['IDNhom'] . '</span>' : '<span class="badge-custom" style="background: #F1F5F9; color: #64748B;">-</span>') . '</td>
+            <td class="text-center"><span class="badge-custom" style="background: #F1F5F9; color: #334155;">' . (isset($row['SoLuongTV']) ? $row['SoLuongTV'] : '0') . '</span></td>
+            <td>
+                <a href="/CongNgheMoi/Admin/CapNhatDT?id=' . $row['IDDeTai'] . '" class="btn btn-sm" style="background: #F8FAFC; color: #4F46E5; border: 1px solid #E2E8F0; border-radius: 0.5rem; padding: 0.375rem 0.75rem;">
+                    <i class="fas fa-edit"></i>
+                </a>
+            </td>
+        </tr>';
+    }
+} else {
+    echo '
+        <tr>
+            <td colspan="9">
+                <div class="empty-state">
+                    <i class="fas fa-inbox" style="font-size: 3rem; color: #CBD5E1; margin-bottom: 1rem;"></i>
+                    <h5 style="color: #64748B;">Không có dữ liệu</h5>
+                    <p class="text-muted">Chưa có đề tài nào trong hệ thống</p>
+                </div>
+            </td>
+        </tr>';
+}
+
+echo '
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-    <!-- /.sidebar -->
-  </aside>
-
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-<section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Quản lý đề tài</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Quản lý đề tài</li>
-            </ol>
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
-
-    <!-- Main content -->
-    
-        
-        <!-- Charts Row -->
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-header d-flex justify-content-between align-items-center">
-                <div class="flex-grow-1" >
-                  <h3 class="card-title mb-0">Danh sách để tài</h3>
-                  
-                </div>
-                <div class="d-flex align-items-center">
-                <form action="/CongNgheMoi/Admin/QuanLyGV" method="POST">
-                <select name="loc" class="form-select form-select-sm w-auto" style="min-width: 150px;">
-                      <option value="cn.IDNganh">Tất cả khoa</option>
-                      <?php
-                      foreach ($dt as $khoa):
-                      echo '<option value="'.$khoa['IDNganh'].'">'.$khoa['ChuyenNganh'].'</option>';
-                      endforeach;
-                      ?>
-                </select>
-                <input type="submit" name="btnLoc" value="Lọc" class="btn btn-primary btn-sm" style="margin-left: 8px;">
-                </form>
-                </div>
-              </div>
-
-              <div class="card-body">
-              <table class="table table-borderless">
-                <thead>
-                  <tr>
-                    <th>STT</th>
-                    <th>Tên đề tài</th>
-                    <th>Mô tả</th>
-                    <th>Giảng viên</th>
-                    <th>Chuyên Ngành</th>
-                    <th>Trạng thái đề tài</th>
-                    <th>Ngày đăng ký</th>
-                    <th>Trạng thái đăng ký</th>
-                    <th>Nhóm đăng ký</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                  $dem = 1;
-                  foreach ($detai as $index): 
-                  echo '<tr class="bg-light">
-                    <td>'.$dem.'</td>
-                    <td>'.$index["TenDeTai"].'</td>
-                    <td style = "max-width: 200px;">'.$index["MoTa"].'</td>
-                    <td style="text-align:center;">'.$index["Ten"].'</td>
-                    <td>'.$index["ChuyenNganh"].'</td>
-                    <td>'.$index["TrangThaiDeTai"].'</td>
-                    <td style="text-align:center;">'.$index["NgayDK"].'</td>
-                    <td style="text-align:center;">'.$index["TrangThaiDK"].'</td>
-                    <td style="text-align:center;">'.$index["IDNhom"].'</td>
-                    <td>
-                      <a href="/CongNgheMoi/Admin/CapNhatDT?id='.$index["IDDeTai"].'" class="btn btn-primary btn-sm">Cập nhật</a>
-                      <a href="/CongNgheMoi/mvc/api/xoadetai.php?id='.$index["IDDeTai"].'" onclick="return confirm(\'Bạn có chắc chắn muốn xóa đề tài này không?\')" class="btn btn-danger btn-sm">Xóa</a>
-                  </tr>';
-                  $dem++;
-                  endforeach;
-                  ?>
-                </tbody>
-              </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+</div>';
+?>
