@@ -12,6 +12,9 @@ require_once $rootPath . "/core/Controller.php";
 // Connect Database
 require_once $rootPath . "/core/DB.php";
 
+// Config helper (BASE_PATH, URL)
+require_once $rootPath . "/core/Config.php";
+
 // Connect Pagination
 require_once $rootPath . "/core/Pagination.php";
 

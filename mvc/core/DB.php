@@ -1,7 +1,26 @@
 <?php
 class DB {
     public $connect;
-    public $api = "http://localhost:8080/CongNgheMoi/mvc/api/";
+    public $api;
+    
+    private function getApiUrl() {
+        $basePath = defined('BASE_PATH') ? BASE_PATH : ($_ENV['BASE_PATH'] ?? '/CongNgheMoi');
+        
+        // Trong Docker container, curl cần gọi localhost:80 (Apache trong container)
+        // Không dùng HTTP_HOST vì đó là host từ browser
+        $isDocker = file_exists('/.dockerenv') || getenv('DOCKER_CONTAINER');
+        
+        if ($isDocker) {
+            // Trong Docker, gọi trực tiếp localhost của container
+            $host = 'localhost';
+        } else {
+            // Ngoài Docker (XAMPP), dùng HTTP_HOST
+            $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+        }
+        
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        return $protocol . '://' . $host . $basePath . '/mvc/api/';
+    }
     
     function __construct() {
         // Load .env file
@@ -17,7 +36,8 @@ class DB {
             $pass = $this->getEnv('CLOUD_SQL_PASS', '');
             $db = $this->getEnv('CLOUD_SQL_NAME', 'thongtinmay');
         } else {
-            // Dùng Localhost
+            // Dùng Localhost hoặc Docker MySQL container
+            // Trong Docker, host là 'db' (tên service), ngoài Docker là 'localhost'
             $host = $this->getEnv('LOCAL_DB_HOST', 'localhost');
             $user = $this->getEnv('LOCAL_DB_USER', 'bao');
             $pass = $this->getEnv('LOCAL_DB_PASS', '123456');
@@ -32,6 +52,9 @@ class DB {
         }
         
         mysqli_set_charset($this->connect, "utf8mb4");
+        
+        // Set API URL
+        $this->api = $this->getApiUrl();
     }
     
     // Load file .env

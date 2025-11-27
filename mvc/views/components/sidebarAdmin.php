@@ -1,6 +1,7 @@
 <?php
 $active = isset($data['active']) ? $data['active'] : '';
-echo '
+$base = base_url('');
+?>
 <style>
     :root {
         --primary: #4F46E5;
@@ -140,7 +141,7 @@ echo '
 </style>
 
 <aside class="main-sidebar sidebar-dark-primary elevation-0">
-    <a href="/CongNgheMoi/Admin" class="brand-link">
+    <a href="<?= base_url('/Admin') ?>" class="brand-link">
         <img src="https://adminlte.io/themes/v3/dist/img/AdminLTELogo.png" alt="Logo" class="brand-image img-circle elevation-2">
         <span class="brand-text">Admin Panel</span>
     </a>
@@ -161,7 +162,7 @@ echo '
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" role="menu">
                 <li class="nav-item">
-                    <a href="/CongNgheMoi/Admin" class="nav-link ' . ($active == 'dashboard' ? 'active' : '') . '">
+                    <a href="<?= base_url('/Admin') ?>" class="nav-link <?= $active == 'dashboard' ? 'active' : '' ?>">
                         <i class="nav-icon fas fa-home"></i>
                         <p>Dashboard</p>
                     </a>
@@ -170,28 +171,28 @@ echo '
                 <li class="nav-header">Quản lý người dùng</li>
                 
                 <li class="nav-item">
-                    <a href="/CongNgheMoi/Admin/QuanLySV" class="nav-link ' . ($active == 'quanlysv' ? 'active' : '') . '">
+                    <a href="<?= base_url('/Admin/QuanLySV') ?>" class="nav-link <?= $active == 'quanlysv' ? 'active' : '' ?>">
                         <i class="nav-icon fas fa-user-graduate"></i>
                         <p>Sinh viên</p>
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a href="/CongNgheMoi/Admin/ThemSinhVien" class="nav-link ' . ($active == 'themsv' ? 'active' : '') . '">
+                    <a href="<?= base_url('/Admin/ThemSinhVien') ?>" class="nav-link <?= $active == 'themsv' ? 'active' : '' ?>">
                         <i class="nav-icon fas fa-plus"></i>
                         <p>Thêm sinh viên</p>
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a href="/CongNgheMoi/Admin/QuanLyGV" class="nav-link ' . ($active == 'quanlygv' ? 'active' : '') . '">
+                    <a href="<?= base_url('/Admin/QuanLyGV') ?>" class="nav-link <?= $active == 'quanlygv' ? 'active' : '' ?>">
                         <i class="nav-icon fas fa-chalkboard-teacher"></i>
                         <p>Giảng viên</p>
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a href="/CongNgheMoi/Admin/ThemGiangVien" class="nav-link ' . ($active == 'themgv' ? 'active' : '') . '">
+                    <a href="<?= base_url('/Admin/ThemGiangVien') ?>" class="nav-link <?= $active == 'themgv' ? 'active' : '' ?>">
                         <i class="nav-icon fas fa-plus"></i>
                         <p>Thêm giảng viên</p>
                     </a>
@@ -200,7 +201,7 @@ echo '
                 <li class="nav-header">Quản lý đề tài</li>
 
                 <li class="nav-item">
-                    <a href="/CongNgheMoi/Admin/DSDeTai" class="nav-link ' . ($active == 'dsdetai' ? 'active' : '') . '">
+                    <a href="<?= base_url('/Admin/DSDeTai') ?>" class="nav-link <?= $active == 'dsdetai' ? 'active' : '' ?>">
                         <i class="nav-icon fas fa-book"></i>
                         <p>Đề tài</p>
                     </a>
@@ -209,7 +210,7 @@ echo '
                 <li class="nav-header">Hệ thống</li>
 
                 <li class="nav-item">
-                    <a href="/CongNgheMoi/Logout" class="nav-link">
+                    <a href="<?= base_url('/Logout') ?>" class="nav-link">
                         <i class="nav-icon fas fa-sign-out-alt"></i>
                         <p>Đăng xuất</p>
                     </a>
@@ -217,5 +218,4 @@ echo '
             </ul>
         </nav>
     </div>
-</aside>';
-?>
+</aside>

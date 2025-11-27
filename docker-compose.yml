@@ -1,0 +1,66 @@
+services:
+  app:
+    build: .
+    container_name: congnghemoi_app
+    ports:
+      - "8080:80"
+    volumes:
+      # Mount source để dev (comment lại khi deploy production)
+      # - .:/var/www/html
+      - ./logs:/var/www/html/logs
+      - ./public/uploads:/var/www/html/public/uploads
+    environment:
+      # Database config - override .env nếu cần
+      - USE_CLOUD_SQL=${USE_CLOUD_SQL:-true}
+      - CLOUD_SQL_HOST=${CLOUD_SQL_HOST:-34.158.44.92}
+      - CLOUD_SQL_PORT=${CLOUD_SQL_PORT:-3306}
+      - CLOUD_SQL_USER=${CLOUD_SQL_USER:-root}
+      - CLOUD_SQL_PASS=${CLOUD_SQL_PASS:-Bao*14092003}
+      - CLOUD_SQL_NAME=${CLOUD_SQL_NAME:-thongtinmay}
+      - API_KEY=${API_KEY:-a3b9f34f0a7d1a6e5c2b4c1a8e7f23c1}
+    depends_on:
+      - db
+    networks:
+      - app_network
+    restart: unless-stopped
+
+  # MySQL local (dùng khi không muốn connect Cloud SQL)
+  db:
+    image: mysql:8.0
+    container_name: congnghemoi_db
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: thongtinmay
+      MYSQL_USER: bao
+      MYSQL_PASSWORD: 123456
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - app_network
+    restart: unless-stopped
+
+  # phpMyAdmin (optional - để quản lý DB)
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: congnghemoi_pma
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 100M
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+    networks:
+      - app_network
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+
+networks:
+  app_network:
+    driver: bridge

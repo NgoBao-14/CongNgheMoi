@@ -27,31 +27,32 @@ class Login extends Controller {
                 $_SESSION['idNganh'] = $r['IDNganh'];
                 $_SESSION['PQ'] = $r['PQ'];
 
-                echo "<script>alert('Đăng nhập thành công');</script>";
-
+                // Lấy base path (hỗ trợ cả XAMPP và Docker)
+                $basePath = defined('BASE_PATH') ? BASE_PATH : '/CongNgheMoi';
+                
                 // Chuyển hướng theo phân quyền
                 switch ($r['PQ']) {
                     case '1':
-                        header("refresh:0; url='/CongNgheMoi/GiangVien/'");
+                        $redirectUrl = $basePath . '/GiangVien/';
                         break;
                     case '2':
-                        header("refresh:0; url='/CongNgheMoi/SinhVien/'");
+                        $redirectUrl = $basePath . '/SinhVien/';
                         break;
                     case '3':
-                        header("refresh:0; url='/CongNgheMoi/Admin/'");
+                        $redirectUrl = $basePath . '/Admin/';
                         break;
                     case '4':
-                        header("refresh:0; url='/CongNgheMoi/TruongKhoa/'");
+                        $redirectUrl = $basePath . '/TruongKhoa/';
                         break;
                     default:
-                        header("refresh:0; url='/CongNgheMoi/'");
+                        $redirectUrl = $basePath . '/';
                         break;
-
                 }
-                    exit;
+                
+                echo "<script>alert('Đăng nhập thành công'); window.location.href='" . $redirectUrl . "';</script>";
+                exit;
                 } else {
-                    echo "<script>alert('Sai tên đăng nhập hoặc mật khẩu');</script>";
-                    header("refresh:0; url='Login'");
+                    echo "<script>alert('Sai tên đăng nhập hoặc mật khẩu'); window.location.href='Login';</script>";
                     exit;
                 }
             } catch (Exception $e) {
