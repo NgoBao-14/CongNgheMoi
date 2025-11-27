@@ -12,25 +12,35 @@ class GiangVien extends Controller {
     }
 
     function QuanLyNhom(){
-        // $_SESSION['iduser'] = 3;
         $iduser = $_SESSION['iduser'];
-        $dt= $this->model("mGiangVien");
-        $detai = json_decode($dt->getDanhSachNhom($iduser), true);
-        //nếu có thao tác trên nút xem chi tiết thì hiện ra thông tin thành viên nhóm
-        if (isset($_POST['btnXemChiTiet'])) {
-            $nhom= $this->model("mDKDT");
-            $idNhom = $_POST['idNhom'];
-            $thongTinTV = json_decode($nhom->getTTTVNhom($idNhom), true);
-            $this->view("layoutGV2", [
-            "Page" => "qlnhom",
-            "nhom" => $detai,
-            "thongTinTV" => $thongTinTV
-        ]);
-        }
+        $dt = $this->model("mGiangVien");
+        
+        // Lấy danh sách tất cả sinh viên đã đăng ký đề tài
+        $danhSachSV = json_decode($dt->getDanhSachSinhVienDangKy($iduser), true);
+        
         $this->view("layoutGV2", [
             "Page" => "qlnhom",
-            "nhom" => $detai
+            "danhSachSV" => $danhSachSV
         ]);
+    }
+    
+    function getKetQuaDanhGia() {
+        header('Content-Type: application/json');
+        
+        if (!isset($_GET['masv'])) {
+            echo json_encode(["success" => false, "message" => "Không tìm thấy mã sinh viên"]);
+            return;
+        }
+        
+        $masv = $_GET['masv'];
+        $dt = $this->model("mGiangVien");
+        $ketqua = $dt->getKetQuaDanhGia($masv);
+        
+        if ($ketqua) {
+            echo json_encode(["success" => true, "ketqua" => $ketqua]);
+        } else {
+            echo json_encode(["success" => false, "message" => "Chưa có kết quả đánh giá"]);
+        }
     }
 
     function QuanLyDeTai(){

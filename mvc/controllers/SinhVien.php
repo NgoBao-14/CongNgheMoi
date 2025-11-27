@@ -1,10 +1,12 @@
 <?php
+require_once "./mvc/helpers/ToastHelper.php";
+
 class SinhVien extends Controller {
     
     function SayHi(){
         if($_SESSION["PQ"] != 2){
-            echo "<script>alert('Bạn không có quyền truy cập')</script>";
-            header("refresh: 0; url='/CongNgheMoi'");
+            ToastHelper::error('Bạn không có quyền truy cập', '/CongNgheMoi');
+            return;
         }
         $iduser= $_SESSION['iduser'];
         $masv = $_SESSION['MaSV'];
@@ -19,12 +21,18 @@ class SinhVien extends Controller {
 
     function DeTai(){
         $iduser= $_SESSION['iduser'];
+        $masv = $_SESSION['MaSV'];
         $dt= $this->model("mDKDT");
         $detai = $dt->getTTDeTai($iduser);
+        
+        // Kiểm tra sinh viên đã đăng ký đề tài chưa
+        $daDangKy = $dt->ktSV($masv);
+        
         // page cũ DeTai, layoutDKDT
         $this->view("layoutDKDT", [
             "Page" => "DeTai",
-            "dt" => $detai
+            "dt" => $detai,
+            "daDangKy" => $daDangKy
         ]);
 
         if (isset($_POST['btnDKN'])) {
@@ -35,7 +43,7 @@ class SinhVien extends Controller {
     $members = $_POST['members'];
 
     if ($nhomModel->ktSV($leaderMaSV)) {
-        echo "<script>alert('Nhóm trưởng đã thuộc một nhóm khác.');</script>";
+        ToastHelper::error('Nhóm trưởng đã thuộc một nhóm khác.');
         return;
     }
     $idnganhUser = $nhomModel->layIDNganhUser($iduser); 
@@ -47,22 +55,22 @@ class SinhVien extends Controller {
     $sv = $nhomModel->timSV($mssv);
 
     if (!$sv) {
-        echo "<script>alert('MSSV $mssv không tồn tại.');</script>";
+        ToastHelper::error("MSSV $mssv không tồn tại.");
         return;
     }
 
     if (trim($sv['HoTen']) !== $hoten) {
-        echo "<script>alert('Tên không khớp với MSSV $mssv.');</script>";
+        ToastHelper::error("Tên không khớp với MSSV $mssv.");
         return;
     }
 
     if ($sv['IDNganh'] != $idnganhUser) {
-        echo "<script>alert('Sinh viên $mssv không cùng ngành.');</script>";
+        ToastHelper::error("Sinh viên $mssv không cùng ngành.");
         return;
     }
 
     if ($nhomModel->ktSV($mssv)) {
-        echo "<script>alert('Sinh viên $mssv đã thuộc một nhóm khác.');</script>";
+        ToastHelper::error("Sinh viên $mssv đã thuộc một nhóm khác.");
         return;
     }
 }
@@ -70,7 +78,7 @@ class SinhVien extends Controller {
     // Tạo nhóm mới
     $idNhomMoi = $nhomModel->addNhom($IDDeTai);
     if (!$idNhomMoi) {
-        echo "<script>alert('Lỗi khi tạo nhóm.');</script>";
+        ToastHelper::error('Lỗi khi tạo nhóm.');
         return;
     }
 
@@ -83,16 +91,12 @@ class SinhVien extends Controller {
     }
     // Cập nhật trạng thái đề tài
     $nhomModel->capNhatTTDeTai($IDDeTai, $idNhomMoi);
-    echo "<script>
-    alert('Đăng ký nhóm thành công!');
-    window.location.href = './DeTaiDK';
-    </script>";
+    ToastHelper::success('Đăng ký nhóm thành công!', './DeTaiDK');
     }
 
     }
 
     function DeTaiDK() {
-    //giả định iduser
     $iduser= $_SESSION['iduser'];
     $dtdk = $this->model("mDKDT");
     $idNhom = $dtdk->getIDNhomByIDUser($iduser);
@@ -106,6 +110,150 @@ class SinhVien extends Controller {
         "nhom" => $nhom
     ]);
     }
+    
+    function ThongTinDeTai() {
+        $this->view("layoutDKDT", [
+            "Page" => "ThongTinDeTai"
+        ]);
+    }
+    
+    function DangKyDeTaiMoi() {
+        if (!isset($_GET['iddetai'])) {
+            ToastHelper::error('Không tìm thấy đề tài!', './DeTai');
+            return;
+        }
+        
+        $iduser = $_SESSION['iduser'];
+        $masv = $_SESSION['MaSV'];
+        $idDeTai = $_GET['iddetai'];
+        
+        $dt = $this->model("mDKDT");
+        
+        // Kiểm tra sinh viên đã đăng ký đề tài chưa
+        if ($dt->ktSV($masv)) {
+            ToastHelper::warning('Bạn đã đăng ký đề tài rồi!', './ThongTinDeTai');
+            return;
+        }
+        
+        // Đăng ký đề tài (chưa tạo nhóm, làm một mình)
+        $result = $dt->dangKyDeTai($masv, $idDeTai);
+        
+        if ($result) {
+            ToastHelper::success('Đăng ký đề tài thành công!', './ThongTinDeTai');
+        } else {
+            ToastHelper::error('Có lỗi xảy ra khi đăng ký!', './DeTai');
+        }
+    }
+    
+    function HuyDangKyDeTai() {
+        $iduser = $_SESSION['iduser'];
+        $masv = $_SESSION['MaSV'];
+        $dt = $this->model("mDKDT");
+        
+        // Kiểm tra đã đăng ký chưa
+        if (!$dt->ktSV($masv)) {
+            ToastHelper::warning('Bạn chưa đăng ký đề tài!', './DeTai');
+            return;
+        }
+        
+        // Kiểm tra xem có đang trong nhóm không
+        if ($dt->ktSVCoNhom($masv)) {
+            ToastHelper::warning('Bạn đang trong nhóm, vui lòng hủy nhóm trước!', './ThongTinDeTai');
+            return;
+        }
+        
+        // Hủy đăng ký
+        $result = $dt->huyDangKyDeTai($masv);
+        if ($result) {
+            ToastHelper::success('Hủy đăng ký đề tài thành công!', './DeTai');
+        } else {
+            ToastHelper::error('Có lỗi xảy ra!', './ThongTinDeTai');
+        }
+    }
+    
+    function DangKyNhom() {
+        if (!isset($_GET['masv'])) {
+            ToastHelper::error('Không tìm thấy thông tin sinh viên!', './ThongTinDeTai');
+            return;
+        }
+        
+        $iduser = $_SESSION['iduser'];
+        $masv = $_SESSION['MaSV'];
+        $masvChon = $_GET['masv'];
+        
+        $dt = $this->model("mDKDT");
+        
+        // Kiểm tra cả 2 đã đăng ký đề tài chưa
+        if (!$dt->ktSV($masv) || !$dt->ktSV($masvChon)) {
+            ToastHelper::warning('Cả 2 sinh viên phải đăng ký đề tài trước!', './ThongTinDeTai');
+            return;
+        }
+        
+        // Kiểm tra cả 2 đều chưa có nhóm
+        if ($dt->ktSVCoNhom($masv) || $dt->ktSVCoNhom($masvChon)) {
+            ToastHelper::warning('Một trong hai sinh viên đã có nhóm!', './ThongTinDeTai');
+            return;
+        }
+        
+        // Lấy IDDeTai của sinh viên hiện tại
+        $sqlDeTai = "SELECT IDDeTai FROM dangkydetai WHERE MaSV = '$masv'";
+        $resultDeTai = mysqli_query($dt->connect, $sqlDeTai);
+        $rowDeTai = mysqli_fetch_assoc($resultDeTai);
+        $idDeTai = $rowDeTai['IDDeTai'];
+        
+        // Tạo nhóm mới và thêm 2 sinh viên
+        $result = $dt->dangKyNhom($masv, $masvChon, $idDeTai);
+        
+        if ($result) {
+            ToastHelper::success('Đăng ký nhóm thành công!', './ThongTinDeTai');
+        } else {
+            ToastHelper::error('Có lỗi xảy ra!', './ThongTinDeTai');
+        }
+    }
+    
+    function HuyNhom() {
+        $iduser = $_SESSION['iduser'];
+        $masv = $_SESSION['MaSV'];
+        $dt = $this->model("mDKDT");
+        
+        $idNhom = $dt->getIDNhomByMaSV($masv);
+        if (!$idNhom) {
+            ToastHelper::warning('Bạn chưa có nhóm!', './ThongTinDeTai');
+            return;
+        }
+        
+        // Kiểm tra nhóm có nhiều hơn 1 người không
+        $nhom = json_decode($dt->getTTTVNhom($idNhom), true);
+        if (count($nhom) <= 1) {
+            ToastHelper::info('Bạn đang làm một mình!', './ThongTinDeTai');
+            return;
+        }
+        
+        // Hủy nhóm
+        $result = $dt->huyNhom($idNhom);
+        if ($result) {
+            ToastHelper::success('Hủy nhóm thành công! Các thành viên đã trở về làm một mình.', './ThongTinDeTai');
+        } else {
+            ToastHelper::error('Có lỗi xảy ra!', './ThongTinDeTai');
+        }
+    }
+    
+    function TieuChiDanhGia() {
+        $this->view("layoutDKDT", [
+            "Page" => "TieuChiDanhGia"
+        ]);
+    }
+    
+    function LichSuDangKy() {
+        $iduser = $_SESSION['iduser'];
+        $dt = $this->model("mDKDT");
+        $lichsu = json_decode($dt->getLichSuDangKy($iduser), true);
+        
+        $this->view("layoutDKDT", [
+            "Page" => "LichSuDangKy",
+            "lichsu" => $lichsu
+        ]);
+    }
 
     function NopBaoCaoTD() {
     $iduser= $_SESSION['iduser'];
@@ -115,7 +263,7 @@ class SinhVien extends Controller {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Check if a file is uploaded
         if (!isset($_FILES['fileBC']) || $_FILES['fileBC']['error'] == UPLOAD_ERR_NO_FILE) {
-            echo "<script>alert('Vui lòng chọn một file để nộp!');</script>";
+            ToastHelper::warning('Vui lòng chọn một file để nộp!');
         } else {
             $fileBC = $_FILES['fileBC']['name'];
             $tmp_name = $_FILES['fileBC']['tmp_name'];
@@ -124,12 +272,12 @@ class SinhVien extends Controller {
             $allowed_exts = ['doc', 'docx', 'pdf'];
 
             if (!in_array($file_ext, $allowed_exts)) {
-                echo "<script>alert('Chỉ chấp nhận file Word (.doc, .docx) hoặc PDF!');</script>";
+                ToastHelper::error('Chỉ chấp nhận file Word (.doc, .docx) hoặc PDF!');
                 return;
             }
 
             if ($file_size > 10 * 1024 * 1024) {
-                echo "<script>alert('File quá lớn! Kích thước tối đa là 10MB.');</script>";
+                ToastHelper::error('File quá lớn! Kích thước tối đa là 10MB.');
                 return;
             }
 
@@ -158,9 +306,9 @@ class SinhVien extends Controller {
                 $dt = $this->model("mDKDT");
                 $file_name = basename($target_file);
                 $dt->nopBaoCao($idNhom, $file_name);
-                echo "<script>alert('Nộp báo cáo thành công!'); location.href='./NopBaoCaoTD';</script>";
+                ToastHelper::success('Nộp báo cáo thành công!', './NopBaoCaoTD');
             } else {
-                echo "<script>alert('Lỗi khi tải file lên.');</script>";
+                ToastHelper::error('Lỗi khi tải file lên.');
             }
         }
     }
@@ -180,7 +328,7 @@ class SinhVien extends Controller {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Check if a file is uploaded
         if (!isset($_FILES['fileBC']) || $_FILES['fileBC']['error'] == UPLOAD_ERR_NO_FILE) {
-            echo "<script>alert('Vui lòng chọn một file để nộp!');</script>";
+            ToastHelper::warning('Vui lòng chọn một file để nộp!');
         } else {
             $fileBC = $_FILES['fileBC']['name'];
             $tmp_name = $_FILES['fileBC']['tmp_name'];
@@ -189,12 +337,12 @@ class SinhVien extends Controller {
             $allowed_exts = ['doc', 'docx', 'pdf'];
 
             if (!in_array($file_ext, $allowed_exts)) {
-                echo "<script>alert('Chỉ chấp nhận file Word (.doc, .docx) hoặc PDF!');</script>";
+                ToastHelper::error('Chỉ chấp nhận file Word (.doc, .docx) hoặc PDF!');
                 return;
             }
 
             if ($file_size > 10 * 1024 * 1024) {
-                echo "<script>alert('File quá lớn! Kích thước tối đa là 10MB.');</script>";
+                ToastHelper::error('File quá lớn! Kích thước tối đa là 10MB.');
                 return;
             }
 
@@ -223,9 +371,9 @@ class SinhVien extends Controller {
                 $dt = $this->model("mDKDT");
                 $file_name = basename($target_file);
                 $dt->NopKhoaLuan($idNhom, $file_name);
-                echo "<script>alert('Nộp báo cáo thành công!'); location.href='./NopKhoaLuan';</script>";
+                ToastHelper::success('Nộp báo cáo thành công!', './NopKhoaLuan');
             } else {
-                echo "<script>alert('Lỗi khi tải file lên.');</script>";
+                ToastHelper::error('Lỗi khi tải file lên.');
             }
         }
     }
@@ -235,6 +383,46 @@ class SinhVien extends Controller {
         "Page" => "NopKhoaLuan",
         "khoaluan" => $khoaluan
     ]);
+    }
+
+    function getThongBaoGVHD() {
+        header('Content-Type: application/json');
+        if($_SESSION["PQ"] != 2){
+            echo json_encode(["success" => false, "message" => "Bạn không có quyền truy cập"]);
+            return;
+        }
+        
+        $iduser = $_SESSION['iduser'];
+        $dtdk = $this->model("mDKDT");
+        $idNhom = $dtdk->getIDNhomByIDUser($iduser);
+        
+        if (!$idNhom) {
+            echo json_encode(["success" => false, "message" => "Không tìm thấy nhóm"]);
+            return;
+        }
+        
+        $thongbao = $dtdk->getThongBaoGVHD($idNhom);
+        echo json_encode(["success" => true, "thongbao" => $thongbao]);
+    }
+
+    function getKetQuaCham() {
+        header('Content-Type: application/json');
+        if($_SESSION["PQ"] != 2){
+            echo json_encode(["success" => false, "message" => "Bạn không có quyền truy cập"]);
+            return;
+        }
+        
+        $iduser = $_SESSION['iduser'];
+        $dtdk = $this->model("mDKDT");
+        $idNhom = $dtdk->getIDNhomByIDUser($iduser);
+        
+        if (!$idNhom) {
+            echo json_encode(["success" => false, "message" => "Không tìm thấy nhóm"]);
+            return;
+        }
+        
+        $ketqua = $dtdk->getKetQuaCham($idNhom);
+        echo json_encode(["success" => true, "ketqua" => $ketqua]);
     }
 
 }

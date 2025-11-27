@@ -1,4 +1,6 @@
 <?php
+require_once "./mvc/helpers/ToastHelper.php";
+
 class Login extends Controller {
     public function SayHi() {
         if (isset($_POST['btndn'])) {
@@ -20,31 +22,27 @@ class Login extends Controller {
                 $_SESSION['idNganh'] = $r['IDNganh'];
                 $_SESSION['PQ'] = $r['PQ'];
 
-                echo "<script>alert('Đăng nhập thành công');</script>";
-
                 // Chuyển hướng theo phân quyền
                 switch ($r['PQ']) {
                     case '1':
-                        header("refresh:0; url='/CongNgheMoi/GiangVien/'");
+                        ToastHelper::success('Đăng nhập thành công!', '/CongNgheMoi/GiangVien/');
                         break;
                     case '2':
-                        header("refresh:0; url='/CongNgheMoi/SinhVien/'");
+                        ToastHelper::success('Đăng nhập thành công!', '/CongNgheMoi/SinhVien/');
                         break;
                     case '3':
-                        header("refresh:0; url='/CongNgheMoi/Admin/'");
+                        ToastHelper::success('Đăng nhập thành công!', '/CongNgheMoi/Admin/');
                         break;
                     case '4':
-                        header("refresh:0; url='/CongNgheMoi/TruongKhoa/'");
+                        ToastHelper::success('Đăng nhập thành công!', '/CongNgheMoi/TruongKhoa/');
                         break;
                     default:
-                        header("refresh:0; url='/CongNgheMoi/'");
+                        ToastHelper::success('Đăng nhập thành công!', '/CongNgheMoi/');
                         break;
-
                 }
                 exit;
             } else {
-                echo "<script>alert('Sai tên đăng nhập hoặc mật khẩu');</script>";
-                header("refresh:0; url='Login'");
+                ToastHelper::error('Sai tên đăng nhập hoặc mật khẩu!', 'Login');
                 exit;
             }
         }

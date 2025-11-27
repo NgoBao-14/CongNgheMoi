@@ -1,20 +1,63 @@
 <?php
-// session_start(); 
-// $_SESSION['iduser'] = 5;
-$dtdk = $data["dtdk"];
-$nhom = $data["nhom"];
+$iduser = $_SESSION['iduser'];
+$masv = $_SESSION['MaSV'];
+$dt = $this->model("mDKDT");
 
+// Kiểm tra nếu sinh viên chưa đăng ký đề tài
+if (!$dt->ktSV($masv)) {
+    echo '
+    <div class="col-md-3">
+        <div class="navigation-breadcrumb">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href=".">Trang chủ</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Thông tin đề tài</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    
+    <!-- Modal thông báo chưa đăng ký -->
+    <div class="modal fade show" id="chuaDangKyModal" tabindex="-1" style="display: block; background: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title"><i class="bi bi-exclamation-triangle"></i> Thông báo</h5>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <i class="bi bi-info-circle text-warning" style="font-size: 3rem;"></i>
+                    <p class="mt-3 fs-5">Bạn chưa đăng ký đề tài cho học kỳ này!</p>
+                    <p class="text-muted">Vui lòng đăng ký đề tài trước khi xem thông tin.</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <a href="./DeTai" class="btn btn-primary" onclick="LoadingSpinner.show(\'Đang chuyển trang...\')">Đăng ký đề tài ngay</a>
+                    <a href="." class="btn btn-secondary" onclick="LoadingSpinner.show(\'Đang tải...\')">Quay lại trang chủ</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    ';
+    return;
+}
+
+// Nếu đã đăng ký, hiển thị thông tin đề tài
+$dtdk = json_decode($dt->getTTDeTaiByIDU($iduser), true);
+$idNhom = $dt->getIDNhomByMaSV($masv);
+$nhom = json_decode($dt->getTTTVNhom($idNhom), true);
+$danhSachSVCungDeTai = json_decode($dt->getDanhSachSVCungDeTai($masv), true);
 
 echo '<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xem Lại Đề Tài Đăng Ký Khóa Luận</title>
-    <!-- Bootstrap CSS -->
+    <title>Thông Tin Đề Tài</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../public/css/loading.css">
     <style>
         body {
             background-color: #f0f7ff;
@@ -24,34 +67,22 @@ echo '<!DOCTYPE html>
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
-        .icon-circle {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .custom-btn {
+            margin-top: 30px;
+            border: 1px solid #007dc9;
+            color: #007dc9;
+            background-color: transparent;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        .custom-btn:hover {
+            background-color: #007dc9;
             color: white;
         }
-        .bg-red {
-            background-color: #dc3545;
-        }
-        .bg-orange {
-            background-color: #fd7e14;
-        }
-        .bg-teal {
-            background-color: #20c997;
-        }
-        .bg-blue {
-            background-color: #0d6efd;
-        }
-        .btn-emerald {
-            background-color: #10b981;
-            color: white;
-        }
-        .btn-emerald:hover {
-            background-color: #059669;
-            color: white;
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
         }
         .status-badge {
             font-size: 0.75rem;
@@ -63,38 +94,9 @@ echo '<!DOCTYPE html>
             background-color: #d1fae5;
             color: #065f46;
         }
-            .status-rejected {
+        .status-rejected {
             background-color: #f8d7da; 
         }
-        .table-responsive {
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        .section-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            
-        }
-        .custom-btn {
-            margin-top: 30px;
-            border: 1px solid #007dc9;
-            color: #007dc9;
-            background-color: transparent;
-            border-radius: 8px;
-            transition: 0.3s;
-        }
-
-        .custom-btn:hover {
-            background-color: #007dc9;
-            color: white;
-        }
-        .disabled-overlay {
-            opacity: 0.5;                
-            pointer-events: none;        
-            filter: grayscale(70%);      
-    }
-
     </style>
 </head>
 <body>
@@ -109,9 +111,8 @@ echo '<!DOCTYPE html>
         </div>
     </div>
     <div class="container py-4 border">
-        <h1 class="text-center fw-bold mb-5">XEM LẠI ĐỀ TÀI ĐĂNG KÝ KHÓA LUẬN</h1>
+        <h1 class="text-center fw-bold mb-5">THÔNG TIN ĐỀ TÀI ĐĂNG KÝ</h1>
         
-        <!-- Functional Cards -->
         <div class="row col">
             <div class="col-md-3">
                 <div class="card text-center" style="height: 96%;">
@@ -120,8 +121,7 @@ echo '<!DOCTYPE html>
                             <div>
                                 <h5 class="card-title fw-bold mb-3">THÔNG TIN GIẢNG VIÊN HƯỚNG DẪN</h5>
                             </div>
-                        </div>
-                        <!-- Thông tin giảng viên -->';
+                        </div>';
                         foreach($dtdk as $row):
 echo'
                         <div class="mt-2 text-start">
@@ -141,7 +141,6 @@ echo'
             </div>
             <div class="col-md-9">
                 <div class="row">
-                    <!-- Card 1: Thông báo đề tài từ gvhd -->
                     <div class="col-md-6 col-lg-4 mb-3">
                         <div class="card h-70 text-center">
                             <div class="card-body">
@@ -156,7 +155,6 @@ echo'
                         </div>
                     </div>
                     
-                    <!-- Card 2: Tiêu chí đánh giá -->
                     <div class="col-md-6 col-lg-4 mb-3">
                         <div class="card h-70 text-center">
                             <div class="card-body">
@@ -171,7 +169,6 @@ echo'
                         </div>
                     </div>
                     
-                    <!-- Card 3: Kết quả chấm từ giảng viên hướng dẫn -->
                     <div class="col-md-6 col-lg-4 mb-3">
                         <div class="card h-70 text-center">
                             <div class="card-body">
@@ -185,10 +182,9 @@ echo'
                             </div>
                         </div>
                     </div>
-
                 </div>
+                
                 <div class="row">
-                    <!-- Thesis Information -->
                     <div class="col-12">
                         <h2 class="section-title">THÔNG TIN ĐỀ TÀI ĐĂNG KÝ</h2>
                         <div class="card">
@@ -232,7 +228,6 @@ echo'
                                                         data-sltoida="'.$row['SoLuongTV'].'">
                                         <i class="bi bi-file-text me-1"></i> Xem chi tiết đề tài
                                     </button>
-                                    
                                 </div>';
                                 }
                                 echo'
@@ -243,8 +238,8 @@ echo'
             </div>
         </div>
         
-        <!-- Group Information -->
-        <div class="mb-">
+        <!-- Thông tin nhóm thực hiện -->
+        <div class="mb-4">
             <h2 class="section-title">THÔNG TIN NHÓM THỰC HIỆN</h2>
             <div class="card">
                 <div class="card-body p-0">
@@ -257,32 +252,125 @@ echo'
                                     <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">Họ và tên</td>
                                     <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">Lớp</td>
                                     <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">Email</td>
-                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">Vai trò</td>
+                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">Nhóm</td>
                                 </tr>
                             </thead>
                             <tbody >';
                             $stt=1;
-                            foreach($nhom as $row){
+                            if (!empty($nhom)) {
+                                foreach($nhom as $row){
+                                    echo'
+                                    <tr>
+                                        <td class="px-3">'.$stt.'</td>
+                                        <td class="px-3">'.htmlspecialchars($row["MaSV"]).'</td>
+                                        <td class="px-3">'.htmlspecialchars($row["HoTenSinhVien"]).'</td>
+                                        <td class="px-3">'.htmlspecialchars($row["Lop"]).'</td>
+                                        <td class="px-3">'.htmlspecialchars($row["Email"]).'</td>
+                                        <td class="px-3">'.($row["IDNhom"] ? $row["IDNhom"] : '<span style="color: #dc3545; font-weight: bold;">Làm một mình</span>').'</td>
+                                    </tr>';
+                                    $stt++;
+                                }
+                            } else {
+                                // Hiển thị thông tin sinh viên hiện tại nếu chưa có nhóm
                                 echo'
                                 <tr>
-                                    <td class="px-3">'.$stt.'</td>
-                                    <td class="px-3">'.htmlspecialchars($row["MaSV"]).'</td>
-                                    <td class="px-3">'.htmlspecialchars($row["HoTenSinhVien"]).'</td>
-                                    <td class="px-3">'.htmlspecialchars($row["Lop"]).'</td>
-                                    <td class="px-3">'.htmlspecialchars($row["Email"]).'</td>
-                                    <td class="px-3">Thành viên</td>
+                                    <td class="px-3">1</td>
+                                    <td class="px-3">'.$masv.'</td>
+                                    <td class="px-3">'.$_SESSION['ten'].'</td>
+                                    <td class="px-3">-</td>
+                                    <td class="px-3">-</td>
+                                    <td class="px-3"><span style="color: #dc3545; font-weight: bold;">Làm một mình</span></td>
                                 </tr>';
-                                $stt++;
                             }
                             echo'
-
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+        
+        <!-- Danh sách sinh viên đăng ký cùng đề tài -->
+        <div class="mb-4">
+            <h2 class="section-title">DANH SÁCH CÁC SINH VIÊN ĐĂNG KÝ CÙNG ĐỀ TÀI</h2>
+            <div class="card">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table mb-0">
+                            <thead>
+                                <tr>
+                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">STT</td>
+                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">MSSV</td>
+                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">Họ Tên</td>
+                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">Lớp</td>
+                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">GVHD</td>
+                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">Nhóm</td>
+                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">Chọn Làm Chung Nhóm</td>
+                                </tr>
+                            </thead>
+                            <tbody>';
+                            $stt=1;
+                            $currentUserMaSV = $_SESSION['MaSV'];
+                            $currentUserNhom = null;
+                            
+                            // Tìm nhóm của user hiện tại
+                            foreach($nhom as $row){
+                                if($row["MaSV"] == $currentUserMaSV){
+                                    $currentUserNhom = $row["IDNhom"];
+                                    break;
+                                }
+                            }
+                            
+                            // Kiểm tra xem user hiện tại đã có nhóm với người khác chưa
+                            $daCoNhom = count($nhom) > 1;
+                            
+                            if(!empty($danhSachSVCungDeTai)){
+                                foreach($danhSachSVCungDeTai as $sv){
+                                    // Không hiển thị bản thân
+                                    if($sv["MaSV"] == $currentUserMaSV) continue;
+                                    
+                                    $tenNhom = $sv["IDNhom"] == $currentUserNhom ? $sv["IDNhom"] : ($sv["SoLuongThanhVien"] > 1 ? $sv["IDNhom"] : "Làm một mình");
+                                    $isDisabled = $daCoNhom || ($sv["SoLuongThanhVien"] > 1) ? 'disabled' : '';
+                                    $checkboxValue = $daCoNhom ? '' : ($sv["IDNhom"] == $currentUserNhom ? 'checked' : '');
+                                    
+                                    echo'
+                                    <tr>
+                                        <td class="px-3">'.$stt.'</td>
+                                        <td class="px-3">'.htmlspecialchars($sv["MaSV"]).'</td>
+                                        <td class="px-3">'.htmlspecialchars($sv["HoTen"]).'</td>
+                                        <td class="px-3">'.htmlspecialchars($sv["Lop"]).'</td>
+                                        <td class="px-3">'.htmlspecialchars($sv["GiangVienHuongDan"]).'</td>
+                                        <td class="px-3 text-danger fw-bold">'.$tenNhom.'</td>
+                                        <td class="px-3 text-center">
+                                            <input type="radio" name="chonNhom" value="'.$sv["MaSV"].'" '.$isDisabled.' '.$checkboxValue.' class="form-check-input">
+                                        </td>
+                                    </tr>';
+                                    $stt++;
+                                }
+                            } else {
+                                echo '<tr><td colspan="7" class="text-center">Chỉ có bạn đăng ký đề tài này</td></tr>';
+                            }
+                            echo'
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-end mt-3">';
+            
+            // Hiển thị nút dựa trên trạng thái nhóm
+            if($daCoNhom){
+                echo '<button class="btn btn-danger" id="btnHuyNhom">Hủy nhóm</button>';
+            } else {
+                echo '
+                <button class="btn btn-danger me-2" id="btnHuyDangKy">Hủy đăng ký đề tài</button>
+                <button class="btn btn-primary" id="btnDangKyNhom">Đăng ký nhóm</button>';
+            }
+            
+            echo '
+            </div>
+        </div>
     </div>
     
     <!-- Modals -->';
@@ -291,6 +379,7 @@ include 'DeTaiDK_Modals.php';
 
 echo '
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../public/js/loading.js"></script>
 </body>
 </html>';
 ?>

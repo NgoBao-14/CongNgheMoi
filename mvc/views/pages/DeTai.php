@@ -1,5 +1,11 @@
 <?php
 $dt = json_decode($data['dt'], true);
+$daDangKy = isset($data['daDangKy']) ? $data['daDangKy'] : false;
+
+// Kiểm tra nếu $dt không phải là mảng hoặc null
+if (!is_array($dt)) {
+    $dt = array();
+}
 
     echo '
     <div class="col-md-3">
@@ -13,217 +19,149 @@ $dt = json_decode($data['dt'], true);
         </div>
     </div>
         <!-- Project Registration Section -->
-        <div id="deTaiSection" class="project-section">
+        <div id="deTaiSection" class="project-section" style="position: relative;">';
+        
+        // Hiển thị overlay nếu đã đăng ký
+        if ($daDangKy) {
+            echo '
+            <div class="registration-disabled-overlay">
+                <div class="registration-disabled-message">
+                    <i class="bi bi-lock-fill" style="font-size: 3rem; color: #dc3545;"></i>
+                    <h4 class="mt-3">Bạn đã đăng ký đề tài</h4>
+                    <p>Bạn không thể đăng ký thêm đề tài mới</p>
+                    <a href="./ThongTinDeTai" class="btn btn-primary mt-2">Xem thông tin đề tài</a>
+                </div>
+            </div>';
+        }
+        
+        echo '
             <h3 class="text-center text-primary my-4">ĐĂNG KÝ ĐỀ TÀI</h3>
             
             <div class="project-list">
                 <table class="table table-striped table-bordered">
-                    <thead class="table-primary">
+                    <thead style="background-color: #D6E9F8;">
                         <tr>
-                            <th width="5%">STT</th>
-                            <th width="15%">Mã đề tài</th>
-                            <th width="40%">Tên đề tài</th>
-                            <th width="15%">Giảng viên hướng dẫn</th>
-                            <th width="25%">Thao tác</th>
+                            <th width="3%">STT</th>
+                            <th width="12%">Tên Đề Tài</th>
+                            <th width="15%">Mô Tả</th>
+                            <th width="15%">Yêu Cầu</th>
+                            <th width="8%">Số Sinh Viên</th>
+                            <th width="8%">GVHD</th>
+                            <th width="8%">Trạng Thái</th>
+                            <th width="8%">Chọn</th>
                         </tr>
                     </thead>
                     <tbody>';
                             $i = 1;
-                            foreach($dt as $row){
-                                if($row['TrangThaiDK']==='Chưa được đăng ký' && $row['TrangThaiDeTai']==='Đã duyệt'){
+                            if (!empty($dt) && is_array($dt)) {
+                                foreach($dt as $row){
+                                    if(isset($row['TrangThaiDK']) && isset($row['TrangThaiDeTai']) && 
+                                       $row['TrangThaiDK']==='Chưa được đăng ký' && $row['TrangThaiDeTai']==='Đã duyệt'){
                                 echo '<tr>
-                                <td>'.$i.'</td>
-                                <td>'.$row['IDDeTai'].'</td>
-                                <td>'.$row['TenDeTai'].'</td>
-                                <td>'.$row['ten_giang_vien'].'</td>
-                                <td>
-                                        <button 
-                                            class="btn btn-info btn-sm view-details" style="background-color: #EE7600; border-color: #EE7600; color: #fff;" 
-                                            data-id="'.$row['IDDeTai'].'"
-                                            data-title="'.htmlspecialchars($row['TenDeTai'], ENT_QUOTES).'"
-                                            data-giangvien="'.htmlspecialchars($row['ten_giang_vien'], ENT_QUOTES).'"
-                                            data-mota="'.htmlspecialchars($row['MoTa'], ENT_QUOTES).'"
-                                            data-yeucau="'.htmlspecialchars($row['YeuCau'], ENT_QUOTES).'"
-                                            data-sltoida="'.$row['SoLuongTV'].'"
-                                        >Xem chi tiết</button>
-
-                                        <button 
-                                            class="btn btn-primary btn-sm register-btn"
-                                            data-id="'.$row['IDDeTai'].'"
-                                            data-title="'.htmlspecialchars($row['TenDeTai'], ENT_QUOTES).'"
-                                            data-soLuong="'.$row['SoLuongTV'].'"
-                                        >Đăng ký</button>
-                                    </td>
+                                <td class="text-center">'.$i.'</td>
+                                <td>'.htmlspecialchars($row['TenDeTai']).'</td>
+                                <td>'.htmlspecialchars(substr($row['MoTa'], 0, 100)).(strlen($row['MoTa']) > 100 ? '...' : '').'</td>
+                                <td>'.htmlspecialchars(substr($row['YeuCau'], 0, 100)).(strlen($row['YeuCau']) > 100 ? '...' : '').'</td>
+                                <td class="text-center">'.$row['SoLuongTV'].' / 4</td>
+                                <td>'.htmlspecialchars($row['ten_giang_vien']).'</td>
+                                <td class="text-center">
+                                    <button 
+                                        class="btn btn-success btn-sm" 
+                                        style="background-color: #28a745; border-color: #28a745; color: #fff; border-radius: 5px; padding: 2px 8px;"
+                                    >Đăng mở</button>
+                                </td>
+                                <td class="text-center">
+                                    <input type="radio" name="chonDeTai" value="'.$row['IDDeTai'].'" 
+                                        data-title="'.htmlspecialchars($row['TenDeTai'], ENT_QUOTES).'"
+                                        data-giangvien="'.htmlspecialchars($row['ten_giang_vien'], ENT_QUOTES).'"
+                                        data-mota="'.htmlspecialchars($row['MoTa'], ENT_QUOTES).'"
+                                        data-yeucau="'.htmlspecialchars($row['YeuCau'], ENT_QUOTES).'"
+                                        data-sltoida="'.$row['SoLuongTV'].'"
+                                        class="form-check-input">
+                                </td>
                                 </tr>';
-                                $i++;
-                            }
+                                        $i++;
+                                    }
+                                }
+                            } else {
+                                echo '<tr><td colspan="9" class="text-center">Không có đề tài nào để đăng ký.</td></tr>';
                             }
                             
 echo '
                     </tbody>
                 </table>
             </div>
-            ';
-echo'             <!-- Project Details Modal -->
-            <div class="modal fade" id="projectDetailModal" tabindex="-1" aria-labelledby="projectDetailModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-primary text-white">
-                            <h5 class="modal-title" id="projectDetailModalLabel">Chi tiết đề tài</h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body" id="projectDetailContent">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                        </div>
-                    </div>
-                </div>
-            </div>';
-$masv = $_SESSION['MaSV'];
-$hoten = $_SESSION['ten'];
-echo'            <!-- Registration Form (Initially Hidden) -->
-            <div id="registrationForm" class="mt-4" style="display: none;">
-                <h4 class="text-primary">Đăng ký nhóm</h4>
-                <div class="card">
-                    <div class="card-header text-white" style="background-color: #2196F3;">
-                        <span id="selectedProjectTitle">Đề tài: </span>
-                    </div>
-                    <div class="card-body">
-                        <form id="groupRegistrationForm" action="" method="POST">';
-
-echo'                       <input type="hidden" id="selectedProjectId" name="selectedProjectId">
-                            <div class="mb-3">
-                                <h5>Trưởng nhóm</h5>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <label for="leaderMssv" class="form-label">MSSV</label>
-                                        <input type="text" class="form-control" id="leaderMssv" name="leaderMssv"
-                                            value="'.$masv.'" readonly>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <label for="leaderName" class="form-label">Họ và tên</label>
-                                        <input type="text" class="form-control" id="leaderName"
-                                            value="'.$hoten.'" readonly>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div id="memberContainer"></div>
-                                <button type="button" id="addMemberBtn" class="btn btn-secondary">Thêm thành viên</button>
-                            
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-primary" name="btnDKN">Đăng ký</button>
-                                <button type="button" class="btn btn-secondary" id="cancelRegistration">Hủy</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+            
+            <div class="text-end mt-3">
+                <button class="btn btn-primary" id="btnDangKyDeTai">Đăng ký</button>
             </div>
-        </div>';
+        </div>
+        
+        <style>
+        .registration-disabled-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .registration-disabled-message {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+        }
+        
+        .registration-disabled-message h4 {
+            color: #dc3545;
+            font-weight: 700;
+        }
+        
+        .registration-disabled-message p {
+            color: #6c757d;
+            margin-bottom: 0;
+        }
+        </style>';
 
     
     ?>
     <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const detailButtons = document.querySelectorAll(".view-details");
-
-    detailButtons.forEach(function(button) {
-        button.addEventListener("click", function() {
-            const title = this.dataset.title;
-            const giangVien = this.dataset.giangvien;
-            const moTa = this.dataset.mota;
-            const yeuCau = this.dataset.yeucau;
-            const soLuong = this.dataset.sltoida;
-            const hanDK = this.dataset.handangky;
-
-            const content = `
-                <p><strong>Tên đề tài:</strong> ${title}</p>
-                <p><strong>Giảng viên hướng dẫn:</strong> ${giangVien}</p>
-                <p><strong>Mô tả:</strong> ${moTa}</p>
-                <p><strong>Yêu cầu:</strong> ${yeuCau}</p>
-                <p><strong>Số lượng tối đa:</strong> ${soLuong}</p>
-            `;
-            document.getElementById("projectDetailContent").innerHTML = content;
-            const modal = new bootstrap.Modal(document.getElementById("projectDetailModal"));
-            modal.show();
-        });
-    });
-});
-</script>
-
-<script>
 document.addEventListener("DOMContentLoaded", function () {
-    // Xử lý khi bấm nút "Đăng ký"
-    document.querySelectorAll(".register-btn").forEach(function (btn) {
-        btn.addEventListener("click", function () {
-            const projectId = btn.getAttribute("data-id");
-            const projectTitle = btn.getAttribute("data-title");
-
-            // Cập nhật thông tin đề tài
-            document.getElementById("selectedProjectId").value = projectId;
-            document.getElementById("selectedProjectTitle").innerText = "Đề tài: " + projectTitle;
-
-            // Hiện form đăng ký
-            document.getElementById("registrationForm").style.display = "block";
-
-            // Cuộn đến form
-            document.getElementById("registrationForm").scrollIntoView({ behavior: "smooth" });
-        }); 
-    });
-
-    // Hủy đăng ký
-    document.getElementById("cancelRegistration").addEventListener("click", function () {
-        document.getElementById("registrationForm").style.display = "none";
-    });
-});
-</script>
-
-<!-- them thanh vien -->
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const addBtn = document.getElementById("addMemberBtn");
-    const memberContainer = document.getElementById("memberContainer");
-    const maxMembersInput = document.getElementById("selectedProjectId"); 
-    // Số lượng thành viên đã thêm
-    // Giả sử nhóm trưởng đã có sẵn, nên bắt đầu từ 0
-    let memberCount = 0;
-
-    addBtn.addEventListener("click", function () {
-        // Lấy nút đăng ký tương ứng để biết số lượng tối đa
-        const selectedProjectId = maxMembersInput.value;
-        const projectBtn = document.querySelector(`.register-btn[data-id="${selectedProjectId}"]`);
-        const max = parseInt(projectBtn.getAttribute("data-soLuong"));
-
-        // Giảm 1 vì nhóm trưởng đã có sẵn
-        const maxAdditionalMembers = max - 1;
-
-        if (memberCount >= maxAdditionalMembers) {
-            alert("Đã đạt số lượng thành viên tối đa cho đề tài này.");
+    let selectedDeTaiId = null;
+    let selectedDeTaiName = null;
+    
+    // Xử lý nút đăng ký
+    document.getElementById("btnDangKyDeTai").addEventListener("click", function () {
+        const selectedRadio = document.querySelector("input[name='chonDeTai']:checked");
+        
+        if (!selectedRadio) {
+            Toast.warning("Vui lòng chọn một đề tài để đăng ký!");
             return;
         }
-
-        const index = memberCount + 1;
-        const memberHtml = `
-            <h5>Thành viên ${index}</h5>
-            <div class="row mb-3">
-                <div class="col-md-4">
-                    <label class="form-label">MSSV</label>
-                    <input type="text" name="members[${index}][mssv]" class="form-control"
-                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                        pattern="\\d+" title="Chỉ nhập số" required>
-                </div>
-                <div class="col-md-8">
-                    <label class="form-label">Họ và tên</label>
-                    <input type="text" name="members[${index}][hoten]" class="form-control"
-                        oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ỹ\\s]/g, '')"
-                        pattern="[a-zA-ZÀ-ỹ\\s]+" title="Chỉ nhập chữ cái và khoảng trắng" required>
-                </div>
-            </div>
-        `;
-
-        memberContainer.insertAdjacentHTML("beforeend", memberHtml);
-        memberCount++;
+        
+        selectedDeTaiId = selectedRadio.value;
+        selectedDeTaiName = selectedRadio.dataset.title;
+        
+        // Hiển thị toast confirm
+        Toast.confirm(
+            `Bạn có chắc chắn muốn đăng ký đề tài: <strong>${selectedDeTaiName}</strong>?`,
+            function() {
+                // Xác nhận - hiển thị loading và chuyển trang
+                LoadingSpinner.show('Đang đăng ký đề tài...');
+                window.location.href = "./DangKyDeTaiMoi?iddetai=" + selectedDeTaiId;
+            }
+        );
     });
+    
+
 });
 </script>
