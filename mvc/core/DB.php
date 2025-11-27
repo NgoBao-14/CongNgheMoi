@@ -1,19 +1,6 @@
 <?php
 class DB {
     public $connect;
-
-    protected $servername = "localhost";
-    protected $username = "bao";
-    protected $password = "123456";
-    protected $dbname = "thongtinmay";
-
-    public $api = "http://localhost:1111/CongNgheMoi/mvc/api/";
-
-    function __construct(){
-        $this->connect = mysqli_connect($this->servername, $this->username, $this->password);
-        mysqli_select_db($this->connect, $this->dbname);
-        mysqli_query($this->connect, "SET NAMES 'utf8'");
-
     public $api;
     
     private function getApiUrl() {
@@ -33,7 +20,6 @@ class DB {
         
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         return $protocol . '://' . $host . $basePath . '/mvc/api/';
-
     }
     
     function __construct() {
