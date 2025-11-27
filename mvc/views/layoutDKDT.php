@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="../public/css/sinhvien.css">
     <link rel="stylesheet" href="../public/css/xemdetai.css">
+    <link rel="stylesheet" href="../public/css/loading.css">
+    <link rel="stylesheet" href="../public/css/toast.css">
 </head>
 <body>
     <div class="container p-0">
@@ -31,6 +33,8 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../public/js/toast.js"></script>
+    <script src="../public/js/loading.js"></script>
     
 </body>
 </html>

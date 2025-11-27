@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Toast CSS -->
+    <link rel="stylesheet" href="./public/css/toast.css">
     <style>
         body {
             background-color: #Fatal error: Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'c4ca4238a0b923820dcc509a6f75849b'' at line 17 in C:\xampp\htdocs\CongNgheMoi\mvc\model\mLogin.php:21 Stack trace: #0 C:\xampp\htdocs\CongNgheMoi\mvc\model\mLogin.php(21): mysqli_query(Object(mysqli), 'SELECT \r\n ...') #1 C:\xampp\htdocs\CongNgheMoi\mvc\controllers\Login.php(9): mLogin->GetDN('' or 1=1 --', 'c4ca4238a0b9238...') #2 C:\xampp\htdocs\CongNgheMoi\mvc\core\App.php(28): Login->SayHi() #3 C:\xampp\htdocs\CongNgheMoi\index.php(7): App->__construct() #4 {main} thrown in C:\xampp\htdocs\CongNgheMoi\mvc\model\mLogin.php on line 21;
@@ -353,5 +355,7 @@
 
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Toast JS -->
+    <script src="./public/js/toast.js"></script>
 </body>
 </html>

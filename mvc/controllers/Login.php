@@ -1,4 +1,6 @@
 <?php
+require_once "./mvc/helpers/ToastHelper.php";
+
 class Login extends Controller {
     public function SayHi() {
         if (isset($_POST['btndn'])) {
@@ -27,6 +29,24 @@ class Login extends Controller {
                 $_SESSION['idNganh'] = $r['IDNganh'];
                 $_SESSION['PQ'] = $r['PQ'];
 
+
+                // Chuyển hướng theo phân quyền
+                switch ($r['PQ']) {
+                    case '1':
+                        ToastHelper::success('Đăng nhập thành công!', '/CongNgheMoi/GiangVien/');
+                        break;
+                    case '2':
+                        ToastHelper::success('Đăng nhập thành công!', '/CongNgheMoi/SinhVien/');
+                        break;
+                    case '3':
+                        ToastHelper::success('Đăng nhập thành công!', '/CongNgheMoi/Admin/');
+                        break;
+                    case '4':
+                        ToastHelper::success('Đăng nhập thành công!', '/CongNgheMoi/TruongKhoa/');
+                        break;
+                    default:
+                        ToastHelper::success('Đăng nhập thành công!', '/CongNgheMoi/');
+
                 // Lấy base path (hỗ trợ cả XAMPP và Docker)
                 $basePath = defined('BASE_PATH') ? BASE_PATH : '/CongNgheMoi';
                 
@@ -46,11 +66,15 @@ class Login extends Controller {
                         break;
                     default:
                         $redirectUrl = $basePath . '/';
+
                         break;
                 }
                 
                 echo "<script>alert('Đăng nhập thành công'); window.location.href='" . $redirectUrl . "';</script>";
                 exit;
+
+            } else {
+                ToastHelper::error('Sai tên đăng nhập hoặc mật khẩu!', 'Login');
                 } else {
                     echo "<script>alert('Sai tên đăng nhập hoặc mật khẩu'); window.location.href='Login';</script>";
                     exit;
@@ -59,6 +83,7 @@ class Login extends Controller {
                 // Log lỗi và chuyển đến trang 404
                 error_log("Login error: " . $e->getMessage());
                 header("Location: /CongNgheMoi/Error404");
+
                 exit;
             }
         }

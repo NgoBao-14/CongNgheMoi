@@ -11,6 +11,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cổng Đăng Ký Học Phần Sinh Viên - IUH</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./public/css/loading.css">
+    <link rel="stylesheet" href="./public/css/toast.css">
 </head>
 <body>
     <div class="container p-0">
@@ -57,14 +59,16 @@ echo'
 
                 <div class="col-md-7">
                     <div class="student-details">
-                        <?php
-                        $nhom = $data['nhom'];
-                        if (isset($nhom)) {
-                            echo '<div class="detail-item text-primary"><a href="./DeTaiDK" style="text-decoration: none;">THÔNG TIN ĐỀ TÀI</a></div>';
-                        } else {
-                            echo '<div class="detail-item text-primary"><a href="./DeTai" style="text-decoration: none;">ĐĂNG KÝ ĐỀ TÀI</a></div>';
-                        }
-                        ?>
+                        <div class="detail-item text-primary"><a href="./DeTai" style="text-decoration: none;" onclick="if(typeof LoadingSpinner !== 'undefined') LoadingSpinner.show('Đang tải...')">ĐĂNG KÝ ĐỀ TÀI</a></div>
+                        <div class="detail-item text-primary"><a href="./ThongTinDeTai" style="text-decoration: none;" onclick="if(typeof LoadingSpinner !== 'undefined') LoadingSpinner.show('Đang tải...')">THÔNG TIN ĐỀ TÀI</a></div>
+                    </div>
+                </div>
+                
+                <div class="col-md-2">
+                    <div class="student-details">
+                        <div class="detail-item text-primary"><a href="./TieuChiDanhGia" style="text-decoration: none;" onclick="if(typeof LoadingSpinner !== 'undefined') LoadingSpinner.show('Đang tải...')">TIÊU CHÍ ĐÁNH GIÁ</a></div>
+                        <div class="detail-item text-primary"><a href="./LichSuDangKy" style="text-decoration: none;" onclick="if(typeof LoadingSpinner !== 'undefined') LoadingSpinner.show('Đang tải...')">LỊCH SỬ ĐĂNG KÝ</a></div>
+                        <div class="detail-item text-primary"><a href="./DoiMatKhau" style="text-decoration: none;" onclick="if(typeof LoadingSpinner !== 'undefined') LoadingSpinner.show('Đang tải...')">ĐỔI MẬT KHẨU</a></div>
                     </div>
                 </div>
             </div>
@@ -115,6 +119,8 @@ echo'
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./public/js/toast.js"></script>
+    <script src="./public/js/loading.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
