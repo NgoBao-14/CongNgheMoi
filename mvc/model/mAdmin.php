@@ -195,7 +195,30 @@
         }
         public function GetChucVu()
         {
-            $str = "SELECT * FROM phanquyen order by PhanQuyen";
+            // Tạo bảng chucvu nếu chưa tồn tại
+            $createTable = "CREATE TABLE IF NOT EXISTS chucvu (
+                idCV INT AUTO_INCREMENT PRIMARY KEY,
+                ChucVu VARCHAR(100) NOT NULL
+            )";
+            $this->connect->query($createTable);
+            
+            // Kiểm tra và thêm dữ liệu mẫu nếu bảng rỗng
+            $checkData = "SELECT COUNT(*) as total FROM chucvu";
+            $result = $this->connect->query($checkData);
+            $row = $result->fetch_assoc();
+            
+            if ($row['total'] == 0) {
+                $insertData = "INSERT INTO chucvu (ChucVu) VALUES 
+                    ('Giảng viên'),
+                    ('Giảng viên chính'),
+                    ('Phó Giáo sư'),
+                    ('Giáo sư'),
+                    ('Trưởng khoa'),
+                    ('Phó trưởng khoa')";
+                $this->connect->query($insertData);
+            }
+            
+            $str = "SELECT * FROM chucvu ORDER BY ChucVu";
             $result = $this->connect->query($str);
             $data = [];
             while ($row = $result->fetch_assoc()) {

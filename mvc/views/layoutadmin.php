@@ -1,7 +1,7 @@
 <?php
     if($_SESSION["PQ"] != 3){
-        echo "<script>alert('Bạn không có quyền truy cập')</script>";
-        header("refresh: 0; url='/CongNgheMoi'");
+        echo "<script>alert('Bạn không có quyền truy cập'); window.location.href='" . base_url('/') . "';</script>";
+        exit;
     }
 ?>
 <!DOCTYPE html>
@@ -31,7 +31,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="http://localhost:8080/CongNgheMoi/Admin/" class="nav-link">Home</a>
+        <a href="<?= base_url('/Admin/') ?>" class="nav-link">Home</a>
       </li>
       <!-- <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contact</a>

@@ -23,6 +23,7 @@
             }
             $this->view("layoutadmin", [
                 "Page" => "Dashboard",
+                "active" => "dashboard",
                 "sinhvien" => $sinhvien,
                 "giangvien" => $giangvien,
                 "detai" => $detai,
@@ -44,6 +45,7 @@
             
             $this->view("layoutadmin", [
                 "Page" => "QuanLySV",
+                "active" => "quanlysv",
                 "khoa" => $khoa,
                 "sinhvien" => $sinhvien,
             ]);
@@ -97,12 +99,14 @@
                 }
                 $this->view("layoutadmin", [
                     "Page" => "ThemSinhVien",
+                    "active" => "themsv",
                     "khoa" => $khoa,
                     "rs" => $rs,
                 ]);
             }
             $this->view("layoutadmin", [
                 "Page" => "ThemSinhVien",
+                "active" => "themsv",
                 "khoa" => $khoa,
             ]);
         }
@@ -119,6 +123,7 @@
             
             $this->view("layoutadmin", [
                 "Page" => "QuanLyGV",
+                "active" => "quanlygv",
                 "khoa" => $khoa,
                 "giangvien" => $giangvien,
             ]);
@@ -172,6 +177,7 @@
                 }
                 $this->view("layoutadmin", [
                     "Page" => "ThemGiangVien",
+                    "active" => "themgv",
                     "khoa" => $khoa,
                     "chucvu" => $chucvu,
                     "rs" => $rs,
@@ -179,6 +185,7 @@
             }
             $this->view("layoutadmin", [
                 "Page" => "ThemGiangVien",
+                "active" => "themgv",
                 "khoa" => $khoa,
                 "chucvu" => $chucvu,
             ]);
@@ -196,6 +203,7 @@
             
             $this->view("layoutadmin", [
                 "Page" => "QuanLyDT",
+                "active" => "dsdetai",
                 "khoa" => $khoa,
                 "detai" => $detai,
             ]);

@@ -1,0 +1,37 @@
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Logs
+logs/*
+!logs/.gitkeep
+
+# Uploads (mount riêng)
+public/uploads/*
+!public/uploads/.gitkeep
+
+# Docker files
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Documentation
+*.md
+!README.md
+
+# Test files
+testlaythongtinmay/
+test_*.php
+
+# Windows
+*.exe
+Thumbs.db
+
+# Vendor sẽ được cài trong container
+# vendor/
