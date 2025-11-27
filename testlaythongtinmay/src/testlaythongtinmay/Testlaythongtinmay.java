@@ -29,7 +29,8 @@ public class Testlaythongtinmay {
         mycls cls = new mycls();
         if(cls.docfile()==null)
         {
-        formDangNhap fm = new formDangNhap();
+        // Sử dụng form đăng nhập mới với giao diện đẹp
+        ModernLoginForm fm = new ModernLoginForm();
         fm.setVisible(true);
         }
         else
@@ -45,7 +46,7 @@ public class Testlaythongtinmay {
                 String iduser = String.valueOf(jon.getInt("iduser")); 
                 String pq = jon.getString("PQ");
                 String name = jon.getString("name");
-                myform mf = new myform(iduser,name);
+                ModernMainForm mf = new ModernMainForm(iduser,name);
                 mf.setVisible(true);
                 
                 }catch(Exception e)

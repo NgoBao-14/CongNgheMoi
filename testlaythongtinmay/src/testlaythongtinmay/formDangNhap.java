@@ -27,6 +27,10 @@ import oshi.hardware.PhysicalMemory;
 import oshi.software.os.OperatingSystem;
 import oshi.software.os.FileSystem;
 import oshi.software.os.OSFileStore;
+
+import java.awt.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.BorderFactory;
 /**
  *
  * @author admin
