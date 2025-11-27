@@ -27,25 +27,59 @@ echo '
             border-radius: 1rem;
             border: 1px solid #E2E8F0;
             overflow: hidden;
+            max-height: calc(100vh - 350px);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .table-wrapper {
+            overflow-y: auto;
+            overflow-x: auto;
+            flex: 1;
+        }
+        
+        /* Custom scrollbar */
+        .table-wrapper::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        .table-wrapper::-webkit-scrollbar-track {
+            background: #F1F5F9;
+            border-radius: 4px;
+        }
+        
+        .table-wrapper::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 4px;
+        }
+        
+        .table-wrapper::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
         }
         
         .data-table {
             margin: 0;
+            width: 100%;
         }
         
         .data-table thead {
-            background: #F8FAFC;
-            border-bottom: 2px solid #E2E8F0;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
         }
         
         .data-table thead th {
             padding: 1rem;
             font-size: 0.75rem;
             font-weight: 700;
-            color: #64748B;
+            color: white;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             border: none;
+            white-space: nowrap;
         }
         
         .data-table tbody td {
@@ -128,7 +162,7 @@ echo '              </select>
 
         <!-- Table -->
         <div class="table-container">
-            <div class="table-responsive">
+            <div class="table-wrapper">
                 <table class="table data-table">
                     <thead>
                         <tr>

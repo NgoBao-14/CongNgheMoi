@@ -113,4 +113,30 @@ public class mycls {
 
         return new String(decrypted);
     }
+    
+    /**
+     * Xóa token khi đăng xuất
+     * Xóa toàn bộ nội dung file token
+     */
+    public void xoaToken() throws IOException {
+        File file = new File("json_token.txt");
+        if (file.exists()) {
+            // Ghi chuỗi rỗng để xóa nội dung token
+            FileWriter writer = new FileWriter(file);
+            writer.write("");
+            writer.close();
+            System.out.println("Đã xóa token thành công");
+        }
+    }
+    
+    /**
+     * Kiểm tra xem có token hợp lệ không
+     */
+    public boolean coTokenHopLe() {
+        try {
+            return docfile() != null;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
