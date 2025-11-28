@@ -2,11 +2,23 @@
 class mDKDT extends DB {
     
     public function getTTDeTai($iduser) {
-        $param = "?key=".$_ENV['API_KEY']."&iduser=$iduser";
-            $url = $this->api."getTTDeTai.php".$param;
-
-                $results=$this->docjson($url);
-                return json_encode($results);
+        // Lấy danh sách đề tài và đếm số lượng sinh viên đã đăng ký
+        $sql = "SELECT 
+                dt.*,
+                CONCAT(u.HoDem, ' ', u.Ten) AS ten_giang_vien,
+                (SELECT COUNT(*) FROM dangkydetai WHERE IDDeTai = dt.IDDeTai) AS SoLuongDaDangKy
+                FROM detai dt
+                JOIN giangvien gv ON dt.IDGV = gv.MaGV
+                JOIN user u ON gv.iduser = u.iduser
+                WHERE dt.TrangThaiDeTai = 'Đã duyệt'
+                ORDER BY dt.IDDeTai";
+        
+        $result = mysqli_query($this->connect, $sql);
+        $mang = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            $mang[] = $row;
+        }
+        return json_encode($mang);
     }
 
     // Đăng ký đề tài - lưu vào bảng dangkydetai

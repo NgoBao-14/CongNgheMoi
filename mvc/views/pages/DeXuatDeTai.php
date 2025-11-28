@@ -74,99 +74,77 @@
 
 <?php
 require_once "./mvc/views/components/sidebarGV.php";
-echo '
+?>
         <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-            <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-10">
-            <div class="form-container">
-                <div class="form-header">
-                    <h3>Thêm Đề Tài Mới</h3>
-                </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Đề xuất đề tài mới</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-md-10">
+                                    <div class="form-container">
+                                        <div class="form-header">
+                                            <h3>Thêm Đề Tài Mới</h3>
+                                        </div>
 
-                <div id="successMessage" class="success-message d-none">
-                    <i class="fas fa-check-circle me-2"></i>Đề tài đã được thêm thành công!
-                </div>
+                                        <div id="successMessage" class="success-message d-none">
+                                            <i class="fas fa-check-circle me-2"></i>Đề tài đã được thêm thành công!
+                                        </div>
 
-                <div id="errorMessage" class="error-message d-none">
-                    <i class="fas fa-exclamation-circle me-2"></i>Vui lòng điền đầy đủ thông tin!
-                </div>
+                                        <div id="errorMessage" class="error-message d-none">
+                                            <i class="fas fa-exclamation-circle me-2"></i>Vui lòng điền đầy đủ thông tin!
+                                        </div>
 
-                <form id="deTaiForm" action="" method="post">
-                    <div >
-                        <div >
-                            <div class="form-floating mb-3">
-                                <label for="TenDeTai">Tên đề tài</label>
-                                <input type="text" name="TenDeTai" class="form-control" placeholder="Tên đề tài" required>
-                                
-                            </div>
+                                        <form id="deTaiForm" action="" method="post">
+                                            <div>
+                                                <div class="form-floating mb-3">
+                                                    <label for="TenDeTai">Tên đề tài</label>
+                                                    <input type="text" name="TenDeTai" class="form-control" placeholder="Tên đề tài" required>
+                                                </div>
 
-                            <div class="form-floating mb-3">
-                                <label for="Mota">Mô tả đề tài</label>
-                                <textarea name="Mota" class="form-control" placeholder="Mô tả đề tài" style="height: 100px;" required></textarea>
-                            </div>
-                        </div>
+                                                <div class="form-floating mb-3">
+                                                    <label for="Mota">Mô tả đề tài</label>
+                                                    <textarea name="Mota" class="form-control" placeholder="Mô tả đề tài" style="height: 100px;" required></textarea>
+                                                </div>
+                                            </div>
 
-                        <div >
-                            <div class="form-floating mb-3">
-                                <label for="YeuCau">Yêu cầu đề tài</label>
-                                <textarea name="YeuCau" class="form-control" placeholder="Yêu cầu đề tài" style="height: 100px;" required></textarea>
-                            </div>
+                                            <div>
+                                                <div class="form-floating mb-3">
+                                                    <label for="YeuCau">Yêu cầu đề tài</label>
+                                                    <textarea name="YeuCau" class="form-control" placeholder="Yêu cầu đề tài" style="height: 100px;" required></textarea>
+                                                </div>
 
-                            <div class="form-floating mb-3">
-                                <label for="soLuongTV">Số lượng thành viên</label>
-                                <input type="number" name="soLuongTV" class="form-control" placeholder="Số lượng thành viên" min="1" max="5" required>
+                                                <div class="form-floating mb-3">
+                                                    <label for="soLuongTV">Số lượng thành viên</label>
+                                                    <input type="number" name="soLuongTV" class="form-control" placeholder="Số lượng thành viên" min="1" max="5" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-footer text-center">
+                                                <button type="submit" name="btnDeXuat" class="btn btn-primary btn-lg px-5 me-3">
+                                                    <i class="fas fa-plus me-2"></i> Thêm đề tài
+                                                </button>
+                                                <button type="reset" class="btn btn-outline-secondary btn-lg px-5">
+                                                    <i class="fas fa-times me-2"></i> Hủy
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="form-footer text-center">
-                        <button type="submit" name="btnDeXuat" class="btn btn-primary btn-lg px-5 me-3">
-                            <i class="fas fa-plus me-2"></i> Thêm đề tài
-                        </button>
-                        <button type="reset" class="btn btn-outline-secondary btn-lg px-5">
-                            <i class="fas fa-times me-2"></i> Hủy
-                        </button>
-                    </div>
-                </form>
-            </div>
+                </div>
             </div>
         </div>
-    </div>
-            </div>
-            </div>
-        </div>
-        </div>
-            
 
 <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const studentForm = document.getElementById('studentForm');
-            const cancelBtn = document.getElementById('cancelBtn');
-            const successMessage = document.getElementById('successMessage');
-            const errorMessage = document.getElementById('errorMessage');
-            
-     
-            cancelBtn.addEventListener('click', function() {
-                studentForm.reset();
-                successMessage.style.display = 'none';
-                errorMessage.style.display = 'none';
-            });
-            
-      
-            const formInputs = document.querySelectorAll('.form-control');
-            formInputs.forEach(input => {
-                input.addEventListener('focus', function() {
-                    this.parentElement.style.transform = 'translateY(-5px)';
-                    this.parentElement.style.transition = 'transform 0.3s ease';
-                });
-                
-                input.addEventListener('blur', function() {
-                    this.parentElement.style.transform = 'translateY(0)';
-                });
-            });
-        });
-    </script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const deTaiForm = document.getElementById('deTaiForm');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+    });
+</script>

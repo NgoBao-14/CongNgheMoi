@@ -1,16 +1,14 @@
 <?php
+require_once "./mvc/helpers/ToastHelper.php";
+
 class DoiMatKhau extends Controller {
     
     function SayHi(){
         // Kiểm tra đã đăng nhập chưa
         if(!isset($_SESSION["iduser"])){
-            echo "<script>alert('Vui lòng đăng nhập')</script>";
-            header("refresh: 0; url='/CongNgheMoi'");
+            ToastHelper::error('Vui lòng đăng nhập', '/CongNgheMoi');
             return;
         }
-
-        // Không cho phép admin đổi mật khẩu (nếu có PQ = 5 hoặc khác)
-        // Hiện tại cho phép tất cả PQ = 1, 2, 3, 4
 
         $iduser = $_SESSION['iduser'];
         $model = $this->model("mDoiMatKhau");
@@ -23,7 +21,7 @@ class DoiMatKhau extends Controller {
 
             // Kiểm tra mật khẩu mới và xác nhận có khớp không
             if ($matKhauMoi !== $xacNhanMatKhau) {
-                echo "<script>alert('Mật khẩu mới và xác nhận mật khẩu không khớp!');</script>";
+                ToastHelper::error('Mật khẩu mới và xác nhận mật khẩu không khớp!');
             } else {
                 // Kiểm tra mật khẩu cũ
                 $checkOldPass = json_decode($model->checkOldPassword($iduser, $matKhauCu), true);
@@ -34,13 +32,12 @@ class DoiMatKhau extends Controller {
                     $result = json_decode($model->changePassword($iduser, $matKhauMoiMD5), true);
                     
                     if ($result) {
-                        echo "<script>alert('Đổi mật khẩu thành công!');</script>";
-                        header("refresh: 0; url='/CongNgheMoi/DoiMatKhau'");
+                        ToastHelper::success('Đổi mật khẩu thành công!', '/CongNgheMoi/DoiMatKhau');
                     } else {
-                        echo "<script>alert('Đổi mật khẩu thất bại!');</script>";
+                        ToastHelper::error('Đổi mật khẩu thất bại!');
                     }
                 } else {
-                    echo "<script>alert('Mật khẩu cũ không đúng!');</script>";
+                    ToastHelper::error('Mật khẩu cũ không đúng!');
                 }
             }
         }
@@ -55,8 +52,8 @@ class DoiMatKhau extends Controller {
             ]);
         } elseif ($pq == 2) {
             // Sinh viên
-            $this->view("layoutSV", [
-                "Page" => "DoiMatKhau"
+            $this->view("layoutSinhVien", [
+                "Page" => "SV_DoiMatKhau"
             ]);
         } elseif ($pq == 4) {
             // Trưởng khoa

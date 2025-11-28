@@ -3,6 +3,9 @@
         echo "<script>alert('Bạn không có quyền truy cập'); window.location.href='" . base_url('/') . "';</script>";
         exit;
     }
+    
+    // Always use absolute path for assets
+    $basePath = '/CongNgheMoi/public/';
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -12,9 +15,12 @@
     <title>Cổng Đăng Ký Học Phần Sinh Viên - IUH</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="./public/css/sidebar.css">
-    <link rel="stylesheet" href="./public/css/loading.css">
-    <link rel="stylesheet" href="./public/css/toast.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="<?php echo $basePath; ?>css/sidebar.css">
+    <link rel="stylesheet" href="<?php echo $basePath; ?>css/sinhvien.css">
+    <link rel="stylesheet" href="<?php echo $basePath; ?>css/xemdetai.css">
+    <link rel="stylesheet" href="<?php echo $basePath; ?>css/loading.css">
+    <link rel="stylesheet" href="<?php echo $basePath; ?>css/toast.css">
     <style>
         * {
             box-sizing: border-box;
@@ -30,6 +36,7 @@
             min-height: 100vh;
         }
         
+        /* Dashboard specific styles */
         .welcome-section {
             background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
             color: white;
@@ -83,6 +90,11 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 1.5rem;
+        }
+        @media (max-width: 992px) {
+            .thesis-grid {
+                grid-template-columns: 1fr;
+            }
         }
         .thesis-cell .thesis-meta-label {
             font-size: 0.75rem;
@@ -184,86 +196,65 @@
     </button>
     
     <div class="main-container">
-        <!-- Sidebar -->
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar-logo">
-                <div class="sidebar-logo-icon">
-                    <i class="bi bi-mortarboard-fill"></i>
-                </div>
-                <div class="sidebar-logo-text">University Portal</div>
-                <div class="toggle-btn" onclick="toggleSidebar()">
-                    <i class="bi bi-chevron-left" id="toggleIcon"></i>
-                </div>
-            </div>
-            
-            <div class="sidebar-menu">
-                <a href="." class="menu-item active" data-title="Bảng điều khiển">
-                    <i class="bi bi-grid-fill"></i>
-                    <span>Bảng điều khiển</span>
-                </a>
-                <a href="./DeTai" class="menu-item" data-title="Đăng Ký Đề Tài" onclick="if(typeof LoadingSpinner !== 'undefined') LoadingSpinner.show('Đang tải...')">
-                    <i class="bi bi-file-earmark-text"></i>
-                    <span>Đăng Ký Đề Tài</span>
-                </a>
-                <a href="./ThongTinDeTai" class="menu-item" data-title="Thông Tin Đề Tài" onclick="if(typeof LoadingSpinner !== 'undefined') LoadingSpinner.show('Đang tải...')">
-                    <i class="bi bi-info-circle"></i>
-                    <span>Thông Tin Đề Tài</span>
-                </a>
-                <a href="./TieuChiDanhGia" class="menu-item" data-title="Tiêu Chí Đánh Giá" onclick="if(typeof LoadingSpinner !== 'undefined') LoadingSpinner.show('Đang tải...')">
-                    <i class="bi bi-list-check"></i>
-                    <span>Tiêu Chí Đánh Giá</span>
-                </a>
-                <a href="./LichSuDangKy" class="menu-item" data-title="Lịch Sử Đăng Ký" onclick="if(typeof LoadingSpinner !== 'undefined') LoadingSpinner.show('Đang tải...')">
-                    <i class="bi bi-clock-history"></i>
-                    <span>Lịch Sử Đăng Ký</span>
-                </a>
-                <a href="./DoiMatKhau" class="menu-item" data-title="Đổi Mật Khẩu" onclick="if(typeof LoadingSpinner !== 'undefined') LoadingSpinner.show('Đang tải...')">
-                    <i class="bi bi-lock"></i>
-                    <span>Đổi Mật Khẩu</span>
-                </a>
-            </div>
-            
-            <div class="sidebar-footer">
-                <a href="/CongNgheMoi/Logout" class="logout-btn" data-title="Đăng Xuất" onclick="if(typeof LoadingSpinner !== 'undefined') LoadingSpinner.show('Đang đăng xuất...')">
-                    <i class="bi bi-box-arrow-right"></i>
-                    <span>Đăng Xuất</span>
-                </a>
-            </div>
-        </div>
+        <!-- Sidebar Component -->
+        <?php 
+        // Always use absolute path from root
+        if(file_exists("./mvc/views/blocks/sidebarSV.php")) {
+            include "./mvc/views/blocks/sidebarSV.php";
+        } else if(file_exists("blocks/sidebarSV.php")) {
+            include "blocks/sidebarSV.php";
+        }
+        ?>
 
         <!-- Main Content -->
         <div class="main-content">
-            <!-- Welcome Section -->
-            <div class="welcome-section">
-                <h2>Xin chào, <?php echo htmlspecialchars($_SESSION['ten']); ?></h2>
-                <p>Cổng Đăng Ký Đề Tài Khóa Luận Tốt Nghiệp</p>
-            </div>
+            <?php 
+            // If Page is set, load the page content
+            if(isset($data['Page']) && $data['Page'] != '') {
+                require_once "./mvc/views/pages/".$data["Page"].".php";
+            } else {
+                // Dashboard content
+                ?>
+                <!-- Welcome Section -->
+                <div class="welcome-section">
+                    <h2>Xin chào, <?php echo htmlspecialchars($_SESSION['ten']); ?></h2>
+                    <p>Cổng Đăng Ký Đề Tài Khóa Luận Tốt Nghiệp</p>
+                </div>
 
-            <!-- Status Section - Trạng Thái Khóa Luận -->
-            <div class="status-section">
-                <h3 class="section-title">Trạng Thái Khóa Luận</h3>
-                <div id="statusContent">
-                    <!-- Will be filled by JS -->
+                <!-- Status Section - Trạng Thái Khóa Luận -->
+                <div class="status-section">
+                    <h3 class="section-title">Trạng Thái Khóa Luận</h3>
+                    <div id="statusContent">
+                        <!-- Will be filled by JS -->
+                    </div>
                 </div>
-            </div>
 
-            <!-- Messages from GVHD Section -->
-            <div class="message-section">
-                <div class="message-header">
-                    <h3>Thông Báo Từ Giảng Viên Hướng Dẫn</h3>
+                <!-- Messages from GVHD Section -->
+                <div class="message-section">
+                    <div class="message-header">
+                        <h3>Thông Báo Từ Giảng Viên Hướng Dẫn</h3>
+                    </div>
+                    <div id="messageContainer">
+                        <!-- Will be filled by JS -->
+                    </div>
                 </div>
-                <div id="messageContainer">
-                    <!-- Will be filled by JS -->
-                </div>
-            </div>
+                <?php
+            }
+            ?>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="./public/js/toast.js"></script>
-    <script src="./public/js/loading.js"></script>
+    <script src="<?php echo $basePath; ?>js/toast.js"></script>
+    <script src="<?php echo $basePath; ?>js/loading.js"></script>
+    
+    <?php if(!isset($data['Page']) || $data['Page'] == ''): ?>
+    <!-- Dashboard specific scripts -->
     <script>
+        console.log('Dashboard scripts loaded');
+        
         function loadStatusAndMessages() {
+            console.log('loadStatusAndMessages called');
             loadThesisData();
             loadThongBaoGVHD();
         }
@@ -271,9 +262,10 @@
         function loadThesisData() {
             const statusDiv = document.getElementById('statusContent');
             
-            fetch('./getTTDeTaiForDashboard')
+            fetch('/CongNgheMoi/SinhVien/getTTDeTaiForDashboard')
                 .then(response => response.json())
                 .then(data => {
+                    console.log('Thesis data:', data);
                     if (data.success && data.data && data.data.TenDeTai) {
                         displayThesisInfo(data.data);
                     } else {
@@ -284,7 +276,8 @@
                         `;
                     }
                 })
-                .catch(() => {
+                .catch((error) => {
+                    console.error('Error loading thesis:', error);
                     statusDiv.innerHTML = `
                         <div class="not-registered">
                             <p>Bạn chưa đăng ký đề tài</p>
@@ -296,17 +289,9 @@
         function displayThesisInfo(thesis) {
             const statusDiv = document.getElementById('statusContent');
             
-            let badgeClass = 'status-badge-processing';
-            let statusText = thesis.TrangThaiDK || 'Đang thực hiện';
-            
-            if (statusText === 'Đã duyệt' || statusText.includes('duyệt')) {
-                badgeClass = 'status-badge-approved';
-                statusText = 'Đang thực hiện';
-            } else if (statusText.includes('Chờ')) {
-                badgeClass = 'status-badge-pending';
-            }
-
-            const hanNop = '30/11/2024';
+            // Always show "Đã đăng ký" status for registered students
+            let badgeClass = 'status-badge-approved';
+            let statusText = 'Đã đăng ký';
 
             const html = `
                 <div class="thesis-card">
@@ -318,12 +303,12 @@
                             <div class="thesis-meta-value">${escapeHtml(thesis.GiangVienHuongDan || '')}</div>
                         </div>
                         <div class="thesis-cell">
-                            <div class="thesis-meta-label">Trạng thái</div>
-                            <div class="thesis-meta-value"><span class="status-badge-inline ${badgeClass}">${escapeHtml(statusText)}</span></div>
+                            <div class="thesis-meta-label">Email giảng viên</div>
+                            <div class="thesis-meta-value">${escapeHtml(thesis.Email || 'Chưa có thông tin')}</div>
                         </div>
                         <div class="thesis-cell">
-                            <div class="thesis-meta-label">Hạn nộp tiếp theo</div>
-                            <div class="thesis-meta-value">${hanNop}</div>
+                            <div class="thesis-meta-label">Trạng thái</div>
+                            <div class="thesis-meta-value"><span class="status-badge-inline ${badgeClass}">${escapeHtml(statusText)}</span></div>
                         </div>
                     </div>
                 </div>`;
@@ -333,9 +318,10 @@
         function loadThongBaoGVHD() {
             const container = document.getElementById('messageContainer');
             
-            fetch('./getThongBaoDeTai')
+            fetch('/CongNgheMoi/SinhVien/getThongBaoDeTai')
                 .then(response => response.json())
                 .then(data => {
+                    console.log('Notification data:', data);
                     if (data.success && data.thongbao && data.thongbao.trim()) {
                         const messageLines = data.thongbao.split('\n').filter(line => line.trim());
                         let html = '';
@@ -379,6 +365,8 @@
             return text.replace(/[&<>"']/g, m => map[m]);
         }
     </script>
-    <script src="./public/js/sidebar.js"></script>
+    <?php endif; ?>
+    
+    <script src="<?php echo $basePath; ?>js/sidebar.js"></script>
 </body>
 </html>

@@ -158,5 +158,46 @@ class mGiangVien extends DB {
         
         return $diem;
     }
+
+    // Lấy danh sách đề tài đã duyệt của giảng viên để tạo thông báo
+    public function getDSDeTaiThongBao($iduser) {
+        $str = "SELECT dt.IDDeTai, dt.TenDeTai, dt.MoTa, dt.YeuCau, dt.ThongBao
+                FROM detai dt
+                JOIN giangvien gv ON dt.IDGV = gv.MaGV
+                JOIN user u ON gv.IDUser = u.IDUser
+                WHERE u.IDUser = $iduser AND dt.TrangThaiDeTai = 'Đã duyệt'
+                ORDER BY dt.TenDeTai";
+        $result = mysqli_query($this->connect, $str);
+        $mang = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            $mang[] = $row;
+        }
+        return json_encode($mang);
+    }
+
+    // Cập nhật thông báo cho đề tài
+    public function capNhatThongBao($IDDeTai, $ThongBao) {
+        $IDDeTai = intval($IDDeTai);
+        $ThongBao = mysqli_real_escape_string($this->connect, $ThongBao);
+        $str = "UPDATE detai SET ThongBao = '$ThongBao' WHERE IDDeTai = $IDDeTai";
+        $result = mysqli_query($this->connect, $str);
+        return $result ? json_encode(["success" => true]) : json_encode(["success" => false]);
+    }
+
+    // Kiểm tra giảng viên có quyền sửa đề tài này không
+    public function checkGVQuyen($IDDeTai, $iduser) {
+        $IDDeTai = intval($IDDeTai);
+        $iduser = intval($iduser);
+        
+        $str = "SELECT dt.IDDeTai FROM detai dt
+                JOIN giangvien gv ON dt.IDGV = gv.MaGV
+                JOIN user u ON gv.IDUser = u.IDUser
+                WHERE dt.IDDeTai = $IDDeTai 
+                AND u.IDUser = $iduser 
+                AND dt.TrangThaiDeTai = 'Đã duyệt'";
+        
+        $result = mysqli_query($this->connect, $str);
+        return mysqli_num_rows($result) > 0;
+    }
 }
 ?>

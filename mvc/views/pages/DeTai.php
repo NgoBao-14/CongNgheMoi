@@ -55,36 +55,48 @@ if (!is_array($dt)) {
                             $i = 1;
                             if (!empty($dt) && is_array($dt)) {
                                 foreach($dt as $row){
-                                    if(isset($row['TrangThaiDK']) && isset($row['TrangThaiDeTai']) && 
-                                       $row['TrangThaiDK']==='Chưa được đăng ký' && $row['TrangThaiDeTai']==='Đã duyệt'){
-                                echo '<tr>
-                                <td class="text-center">'.$i.'</td>
-                                <td>'.htmlspecialchars($row['TenDeTai']).'</td>
-                                <td>'.htmlspecialchars(substr($row['MoTa'], 0, 100)).(strlen($row['MoTa']) > 100 ? '...' : '').'</td>
-                                <td>'.htmlspecialchars(substr($row['YeuCau'], 0, 100)).(strlen($row['YeuCau']) > 100 ? '...' : '').'</td>
-                                <td class="text-center">'.$row['SoLuongTV'].' / 4</td>
-                                <td>'.htmlspecialchars($row['ten_giang_vien']).'</td>
-                                <td class="text-center">
-                                    <button 
-                                        class="btn btn-success btn-sm" 
-                                        style="background-color: #28a745; border-color: #28a745; color: #fff; border-radius: 5px; padding: 2px 8px;"
-                                    >Đăng mở</button>
-                                </td>
-                                <td class="text-center">
-                                    <input type="radio" name="chonDeTai" value="'.$row['IDDeTai'].'" 
-                                        data-title="'.htmlspecialchars($row['TenDeTai'], ENT_QUOTES).'"
-                                        data-giangvien="'.htmlspecialchars($row['ten_giang_vien'], ENT_QUOTES).'"
-                                        data-mota="'.htmlspecialchars($row['MoTa'], ENT_QUOTES).'"
-                                        data-yeucau="'.htmlspecialchars($row['YeuCau'], ENT_QUOTES).'"
-                                        data-sltoida="'.$row['SoLuongTV'].'"
-                                        class="form-check-input">
-                                </td>
-                                </tr>';
-                                        $i++;
-                                    }
+                                    // Kiểm tra số lượng đã đăng ký
+                                    $soLuongDaDangKy = isset($row['SoLuongDaDangKy']) ? $row['SoLuongDaDangKy'] : 0;
+                                    $soLuongToiDa = $row['SoLuongTV'];
+                                    $isDayDu = $soLuongDaDangKy >= $soLuongToiDa;
+                                    
+                                    // Class cho row nếu đã đủ số lượng
+                                    $rowClass = $isDayDu ? 'style="opacity: 0.5; background-color: #f5f5f5;"' : '';
+                                    $disabledAttr = $isDayDu ? 'disabled' : '';
+                                    
+                                    echo '<tr '.$rowClass.'>
+                                    <td class="text-center">'.$i.'</td>
+                                    <td>'.htmlspecialchars($row['TenDeTai']).'</td>
+                                    <td>'.htmlspecialchars(substr($row['MoTa'], 0, 100)).(strlen($row['MoTa']) > 100 ? '...' : '').'</td>
+                                    <td>'.htmlspecialchars(substr($row['YeuCau'], 0, 100)).(strlen($row['YeuCau']) > 100 ? '...' : '').'</td>
+                                    <td class="text-center">
+                                        <span '.($isDayDu ? 'style="color: #dc3545; font-weight: bold;"' : '').'>'
+                                            .$soLuongDaDangKy.' / '.$soLuongToiDa.
+                                        '</span>
+                                    </td>
+                                    <td>'.htmlspecialchars($row['ten_giang_vien']).'</td>
+                                    <td class="text-center">
+                                        <button 
+                                            class="btn btn-'.($isDayDu ? 'secondary' : 'success').' btn-sm" 
+                                            style="border-radius: 5px; padding: 2px 8px;"
+                                            disabled
+                                        >'.($isDayDu ? 'Đã đủ' : 'Đăng mở').'</button>
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="radio" name="chonDeTai" value="'.$row['IDDeTai'].'" 
+                                            data-title="'.htmlspecialchars($row['TenDeTai'], ENT_QUOTES).'"
+                                            data-giangvien="'.htmlspecialchars($row['ten_giang_vien'], ENT_QUOTES).'"
+                                            data-mota="'.htmlspecialchars($row['MoTa'], ENT_QUOTES).'"
+                                            data-yeucau="'.htmlspecialchars($row['YeuCau'], ENT_QUOTES).'"
+                                            data-sltoida="'.$row['SoLuongTV'].'"
+                                            class="form-check-input"
+                                            '.$disabledAttr.'>
+                                    </td>
+                                    </tr>';
+                                    $i++;
                                 }
                             } else {
-                                echo '<tr><td colspan="9" class="text-center">Không có đề tài nào để đăng ký.</td></tr>';
+                                echo '<tr><td colspan="8" class="text-center">Không có đề tài nào để đăng ký.</td></tr>';
                             }
                             
 echo '
@@ -145,6 +157,12 @@ document.addEventListener("DOMContentLoaded", function () {
         
         if (!selectedRadio) {
             Toast.warning("Vui lòng chọn một đề tài để đăng ký!");
+            return;
+        }
+        
+        // Kiểm tra nếu radio bị disabled (đề tài đã đủ)
+        if (selectedRadio.disabled) {
+            Toast.error("Đề tài này đã đủ số lượng sinh viên đăng ký!");
             return;
         }
         

@@ -60,42 +60,166 @@ echo '<!DOCTYPE html>
     <link rel="stylesheet" href="../public/css/loading.css">
     <style>
         body {
-            background-color: #f0f7ff;
+            background-color: #f5f7fa;
         }
         .card {
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            border: none;
+            transition: 0.3s;
         }
         .custom-btn {
-            margin-top: 30px;
             border: 1px solid #007dc9;
             color: #007dc9;
             background-color: transparent;
             border-radius: 8px;
             transition: 0.3s;
+            font-weight: 500;
         }
         .custom-btn:hover {
             background-color: #007dc9;
             color: white;
         }
         .section-title {
-            font-size: 1.25rem;
+            font-size: 1.35rem;
             font-weight: 700;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            color: #1a1a1a;
         }
         .status-badge {
-            font-size: 0.75rem;
-            padding: 0.25rem 0.5rem;
-            border-radius: 9999px;
+            font-size: 0.85rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
             font-weight: 600;
+            display: inline-block;
         }
         .status-approved {
-            background-color: #d1fae5;
-            color: #065f46;
+            background-color: #c6f6d5;
+            color: #22543d;
         }
-        .status-rejected {
-            background-color: #f8d7da; 
+
+        .info-label {
+            font-size: 0.9rem;
+            color: #717171;
+            font-weight: 500;
+            margin-bottom: 0.4rem;
+        }
+        .info-value {
+            font-size: 1rem;
+            color: #1a1a1a;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+        }
+        .detai-header {
+            background: linear-gradient(135deg, #007dc9 0%, #0066a1 100%);
+            color: white;
+            padding: 1rem;
+            // border-radius: 10px 10px 0 0;
+            // margin-bottom: 1rem;
+        }
+        .detai-header h5 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 0;
+            line-height: 1.4;
+        }
+        .detai-content {
+            padding: 1.2rem;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        @media (max-width: 768px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .info-item .info-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #717171;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .info-item .info-value {
+            font-size: 1.05rem;
+            color: #1a1a1a;
+            font-weight: 500;
+            margin: 0;
+        }
+        .details-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        @media (max-width: 992px) {
+            .details-section {
+                grid-template-columns: 1fr;
+            }
+        }
+        .detail-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%);
+            padding: 1.25rem;
+            border-radius: 10px;
+            border-left: 4px solid #007dc9;
+        }
+        .detail-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin: 0 0 0.75rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .detail-text {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #555;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 0;
+        }
+        .feature-card {
+            // background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid #e6e5e5ff;
+            transition: 0.3s;
+            
+        }
+        .feature-card .custom-btn {
+            border: 1px solid #b4b4b4ff;
+        }
+        .feature-card .custom-btn:hover {
+            background-color: #007dc9;
+            color: white;
+        }
+        .feature-card h6 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+        .feature-card p {
+            font-size: 0.9rem;
+            color: #717171;
+            margin: 0;
         }
     </style>
 </head>
@@ -110,176 +234,139 @@ echo '<!DOCTYPE html>
             </nav>
         </div>
     </div>
-    <div class="container py-4 border">
-        <h1 class="text-center fw-bold mb-5">THÔNG TIN ĐỀ TÀI ĐĂNG KÝ</h1>
+    <div class="container py-4">
+        <h1 class="text-center fw-bold mb-4">THÔNG TIN ĐỀ TÀI ĐĂNG KÝ</h1>
         
-        <div class="row col">
-            <div class="col-md-3">
-                <div class="card text-center" style="height: 96%;">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-center mb-3">
-                            <div>
-                                <h5 class="card-title fw-bold mb-3">THÔNG TIN GIẢNG VIÊN HƯỚNG DẪN</h5>
-                            </div>
-                        </div>';
-                        foreach($dtdk as $row):
-echo'
-                        <div class="mt-2 text-start">
-                            <h6 style="color:#9C9C9C;">Họ tên:</h6>
-                            <p class="fw-bolder fs-6">'.htmlspecialchars($row["GiangVienHuongDan"]).'</p>
-                            <h6 style="color:#9C9C9C;">Số điện thoại:</h6>
-                            <p class="fw-bolder fs-6">'.htmlspecialchars($row["SDT"]).'</p>
-                            <h6 style="color:#9C9C9C;">Email:</h6>
-                            <p class="fw-bolder fs-6">'.htmlspecialchars($row["Email"]).'</p>
-                            <h6 style="color:#9C9C9C;">Khoa:</h6>
-                            <p class="fw-bolder fs-6">'.htmlspecialchars($row["ChuyenNganh"]).'</p>
-                        </div>';
-                        endforeach;
-echo'
-                    </div>
+        <!-- 3 Khung nổi bật ở trên cùng -->
+        <div class="row mb-5">
+            <div class="col-md-4 mb-3">
+                <div class="feature-card">
+                    <h6><i class="bi bi-bell-fill" style="color: #007dc9; margin-right: 0.5rem;"></i>THÔNG BÁO ĐỀ TÀI</h6>
+                    <p>Nhận ghi chú từ giảng viên</p>
+                    <button class="btn btn-sm custom-btn mt-2 w-100" data-bs-toggle="modal" data-bs-target="#thongBaoModal">
+                        <i class="bi bi-eye"></i> Xem thông báo
+                    </button>
                 </div>
             </div>
-            <div class="col-md-9">
-                <div class="row">
-                    <div class="col-md-6 col-lg-4 mb-3">
-                        <div class="card h-70 text-center">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-center mb-3">
-                                    <div>
-                                        <h5 class="card-title fw-bold mb-0">THÔNG BÁO ĐỀ TÀI TỪ GVHD</h5>
-                                        <p class="card-text small">Nhận ghi chú từ giảng viên</p>
-                                    </div>
-                                </div>
-                                <button class="p-1 w-100 custom-btn" data-bs-toggle="modal" data-bs-target="#thongBaoModal">Xem thông báo</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6 col-lg-4 mb-3">
-                        <div class="card h-70 text-center">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-center mb-3">
-                                    <div>
-                                        <h5 class="card-title fw-bold mb-0">TIÊU CHÍ ĐÁNH GIÁ</h5>
-                                        <p class="card-text small">Khung đánh giá khóa luận</p>
-                                    </div>
-                                </div>
-                                <button class="p-1 w-100 custom-btn" data-bs-toggle="modal" data-bs-target="#tieuChiModal">Xem tiêu chí</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6 col-lg-4 mb-3">
-                        <div class="card h-70 text-center">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-center mb-3">
-                                    <div>
-                                        <h5 class="card-title fw-bold mb-0">KẾT QUẢ CHẤM</h5>
-                                        <p class="card-text small">Từ giảng viên hướng dẫn</p>
-                                    </div>     
-                                </div>
-                                <button class="p-1 w-100 custom-btn" data-bs-toggle="modal" data-bs-target="#ketQuaChamModal">Xem kết quả</button>
-                            </div>
-                        </div>
-                    </div>
+            
+            <div class="col-md-4 mb-3">
+                <div class="feature-card">
+                    <h6><i class="bi bi-clipboard-check" style="color: #007dc9; margin-right: 0.5rem;"></i>TIÊU CHÍ ĐÁNH GIÁ</h6>
+                    <p>Khung đánh giá khóa luận</p>
+                    <button class="btn btn-sm custom-btn mt-2 w-100" data-bs-toggle="modal" data-bs-target="#tieuChiModal">
+                        <i class="bi bi-eye"></i> Xem tiêu chí
+                    </button>
                 </div>
-                
-                <div class="row">
-                    <div class="col-12">
-                        <h2 class="section-title">THÔNG TIN ĐỀ TÀI ĐĂNG KÝ</h2>
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">';
-                                foreach($dtdk as $row){
-                                    echo'
-                                    <div class="col-md-6 ">
-                                        <h6  style="margin:0;color:#9C9C9C;">Tên đề tài</h6>
-                                        <p class="fw-semibold fs-6">'.htmlspecialchars($row["TenDeTai"]).'</p>
+            </div>
+            
+            <div class="col-md-4 mb-3">
+                <div class="feature-card">
+                    <h6><i class="bi bi-star-fill" style="color: #007dc9; margin-right: 0.5rem;"></i>KẾT QUẢ CHẤM</h6>
+                    <p>Từ giảng viên hướng dẫn</p>
+                    <button class="btn btn-sm custom-btn mt-2 w-100" data-bs-toggle="modal" data-bs-target="#ketQuaChamModal">
+                        <i class="bi bi-eye"></i> Xem kết quả
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thông tin đề tài đăng ký - Gộp GVHD + Đề tài -->
+        <h2 class="section-title">THÔNG TIN ĐỀ TÀI & GIẢNG VIÊN HƯỚNG DẪN</h2>
+        <div class="card">';
+                        foreach($dtdk as $row){
+                            echo '
+                            <div class="detai-header">
+                                <h5>'.htmlspecialchars($row["TenDeTai"]).'</h5>
+                            </div>
+                            <div class="detai-content">
+                                <!-- Info Grid - Gọn gàng -->
+                                <div class="info-grid">
+                                    <div class="info-item">
+                                        <span class="info-label"><i class="bi bi-person-fill"></i> GVHD</span>
+                                        <span class="info-value">'.htmlspecialchars($row["GiangVienHuongDan"]).'</span>
                                     </div>
-                                    <div class="col-md-6 ">
-                                        <h6  style="margin:0;color:#9C9C9C;">Giảng viên hướng dẫn</h6>
-                                        <p class="fw-semibold fs-6">'.htmlspecialchars($row["GiangVienHuongDan"]).'</p>
-                                    </div>
-                                    <div class="col-md-6 ">
-                                        <h6  style="margin:0;color:#9C9C9C;">Trạng thái đề tài</h6>
-                                        <span class="status-badge status-rejected">
-                                        '.$row["TrangThaiDK"].'
+                                    <div class="info-item">
+                                        <span class="info-label"><i class="bi bi-check-circle"></i> Trạng thái</span>
+                                        <span class="status-badge status-approved">
+                                            '.$row["TrangThaiDK"].'
                                         </span>
                                     </div>
-                                    <div class="col-md-6 ">
-                                        <h6  style="margin:0;color:#9C9C9C;">Niên khóa</h6>
-                                        <p class="fw-semibold fs-6">2024-2025</p>
+                                    <div class="info-item">
+                                        <span class="info-label"><i class="bi bi-building"></i> Khoa</span>
+                                        <span class="info-value">'.htmlspecialchars($row["ChuyenNganh"]).'</span>
                                     </div>
-                                    <div class="col-md-6 ">
-                                        <h6  style="margin:0;color:#9C9C9C;">Khoa/Bộ môn</h6>
-                                        <p class="fw-semibold fs-6">'.htmlspecialchars($row["ChuyenNganh"]).'</p>
-                                    </div>
-                                    <div class="col-md-6 ">
-                                        <h6 class="text-muted " style="margin:0;">Hội đồng</h6>
-                                        <p class="fw-semibold fs-6">Hội đồng khoa '.htmlspecialchars($row["ChuyenNganh"]).'</p>
+                                    <div class="info-item">
+                                        <span class="info-label"><i class="bi bi-envelope"></i> Email</span>
+                                        <span class="info-value">
+                                            <a href="mailto:'.htmlspecialchars($row["Email"]).'" style="color: #007dc9; text-decoration: none;">
+                                                '.htmlspecialchars($row["Email"]).'
+                                            </a>
+                                        </span>
                                     </div>
                                 </div>
-                                <div >
-                                    <button class="btn btn-primary me-2 view-details" data-id="'.$row['IDDeTai'].'"
-                                                        data-title="'.htmlspecialchars($row['TenDeTai'], ENT_QUOTES).'"
-                                                        data-giangvien="'.htmlspecialchars($row['GiangVienHuongDan'], ENT_QUOTES).'"
-                                                        data-mota="'.htmlspecialchars($row['MoTa'], ENT_QUOTES).'"
-                                                        data-yeucau="'.htmlspecialchars($row['YeuCau'], ENT_QUOTES).'"
-                                                        data-sltoida="'.$row['SoLuongTV'].'">
-                                        <i class="bi bi-file-text me-1"></i> Xem chi tiết đề tài
-                                    </button>
-                                </div>';
-                                }
-                                echo'
+
+                                <!-- Mô tả và Yêu cầu -->
+                                <div class="details-section">
+                                    <div class="detail-box">
+                                        <h6 class="detail-title"><i class="bi bi-file-text"></i> Mô tả đề tài</h6>
+                                        <p class="detail-text">'.htmlspecialchars($row["MoTa"]).'</p>
+                                    </div>
+
+                                    <div class="detail-box">
+                                        <h6 class="detail-title"><i class="bi bi-list-check"></i> Yêu cầu đề tài</h6>
+                                        <p class="detail-text">'.htmlspecialchars($row["YeuCau"]).'</p>
+                                    </div>
+                                </div>
+
                             </div>
-                        </div>
-                    </div>
-                </div>
+                            ';
+                        }
+                        echo '
             </div>
         </div>
         
         <!-- Thông tin nhóm thực hiện -->
-        <div class="mb-4">
-            <h2 class="section-title">THÔNG TIN NHÓM THỰC HIỆN</h2>
+        <div class="mb-5">
+            <h2 class="section-title">THÔNG TIN THÀNH VIÊN(NHÓM) THỰC HIỆN</h2>
             <div class="card">
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table mb-0">
                             <thead>
-                                <tr>
-                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">STT</td>
-                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">MSSV</td>
-                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">Họ và tên</td>
-                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">Lớp</td>
-                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">Email</td>
-                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">Nhóm</td>
+                                <tr style="background-color: #f8f9fa; border-bottom: 2px solid #e0e0e0;">
+                                    <th class="px-4 py-3" style="color: #717171; font-weight: 600;">STT</th>
+                                    <th class="px-4 py-3" style="color: #717171; font-weight: 600;">MSSV</th>
+                                    <th class="px-4 py-3" style="color: #717171; font-weight: 600;">Họ và tên</th>
+                                    <th class="px-4 py-3" style="color: #717171; font-weight: 600;">Lớp</th>
+                                    <th class="px-4 py-3" style="color: #717171; font-weight: 600;">Email</th>
+                                    <th class="px-4 py-3" style="color: #717171; font-weight: 600;">Nhóm</th>
                                 </tr>
                             </thead>
-                            <tbody >';
+                            <tbody>';
                             $stt=1;
                             if (!empty($nhom)) {
                                 foreach($nhom as $row){
                                     echo'
-                                    <tr>
-                                        <td class="px-3">'.$stt.'</td>
-                                        <td class="px-3">'.htmlspecialchars($row["MaSV"]).'</td>
-                                        <td class="px-3">'.htmlspecialchars($row["HoTenSinhVien"]).'</td>
-                                        <td class="px-3">'.htmlspecialchars($row["Lop"]).'</td>
-                                        <td class="px-3">'.htmlspecialchars($row["Email"]).'</td>
-                                        <td class="px-3">'.($row["IDNhom"] ? $row["IDNhom"] : '<span style="color: #dc3545; font-weight: bold;">Làm một mình</span>').'</td>
+                                    <tr style="border-bottom: 1px solid #e0e0e0;">
+                                        <td class="px-4 py-3">'.$stt.'</td>
+                                        <td class="px-4 py-3">'.htmlspecialchars($row["MaSV"]).'</td>
+                                        <td class="px-4 py-3">'.htmlspecialchars($row["HoTenSinhVien"]).'</td>
+                                        <td class="px-4 py-3">'.htmlspecialchars($row["Lop"]).'</td>
+                                        <td class="px-4 py-3">'.htmlspecialchars($row["Email"]).'</td>
+                                        <td class="px-4 py-3">'.($row["IDNhom"] ? '<strong>'.htmlspecialchars($row["IDNhom"]).'</strong>' : '<span style="color: #dc3545; font-weight: bold;">Làm một mình</span>').'</td>
                                     </tr>';
                                     $stt++;
                                 }
                             } else {
                                 // Hiển thị thông tin sinh viên hiện tại nếu chưa có nhóm
                                 echo'
-                                <tr>
-                                    <td class="px-3">1</td>
-                                    <td class="px-3">'.$masv.'</td>
-                                    <td class="px-3">'.$_SESSION['ten'].'</td>
-                                    <td class="px-3">-</td>
-                                    <td class="px-3">-</td>
-                                    <td class="px-3"><span style="color: #dc3545; font-weight: bold;">Làm một mình</span></td>
+                                <tr style="border-bottom: 1px solid #e0e0e0;">
+                                    <td class="px-4 py-3">1</td>
+                                    <td class="px-4 py-3">'.$masv.'</td>
+                                    <td class="px-4 py-3">'.$_SESSION['ten'].'</td>
+                                    <td class="px-4 py-3">-</td>
+                                    <td class="px-4 py-3">-</td>
+                                    <td class="px-4 py-3"><span style="color: #dc3545; font-weight: bold;">Làm một mình</span></td>
                                 </tr>';
                             }
                             echo'
@@ -291,21 +378,21 @@ echo'
         </div>
         
         <!-- Danh sách sinh viên đăng ký cùng đề tài -->
-        <div class="mb-4">
+        <div class="mb-5">
             <h2 class="section-title">DANH SÁCH CÁC SINH VIÊN ĐĂNG KÝ CÙNG ĐỀ TÀI</h2>
             <div class="card">
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table mb-0">
                             <thead>
-                                <tr>
-                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">STT</td>
-                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">MSSV</td>
-                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">Họ Tên</td>
-                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">Lớp</td>
-                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">GVHD</td>
-                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">Nhóm</td>
-                                    <td class="px-3"style="background-color:#E8E8E8;color:#9C9C9C;">Chọn Làm Chung Nhóm</td>
+                                <tr style="background-color: #f8f9fa; border-bottom: 2px solid #e0e0e0;">
+                                    <th class="px-4 py-3" style="color: #717171; font-weight: 600;">STT</th>
+                                    <th class="px-4 py-3" style="color: #717171; font-weight: 600;">MSSV</th>
+                                    <th class="px-4 py-3" style="color: #717171; font-weight: 600;">Họ Tên</th>
+                                    <th class="px-4 py-3" style="color: #717171; font-weight: 600;">Lớp</th>
+                                    <th class="px-4 py-3" style="color: #717171; font-weight: 600;">GVHD</th>
+                                    <th class="px-4 py-3" style="color: #717171; font-weight: 600;">Nhóm</th>
+                                    <th class="px-4 py-3 text-center" style="color: #717171; font-weight: 600;">Chọn Làm Chung Nhóm</th>
                                 </tr>
                             </thead>
                             <tbody>';
@@ -334,21 +421,23 @@ echo'
                                     $checkboxValue = $daCoNhom ? '' : ($sv["IDNhom"] == $currentUserNhom ? 'checked' : '');
                                     
                                     echo'
-                                    <tr>
-                                        <td class="px-3">'.$stt.'</td>
-                                        <td class="px-3">'.htmlspecialchars($sv["MaSV"]).'</td>
-                                        <td class="px-3">'.htmlspecialchars($sv["HoTen"]).'</td>
-                                        <td class="px-3">'.htmlspecialchars($sv["Lop"]).'</td>
-                                        <td class="px-3">'.htmlspecialchars($sv["GiangVienHuongDan"]).'</td>
-                                        <td class="px-3 text-danger fw-bold">'.$tenNhom.'</td>
-                                        <td class="px-3 text-center">
+                                    <tr style="border-bottom: 1px solid #e0e0e0;">
+                                        <td class="px-4 py-3">'.$stt.'</td>
+                                        <td class="px-4 py-3">'.htmlspecialchars($sv["MaSV"]).'</td>
+                                        <td class="px-4 py-3">'.htmlspecialchars($sv["HoTen"]).'</td>
+                                        <td class="px-4 py-3">'.htmlspecialchars($sv["Lop"]).'</td>
+                                        <td class="px-4 py-3">'.htmlspecialchars($sv["GiangVienHuongDan"]).'</td>
+                                        <td class="px-4 py-3">
+                                            '.($sv["SoLuongThanhVien"] > 1 ? '<strong style="color: #007dc9;">'.htmlspecialchars($tenNhom).'</strong>' : '<span style="color: #dc3545; font-weight: bold;">'.htmlspecialchars($tenNhom).'</span>').'
+                                        </td>
+                                        <td class="px-4 py-3 text-center">
                                             <input type="radio" name="chonNhom" value="'.$sv["MaSV"].'" '.$isDisabled.' '.$checkboxValue.' class="form-check-input">
                                         </td>
                                     </tr>';
                                     $stt++;
                                 }
                             } else {
-                                echo '<tr><td colspan="7" class="text-center">Chỉ có bạn đăng ký đề tài này</td></tr>';
+                                echo '<tr><td colspan="7" class="text-center px-4 py-4">Chỉ có bạn đăng ký đề tài này</td></tr>';
                             }
                             echo'
                             </tbody>
@@ -357,15 +446,15 @@ echo'
                 </div>
             </div>
             
-            <div class="text-end mt-3">';
+            <div class="text-end mt-4">';
             
             // Hiển thị nút dựa trên trạng thái nhóm
             if($daCoNhom){
-                echo '<button class="btn btn-danger" id="btnHuyNhom">Hủy nhóm</button>';
+                echo '<button class="btn btn-danger btn-lg" id="btnHuyNhom"><i class="bi bi-trash"></i> Hủy nhóm</button>';
             } else {
                 echo '
-                <button class="btn btn-danger me-2" id="btnHuyDangKy">Hủy đăng ký đề tài</button>
-                <button class="btn btn-primary" id="btnDangKyNhom">Đăng ký nhóm</button>';
+                <button class="btn btn-danger btn-lg me-2" id="btnHuyDangKy"><i class="bi bi-x-circle"></i> Hủy đăng ký đề tài</button>
+                <button class="btn btn-primary btn-lg" id="btnDangKyNhom"><i class="bi bi-check-circle"></i> Đăng ký nhóm</button>';
             }
             
             echo '

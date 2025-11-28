@@ -1,29 +1,13 @@
 <?php
 // File chứa các modal dùng chung cho DeTaiDK và ThongTinDeTai
 echo '
-<!-- Project Details Modal -->
-<div class="modal fade" id="projectDetailModal" tabindex="-1" aria-labelledby="projectDetailModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="projectDetailModalLabel">Chi tiết đề tài</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="projectDetailContent">
-            </div>
-            <div class="modal-footer"> 
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- Thông báo từ GVHD Modal -->
 <div class="modal fade" id="thongBaoModal" tabindex="-1" aria-labelledby="thongBaoModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-info text-white">
-                <h5 class="modal-title" id="thongBaoModalLabel">Thông báo đề tài từ giảng viên hướng dẫn</h5>
+                <h5 class="modal-title" id="thongBaoModalLabel"><i class="bi bi-megaphone"></i> Thông báo đề tài từ giảng viên hướng dẫn</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -45,68 +29,85 @@ echo '
 
 <!-- Tiêu chí đánh giá Modal -->
 <div class="modal fade" id="tieuChiModal" tabindex="-1" aria-labelledby="tieuChiModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header bg-warning text-dark">
-                <h5 class="modal-title fw-bold" id="tieuChiModalLabel">Tiêu chí đánh giá khóa luận</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="tieuChiModalLabel">
+                    <i class="bi bi-clipboard-check me-2"></i>Tiêu chí đánh giá khóa luận
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover">
-                        <thead class="table-light">
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-primary">
                             <tr>
-                                <th style="width: 5%;" class="text-center">STT</th>
-                                <th style="width: 65%;">Tiêu chí đánh giá</th>
-                                <th style="width: 30%;" class="text-center">Mức điểm</th>
+                                <th style="width: 70%;">Nội dung đánh giá</th>
+                                <th style="width: 30%;">Tỷ trọng</th>
                             </tr>
                         </thead>
-                        <tbody id="tieuChiTableBody">
+                        <tbody>
                             <tr>
-                                <td class="text-center">1</td>
-                                <td>Tính cập nhật và mức độ phù hợp của đề tài</td>
-                                <td class="text-center">10%</td>
+                                <td>Hình thành và phát triển ý tưởng nghiên cứu</td>
+                                <td class="text-center fw-bold">15%</td>
                             </tr>
                             <tr>
-                                <td class="text-center">2</td>
-                                <td>Tính khoa học và logic trong phương pháp nghiên cứu</td>
-                                <td class="text-center">15%</td>
+                                <td>Cấu trúc báo cáo KLTN hợp lý khi thuyết trình</td>
+                                <td class="text-center fw-bold">15%</td>
                             </tr>
                             <tr>
-                                <td class="text-center">3</td>
-                                <td>Khả năng áp dụng và tính thực tiễn của kết quả</td>
-                                <td class="text-center">15%</td>
+                                <td>Sự tương tác giữa SV và CBHD</td>
+                                <td class="text-center fw-bold">10%</td>
                             </tr>
                             <tr>
-                                <td class="text-center">4</td>
-                                <td>Kỹ năng triển khai và xử lý công nghệ</td>
-                                <td class="text-center">20%</td>
+                                <td>Sự tương tác giữa các thành viên nhóm</td>
+                                <td class="text-center fw-bold">10%</td>
                             </tr>
                             <tr>
-                                <td class="text-center">5</td>
+                                <td>Hoàn thành nội dung được phân công</td>
+                                <td class="text-center fw-bold">5%</td>
+                            </tr>
+                            <tr>
                                 <td>Thu nhận kết quả và xử lý số liệu</td>
-                                <td class="text-center">15%</td>
+                                <td class="text-center fw-bold">15%</td>
                             </tr>
                             <tr>
-                                <td class="text-center">6</td>
-                                <td>Thảo luận nghiên cứu và kết luận</td>
-                                <td class="text-center">10%</td>
+                                <td>Thảo luận nghiên cứu</td>
+                                <td class="text-center fw-bold">15%</td>
                             </tr>
                             <tr>
-                                <td class="text-center">7</td>
-                                <td>Tài liệu tham khảo và hình thức trình bày</td>
-                                <td class="text-center">10%</td>
+                                <td>Tóm tắt kết quả nghiên cứu</td>
+                                <td class="text-center fw-bold">5%</td>
                             </tr>
                             <tr>
-                                <td class="text-center">8</td>
-                                <td>Trình bày và bảo vệ</td>
-                                <td class="text-center">5%</td>
+                                <td>Kiến nghị</td>
+                                <td class="text-center fw-bold">5%</td>
+                            </tr>
+                            <tr>
+                                <td>Tài liệu tham khảo</td>
+                                <td class="text-center fw-bold">5%</td>
+                            </tr>
+                            <tr>
+                                <td>Chu tích hình ảnh, bảng biểu</td>
+                                <td class="text-center fw-bold">5%</td>
+                            </tr>
+                            <tr>
+                                <td>Chính tả, định dạng, thuật ngữ</td>
+                                <td class="text-center fw-bold">5%</td>
+                            </tr>
+                            <tr class="table-warning">
+                                <td class="fw-bold">TỔNG CỘNG</td>
+                                <td class="text-center fw-bold">100%</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+                <div class="alert alert-info mt-3">
+                    <i class="bi bi-info-circle me-2"></i>
+                    <strong>Lưu ý:</strong> Điểm tổng kết được tính theo thang điểm 10. Sinh viên cần đạt tối thiểu 5.0 điểm để được công nhận tốt nghiệp.
+                </div>
             </div>
-            <div class="modal-footer"> 
+            <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
             </div>
         </div>
@@ -191,6 +192,9 @@ document.addEventListener("DOMContentLoaded", function() {
         thongBaoModal.addEventListener("show.bs.modal", function() {
             loadThongBao();
         });
+        
+        // Load badge thông báo khi trang load
+        loadThongBaoBadge();
     }
 
     // Load kết quả chấm khi modal mở
@@ -262,25 +266,15 @@ function loadThongBao() {
         </div>
     `;
 
-    fetch("./getThongBaoGVHD")
+    fetch("./getThongBaoDeTai")
         .then(response => response.json())
         .then(data => {
-            if (data.success && data.thongbao && data.thongbao.length > 0) {
-                let html = \'<div class="list-group">\';
-                data.thongbao.forEach(function(tb) {
-                    const ngayTao = tb.NgayTao ? new Date(tb.NgayTao).toLocaleDateString("vi-VN") : "N/A";
-                    html += `
-                        <div class="list-group-item mb-3">
-                            <div class="d-flex w-100 justify-content-between mb-2">
-                                <h6 class="mb-1 fw-bold">${tb.TieuDe || "Thông báo"}</h6>
-                                <small class="text-muted">${ngayTao}</small>
-                            </div>
-                            <p class="mb-1">${tb.NoiDung || "Không có nội dung"}</p>
-                            ${tb.GhiChu ? `<p class="mb-0"><small class="text-muted"><strong>Ghi chú:</strong> ${tb.GhiChu}</small></p>` : ""}
-                        </div>
-                    `;
-                });
-                html += \'</div>\';
+            if (data.success && data.thongbao && data.thongbao.trim() !== "") {
+                const html = `
+                    <div style="word-wrap: break-word; line-height: 1.6;">
+                        ${data.thongbao}
+                    </div>
+                `;
                 contentDiv.innerHTML = html;
             } else {
                 contentDiv.innerHTML = `
@@ -386,6 +380,28 @@ function loadKetQuaCham() {
                     <i class="bi bi-exclamation-triangle"></i> Có lỗi xảy ra khi tải kết quả chấm. Vui lòng thử lại sau.
                 </div>
             `;
+        });
+}
+
+function loadThongBaoBadge() {
+    fetch("./getThongBaoDeTai")
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.thongbao && data.thongbao.trim() !== "") {
+                // Nếu có thông báo, thêm badge vào nút
+                const thongBaoBtn = document.querySelector("button[data-bs-target=\'#thongBaoModal\']");
+                if (thongBaoBtn) {
+                    thongBaoBtn.style.position = "relative";
+                    const badge = document.createElement("span");
+                    badge.className = "position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger";
+                    badge.style.transform = "translate(-50%, -50%)";
+                    badge.innerHTML = \'<i class="bi bi-exclamation-circle-fill"></i>\';
+                    thongBaoBtn.appendChild(badge);
+                }
+            }
+        })
+        .catch(error => {
+            console.error("Error loading badge:", error);
         });
 }
 </script>

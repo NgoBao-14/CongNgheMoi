@@ -55,29 +55,31 @@ class GiangVien extends Controller {
         ]);
     }
 
-    function TienDoDeTai(){
-        // $_SESSION['iduser'] = 3;
-        $iduser = $_SESSION['iduser'];
-        $dt= $this->model("mGiangVien");
-        $baocao = json_decode($dt->getTTBaoCao($iduser), true);
+    // COMMENTED OUT - Feature removed from sidebar
+    // function TienDoDeTai(){
+    //     // $_SESSION['iduser'] = 3;
+    //     $iduser = $_SESSION['iduser'];
+    //     $dt= $this->model("mGiangVien");
+    //     $baocao = json_decode($dt->getTTBaoCao($iduser), true);
 
-        $this->view("layoutGV2", [
-            "Page" => "qlbaocao",
-            "baocao" => $baocao
-        ]);
-    }
+    //     $this->view("layoutGV2", [
+    //         "Page" => "qlbaocao",
+    //         "baocao" => $baocao
+    //     ]);
+    // }
 
-    function QuanLyKhoaLuan(){
-        // $_SESSION['iduser'] = 3;
-        $iduser = $_SESSION['iduser'];
-        $dt= $this->model("mGiangVien");
-        $khoaluan = json_decode($dt->getTTKhoaLuan($iduser), true);
+    // COMMENTED OUT - Feature removed from sidebar
+    // function QuanLyKhoaLuan(){
+    //     // $_SESSION['iduser'] = 3;
+    //     $iduser = $_SESSION['iduser'];
+    //     $dt= $this->model("mGiangVien");
+    //     $khoaluan = json_decode($dt->getTTKhoaLuan($iduser), true);
 
-        $this->view("layoutGV2", [
-            "Page" => "qlkhoaluan",
-            "khoaluan" => $khoaluan
-        ]);
-    }
+    //     $this->view("layoutGV2", [
+    //         "Page" => "qlkhoaluan",
+    //         "khoaluan" => $khoaluan
+    //     ]);
+    // }
 
     function DeXuatDeTai(){
         $IDGV = $_SESSION['MaGV'];
@@ -101,6 +103,45 @@ class GiangVien extends Controller {
             
         ]);
         
+    }
+
+    function ThongBaoDeTai(){
+        $iduser = $_SESSION['iduser'];
+        $dt = $this->model("mGiangVien");
+        
+        // Xử lý cập nhật thông báo
+        if (isset($_POST['btnCapNhat'])) {
+            header('Content-Type: application/json');
+            $IDDeTai = isset($_POST['IDDeTai']) ? intval($_POST['IDDeTai']) : null;
+            $ThongBao = isset($_POST['ThongBao']) ? trim($_POST['ThongBao']) : '';
+            
+            if (!$IDDeTai || $IDDeTai <= 0) {
+                echo json_encode(["success" => false, "message" => "Đề tài không hợp lệ"]);
+                exit;
+            }
+            
+            if (!$dt->checkGVQuyen($IDDeTai, $iduser)) {
+                echo json_encode(["success" => false, "message" => "Bạn không có quyền sửa đề tài này"]);
+                exit;
+            }
+            
+            if (strlen($ThongBao) > 5000) {
+                echo json_encode(["success" => false, "message" => "Thông báo quá dài (tối đa 5000 ký tự)"]);
+                exit;
+            }
+            
+            $result = $dt->capNhatThongBao($IDDeTai, $ThongBao);
+            echo $result;
+            exit;
+        }
+        
+        // Lấy danh sách đề tài để tạo thông báo
+        $dsDeTai = json_decode($dt->getDSDeTaiThongBao($iduser), true);
+        
+        $this->view("layoutGV2", [
+            "Page" => "ThongBaoDeTai",
+            "dsDeTai" => $dsDeTai
+        ]);
     }
 }
 ?>
