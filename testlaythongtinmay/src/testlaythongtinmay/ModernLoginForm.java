@@ -230,13 +230,13 @@ public class ModernLoginForm extends JFrame {
                 int pq = jon.getInt("PQ");
                 String name = jon.getString("name");
                 
-                if (response == 101 && pq == 1) {
+                if (response == 101 && (pq == 1 || pq == 4)) {
                     SwingUtilities.invokeLater(() -> {
                         ModernRegisterForm fm = new ModernRegisterForm(iduser, name);
                         fm.setVisible(true);
                         dispose();
                     });
-                } else if (response == 102 && pq == 1) {
+                } else if (response == 102 && (pq == 1 || pq == 4)) {
                     String token = jon.getString("token");
                     long time = jon.getLong("time");
                     cls.ghifile(token, time);

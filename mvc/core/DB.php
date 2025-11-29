@@ -6,17 +6,8 @@ class DB {
     private function getApiUrl() {
         $basePath = defined('BASE_PATH') ? BASE_PATH : ($_ENV['BASE_PATH'] ?? '/CongNgheMoi');
         
-        // Trong Docker container, curl cần gọi localhost:80 (Apache trong container)
-        // Không dùng HTTP_HOST vì đó là host từ browser
-        $isDocker = file_exists('/.dockerenv') || getenv('DOCKER_CONTAINER');
-        
-        if ($isDocker) {
-            // Trong Docker, gọi trực tiếp localhost của container
-            $host = 'localhost';
-        } else {
-            // Ngoài Docker (XAMPP), dùng HTTP_HOST
-            $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-        }
+        // Lấy host từ HTTP_HOST (bao gồm cả port nếu có)
+        $host = $_SERVER['HTTP_HOST'] ?? 'localhost:8080';
         
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         return $protocol . '://' . $host . $basePath . '/mvc/api/';

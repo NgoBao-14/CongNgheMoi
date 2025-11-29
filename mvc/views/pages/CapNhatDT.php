@@ -4,6 +4,13 @@ $detai = json_decode($data['detai'], true);
 $dt = json_decode($data['khoa'], true);
 $nhom = json_decode($data['nhom'], true);
 
+// Kiểm tra dữ liệu
+if (empty($detai) || !isset($detai[0])) {
+    echo '<div class="content-wrapper"><div class="container-fluid p-4"><div class="alert alert-danger">Không tìm thấy đề tài!</div><a href="' . base_url('/Admin/DSDeTai') . '" class="btn btn-primary">Quay lại</a></div></div>';
+    return;
+}
+$detai = $detai[0]; // Lấy phần tử đầu tiên
+
 echo '
 <div class="content-wrapper">
     <style>
@@ -54,7 +61,7 @@ echo '
         
         .form-select {
             appearance: none;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23334155' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e") !important;
+            background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3e%3cpath fill=%27none%27 stroke=%27%23334155%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27 d=%27M2 5l6 6 6-6%27/%3e%3c/svg%3e") !important;
             background-repeat: no-repeat !important;
             background-position: right 0.75rem center !important;
             background-size: 16px 12px !important;
@@ -119,30 +126,30 @@ echo '
         <!-- Form -->
         <div class="form-container">
             <div class="info-badge">
-                <i class="fas fa-hashtag me-2"></i>Mã đề tài: ' . $detai[0]['IDDeTai'] . '
+                <i class="fas fa-hashtag me-2"></i>Mã đề tài: ' . $detai['IDDeTai'] . '
             </div>
 
             <form method="POST" action="">
-                <input type="hidden" name="id" value="' . $detai[0]['IDDeTai'] . '">
+                <input type="hidden" name="id" value="' . $detai['IDDeTai'] . '">
                 
                 <div class="row g-4">
                     <div class="col-md-12">
                         <label class="form-label">Tên đề tài <span class="required">*</span></label>
-                        <input type="text" name="ten" class="form-control" value="' . htmlspecialchars($detai[0]['TenDeTai']) . '" required>
+                        <input type="text" name="ten" class="form-control" value="' . htmlspecialchars($detai['TenDeTai']) . '" required>
                     </div>
                 </div>
                 
                 <div class="row g-4 mt-2">
                     <div class="col-md-12">
                         <label class="form-label">Mô tả <span class="required">*</span></label>
-                        <textarea name="mota" class="form-control" required>' . htmlspecialchars($detai[0]['MoTa']) . '</textarea>
+                        <textarea name="mota" class="form-control" required>' . htmlspecialchars($detai['MoTa']) . '</textarea>
                     </div>
                 </div>
                 
                 <div class="row g-4 mt-2">
                     <div class="col-md-12">
                         <label class="form-label">Yêu cầu <span class="required">*</span></label>
-                        <textarea name="yeucau" class="form-control" required>' . htmlspecialchars($detai[0]['YeuCau']) . '</textarea>
+                        <textarea name="yeucau" class="form-control" required>' . htmlspecialchars($detai['YeuCau']) . '</textarea>
                     </div>
                 </div>
                 
@@ -152,7 +159,7 @@ echo '
                         <select name="chuyennganh" class="form-select" required>
                             <option value="">Chọn chuyên ngành</option>';
                             foreach ($dt as $row) {
-                                $selected = ($detai[0]['IDNganh'] == $row['IDNganh']) ? 'selected' : '';
+                                $selected = ($detai['IDNganh'] == $row['IDNganh']) ? 'selected' : '';
                                 echo '<option value="' . $row['IDNganh'] . '" ' . $selected . '>' . $row['ChuyenNganh'] . '</option>';
                             }
 echo '                  </select>
@@ -160,7 +167,7 @@ echo '                  </select>
                     
                     <div class="col-md-6">
                         <label class="form-label">Số lượng thành viên <span class="required">*</span></label>
-                        <input type="number" name="soluong" class="form-control" value="' . (isset($detai[0]['SoLuongTV']) ? $detai[0]['SoLuongTV'] : '1') . '" min="1" max="5" required>
+                        <input type="number" name="soluong" class="form-control" value="' . (isset($detai['SoLuongTV']) ? $detai['SoLuongTV'] : '1') . '" min="1" max="5" required>
                     </div>
                 </div>
                 
@@ -168,16 +175,16 @@ echo '                  </select>
                     <div class="col-md-6">
                         <label class="form-label">Trạng thái đề tài <span class="required">*</span></label>
                         <select name="trangthaidetai" class="form-select" required>
-                            <option value="Chưa duyệt" ' . ($detai[0]['TrangThaiDeTai'] == 'Chưa duyệt' ? 'selected' : '') . '>Chưa duyệt</option>
-                            <option value="Đã duyệt" ' . ($detai[0]['TrangThaiDeTai'] == 'Đã duyệt' ? 'selected' : '') . '>Đã duyệt</option>
+                            <option value="Chưa duyệt" ' . ($detai['TrangThaiDeTai'] == 'Chưa duyệt' ? 'selected' : '') . '>Chưa duyệt</option>
+                            <option value="Đã duyệt" ' . ($detai['TrangThaiDeTai'] == 'Đã duyệt' ? 'selected' : '') . '>Đã duyệt</option>
                         </select>
                     </div>
                     
                     <div class="col-md-6">
                         <label class="form-label">Trạng thái đăng ký <span class="required">*</span></label>
                         <select name="trangthaidk" class="form-select" required>
-                            <option value="Chưa đăng ký" ' . ($detai[0]['TrangThaiDK'] == 'Chưa đăng ký' ? 'selected' : '') . '>Chưa đăng ký</option>
-                            <option value="Đã đăng ký" ' . ($detai[0]['TrangThaiDK'] == 'Đã đăng ký' ? 'selected' : '') . '>Đã đăng ký</option>
+                            <option value="Chưa đăng ký" ' . ($detai['TrangThaiDK'] == 'Chưa đăng ký' ? 'selected' : '') . '>Chưa đăng ký</option>
+                            <option value="Đã đăng ký" ' . ($detai['TrangThaiDK'] == 'Đã đăng ký' ? 'selected' : '') . '>Đã đăng ký</option>
                         </select>
                     </div>
                 </div>
@@ -185,7 +192,7 @@ echo '                  </select>
                 <div class="row g-4 mt-2">
                     <div class="col-md-6">
                         <label class="form-label">Ngày đăng ký</label>
-                        <input type="date" name="ngaydk" class="form-control" value="' . (isset($detai[0]['NgayDK']) ? $detai[0]['NgayDK'] : '') . '">
+                        <input type="date" name="ngaydk" class="form-control" value="' . (isset($detai['NgayDK']) ? $detai['NgayDK'] : '') . '">
                     </div>
                     
                     <div class="col-md-6">
@@ -193,7 +200,7 @@ echo '                  </select>
                         <select name="nhom" class="form-select">
                             <option value="">Chưa có nhóm</option>';
                             foreach ($nhom as $row) {
-                                $selected = (isset($detai[0]['IDNhom']) && $detai[0]['IDNhom'] == $row['IDNhom']) ? 'selected' : '';
+                                $selected = (isset($detai['IDNhom']) && $detai['IDNhom'] == $row['IDNhom']) ? 'selected' : '';
                                 echo '<option value="' . $row['IDNhom'] . '" ' . $selected . '>Nhóm ' . $row['IDNhom'] . '</option>';
                             }
 echo '                  </select>
@@ -201,7 +208,7 @@ echo '                  </select>
                 </div>
                 
                 <div class="d-flex gap-2 justify-content-end mt-4 pt-4" style="border-top: 1px solid #E2E8F0;">
-                    <a href="/CongNgheMoi/Admin/DSDeTai" class="btn btn-cancel">
+                    <a href="' . base_url('/Admin/DSDeTai') . '" class="btn btn-cancel">
                         <i class="fas fa-arrow-left me-2"></i>Quay lại
                     </a>
                     <button type="submit" name="btn_CapNhat" class="btn btn-submit">

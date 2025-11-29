@@ -1,5 +1,5 @@
 <?php
-//Đừng có đụng dô đụng dô không cần thay đổi gì hết
+//Đừng có đụng dô đụng dô không cần thay  gì hết
 class Controller{
 
     public function model($model){

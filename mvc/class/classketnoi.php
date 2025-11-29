@@ -364,38 +364,33 @@ require("../private/JWT.php");
 		}
 		public function getThongTinSVTheoID($id)
 		{
-			$sql = "SELECT * FROM user u JOIN sinhvien sv ON u.iduser=sv.iduser join chuyennganh cn on u.IDNganh=cn.IDNganh WHERE u.iduser = $id";
+			$sql = "SELECT u.*, sv.*, cn.ChuyenNganh FROM user u 
+					JOIN sinhvien sv ON u.iduser=sv.iduser 
+					JOIN chuyennganh cn ON u.IDNganh=cn.IDNganh 
+					WHERE u.iduser = $id";
 			$link = $this->connect;
 			$ketqua = mysqli_query($link,$sql);
-			$i = mysqli_num_rows($ketqua);
-			if($i>0)
+			$dulieu = array();
+			if($ketqua && mysqli_num_rows($ketqua) > 0)
 			{
-				$dulieu = array();
 				while($row = mysqli_fetch_array($ketqua))
 				{
-					$iduser = $row["iduser"];
-					$MaSV = $row["MaSV"];
-					$HoDem = $row["HoDem"];
-					$Ten = $row["Ten"];
-					$Lop = $row["Lop"];
-					$SDT = $row["SDT"];	
-					$email = $row["Email"];
-					$ChuyenNganh = $row["ChuyenNganh"];
-					$dulieu[] = array('MaSV'=>$MaSV,
-									  'HoDem'=>$HoDem,
-									  'Ten'=>$Ten,
-									  'Lop'=>$Lop,
-									  'ChuyenNganh'=>$ChuyenNganh,
-									  'iduser'=>$iduser,
-									  'SDT'=>$SDT,
-									  'Email'=>$email
-									);
-					
+					$dulieu[] = array(
+						'MaSV'=>$row["MaSV"] ?? '',
+						'HoDem'=>$row["HoDem"] ?? '',
+						'Ten'=>$row["Ten"] ?? '',
+						'Lop'=>$row["Lop"] ?? '',
+						'ChuyenNganh'=>$row["ChuyenNganh"] ?? '',
+						'iduser'=>$row["iduser"] ?? '',
+						'SDT'=>$row["SDT"] ?? '',
+						'Email'=>$row["Email"] ?? '',
+						'IDNganh'=>$row["IDNganh"] ?? '',
+						'IDNhom'=>$row["IDNhom"] ?? null
+					);
 				}
-				header("content-Type:application/json; charset=UTF-8");
-				echo json_encode($dulieu);
-				
 			}
+			header("content-Type:application/json; charset=UTF-8");
+			echo json_encode($dulieu);
 		}
 
 		public function getThongTinGV()
@@ -501,89 +496,68 @@ require("../private/JWT.php");
 
 		public function getDSDetai()
 		{
-			$sql = "SELECT * FROM detai dt join chuyennganh cn on dt.IDNganh = cn.IDNganh join giangvien gv on dt.IDGV = gv.MaGV join user u on gv.iduser = u.iduser"; 
+			$sql = "SELECT dt.*, cn.ChuyenNganh, CONCAT(u.HoDem, ' ', u.Ten) AS ten_giang_vien 
+					FROM detai dt 
+					JOIN chuyennganh cn ON dt.IDNganh = cn.IDNganh 
+					LEFT JOIN giangvien gv ON dt.IDGV = gv.MaGV 
+					LEFT JOIN user u ON gv.iduser = u.iduser"; 
 			$link = $this->connect;
 			$ketqua = mysqli_query($link,$sql);
-			$i = mysqli_num_rows($ketqua);
-			if($i>0)
+			$dulieu = array();
+			if($ketqua && mysqli_num_rows($ketqua) > 0)
 			{
-				$dulieu = array();
 				while($row = mysqli_fetch_array($ketqua))
 				{
-					$TenDeTai = $row["TenDeTai"];
-					$MoTa = $row["MoTa"];
-					$Ten = $row["Ten"];
-					$ChuyenNganh = $row["ChuyenNganh"];
-					$TrangThaiDeTai = $row["TrangThaiDeTai"];
-					$NgayDK = $row["NgayDK"];
-					$TrangThaiDK = $row["TrangThaiDK"];
-					$IDNhom = $row["IDNhom"];
-					$IDDeTai = $row["IDDeTai"];
 					$dulieu[] = array(	
-									  'TenDeTai'=>$TenDeTai,
-									  'MoTa'=>$MoTa,
-									  'Ten'=>$Ten,
-									  'ChuyenNganh'=>$ChuyenNganh,
-									  'TrangThaiDeTai'=>$TrangThaiDeTai,
-									  'NgayDK'=>$NgayDK,
-									  'TrangThaiDK'=>$TrangThaiDK,
-									  'IDNhom'=>$IDNhom,
-									  'IDDeTai'=>$IDDeTai
-
+									  'TenDeTai'=>$row["TenDeTai"] ?? '',
+									  'MoTa'=>$row["MoTa"] ?? '',
+									  'ten_giang_vien'=>$row["ten_giang_vien"] ?? '',
+									  'ChuyenNganh'=>$row["ChuyenNganh"] ?? '',
+									  'TrangThaiDeTai'=>$row["TrangThaiDeTai"] ?? '',
+									  'NgayDK'=>$row["NgayDK"] ?? null,
+									  'TrangThaiDK'=>$row["TrangThaiDK"] ?? '',
+									  'IDNhom'=>$row["IDNhom"] ?? null,
+									  'IDDeTai'=>$row["IDDeTai"] ?? '',
+									  'SoLuongTV'=>$row["SoLuongTV"] ?? 0
 									);
-					
 				}
-				header("content-Type:application/json; charset=UTF-8");
-				echo json_encode($dulieu);
-				
 			}
+			header("content-Type:application/json; charset=UTF-8");
+			echo json_encode($dulieu);
 		}
 		public function getDeTaiTheoID($id)
 		{
-			$sql="SELECT *,dt.IDNganh FROM detai dt join chuyennganh cn on dt.IDNganh = cn.IDNganh join giangvien gv on dt.IDGV = gv.MaGV join user u on gv.iduser = u.iduser WHERE dt.IDDeTai = $id";
+			$sql="SELECT dt.*, cn.ChuyenNganh, u.HoDem, u.Ten FROM detai dt 
+				  JOIN chuyennganh cn ON dt.IDNganh = cn.IDNganh 
+				  LEFT JOIN giangvien gv ON dt.IDGV = gv.MaGV 
+				  LEFT JOIN user u ON gv.iduser = u.iduser 
+				  WHERE dt.IDDeTai = $id";
 			$link = $this->connect;
 			$ketqua = mysqli_query($link,$sql);
-			$i = mysqli_num_rows($ketqua);
-			if($i>0)
+			$dulieu = array();
+			if($ketqua && mysqli_num_rows($ketqua) > 0)
 			{
-				$dulieu = array();
 				while($row = mysqli_fetch_array($ketqua))
 				{
-					$TenDeTai = $row["TenDeTai"];
-					$MoTa = $row["MoTa"];
-					$Ten = $row["Ten"];
-					$ChuyenNganh = $row["ChuyenNganh"];
-					$TrangThaiDeTai = $row["TrangThaiDeTai"];
-					$NgayDK = $row["NgayDK"];
-					$TrangThaiDK = $row["TrangThaiDK"];
-					$IDNhom = $row["IDNhom"];
-					$IDDeTai = $row["IDDeTai"];
-					$HoDem = $row["HoDem"];
-					$YeuCau = $row["YeuCau"];
-					$SoLuongTV = $row["SoLuongTV"];
-					$IDNganh = $row["IDNganh"];
 					$dulieu[] = array(	
-									  'TenDeTai'=>$TenDeTai,
-									  'MoTa'=>$MoTa,
-									  'Ten'=>$Ten,
-									  'ChuyenNganh'=>$ChuyenNganh,
-									  'TrangThaiDeTai'=>$TrangThaiDeTai,
-									  'NgayDK'=>$NgayDK,
-									  'TrangThaiDK'=>$TrangThaiDK,
-									  'IDNhom'=>$IDNhom,
-									  'IDDeTai'=>$IDDeTai,
-									  'HoDem'=>$HoDem,
-									  'YeuCau'=>$YeuCau,
-									  'SoLuongTV'=>$SoLuongTV,
-									  'IDNganh'=>$IDNganh
-
+									  'TenDeTai'=>$row["TenDeTai"] ?? '',
+									  'MoTa'=>$row["MoTa"] ?? '',
+									  'Ten'=>$row["Ten"] ?? '',
+									  'HoDem'=>$row["HoDem"] ?? '',
+									  'ChuyenNganh'=>$row["ChuyenNganh"] ?? '',
+									  'TrangThaiDeTai'=>$row["TrangThaiDeTai"] ?? '',
+									  'NgayDK'=>$row["NgayDK"] ?? null,
+									  'TrangThaiDK'=>$row["TrangThaiDK"] ?? '',
+									  'IDNhom'=>$row["IDNhom"] ?? null,
+									  'IDDeTai'=>$row["IDDeTai"] ?? '',
+									  'YeuCau'=>$row["YeuCau"] ?? '',
+									  'SoLuongTV'=>$row["SoLuongTV"] ?? 0,
+									  'IDNganh'=>$row["IDNganh"] ?? ''
 									);
-					
 				}
-				header("content-Type:application/json; charset=UTF-8");
-				echo json_encode($dulieu);
-				
 			}
+			header("content-Type:application/json; charset=UTF-8");
+			echo json_encode($dulieu);
 		}			
 
 		public function getTTDeTai($iduser) {

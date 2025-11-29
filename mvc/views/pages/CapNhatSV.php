@@ -1,189 +1,268 @@
 <?php
-require_once "./mvc/views/components/sidebarAdmin.php";
-$sv = json_decode($data['sinhvien'], true);
-$dt = json_decode($data['khoa'], true);
-$nhom = json_decode($data['nhom'], true);
 
-echo '
-<div class="content-wrapper">
-    <style>
-        .page-header {
-            background: white;
-            border-radius: 1rem;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            border: 1px solid #E2E8F0;
-        }
+  $sinhvien = json_decode($data["sinhvien"], true);
+  $dt = json_decode($data["khoa"], true);
+  $nhom = json_decode($data["nhom"], true);
+?>
+
+
+<style>
         
         .form-container {
-            background: white;
-            border-radius: 1rem;
-            padding: 2rem;
-            border: 1px solid #E2E8F0;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
         }
-        
-        .info-badge {
-            background: #EFF6FF;
-            color: #3B82F6;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            font-size: 0.875rem;
-            display: inline-block;
-            margin-bottom: 1.5rem;
+        .form-container:hover {
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
         }
-        
-        .form-label {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: #334155;
-            margin-bottom: 0.5rem;
-            display: block;
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #0d6efd;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 15px;
         }
-        
-        .form-control, .form-select {
-            border-radius: 0.5rem !important;
-            border: 1px solid #E2E8F0 !important;
-            padding: 0.625rem 0.875rem !important;
-            font-size: 0.875rem !important;
-            transition: all 0.2s;
-            width: 100%;
-            background-color: white !important;
-            background-image: none !important;
+        .form-footer {
+            border-top: 2px solid #e9ecef;
+            padding-top: 20px;
+            margin-top: 20px;
         }
-        
-        .form-select {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 16 16\'%3e%3cpath fill=\'none\' stroke=\'%23334155\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M2 5l6 6 6-6\'/%3e%3c/svg%3e") !important;
-            background-repeat: no-repeat !important;
-            background-position: right 0.75rem center !important;
-            background-size: 16px 12px !important;
-            padding-right: 2.5rem !important;
+        .btn-primary {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+            transition: all 0.3s ease;
         }
-        
-        .form-control:focus, .form-select:focus {
-            border-color: #4F46E5 !important;
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
-            outline: none !important;
-        }
-        
-        .btn-submit {
-            background: #4F46E5;
-            color: white;
-            border: none;
-            padding: 0.625rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            font-size: 0.875rem;
-            transition: all 0.2s;
-        }
-        
-        .btn-submit:hover {
-            background: #4338CA;
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
         }
-        
-        .btn-cancel {
-            background: #F8FAFC;
-            color: #64748B;
-            border: 1px solid #E2E8F0;
-            padding: 0.625rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            font-size: 0.875rem;
-            transition: all 0.2s;
+        .btn-outline-secondary {
+            transition: all 0.3s ease;
         }
-        
-        .btn-cancel:hover {
-            background: #F1F5F9;
-            color: #334155;
+        .btn-outline-secondary:hover {
+            transform: translateY(-2px);
         }
-        
-        .required {
-            color: #EF4444;
+        .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        .form-label {
+            font-weight: 500;
+        }
+        .success-message {
+            display: none;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .error-message {
+            display: none;
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .form-floating {
+            margin-bottom: 20px;
         }
     </style>
 
-    <div class="container-fluid p-4">
-        <!-- Page Header -->
-        <div class="page-header">
-            <h1 class="h3 fw-bold mb-2" style="color: #0F172A;">Cập nhật thông tin sinh viên</h1>
-            <p class="text-muted mb-0">Chỉnh sửa thông tin sinh viên trong hệ thống</p>
+
+<?php include './mvc/views/components/sidebarAdmin.php'; ?>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+<section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Quản lý sinh viên</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Quản lý sinh viên</li>
+            </ol>
+          </div>
         </div>
+      </div><!-- /.container-fluid -->
+    </section>
 
-        <!-- Form -->
-        <div class="form-container">
-            <div class="info-badge">
-                <i class="fas fa-id-card me-2"></i>MSSV: ' . $sv[0]['MaSV'] . '
+    <!-- Main content -->
+    
+        
+        <!-- Charts Row -->
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header d-flex justify-content-between align-items-center">
+              <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="form-container">
+                    <div class="form-header">
+                        <h2><i class="fas fa-user-graduate me-2"></i>Cập Nhật Thông Tin Sinh Viên</h2>
+                    </div>
+                    
+                    <div id="successMessage" class="success-message">
+                        <i class="fas fa-check-circle me-2"></i>Thông tin sinh viên đã được cập nhật thành công!
+                    </div>
+                    
+                    <div id="errorMessage" class="error-message">
+                        <i class="fas fa-exclamation-circle me-2"></i>Vui lòng điền đầy đủ thông tin!
+                    </div>
+                    
+                    <form id="studentForm" action="" method="post">
+                        <div class="row">
+                            <!-- Cột bên trái -->
+                            <div class="col-md-6">   
+                                <?php
+                                foreach ($sinhvien as $sv) :
+                                    $mssv = $sv['MaSV'];
+                                    $hoDem = $sv['HoDem'];
+                                    $ten = $sv['Ten'];
+                                    $lop = $sv['Lop'];
+                                    $stt = $sv['SDT'];
+                                    $email = $sv['Email'];
+                                    $chuyenNganh = $sv['ChuyenNganh'];
+                                ?>
+                                <div class="form-floating">
+                                    <label for="mssv">MSSV</label>
+                                    <input type="text" class="form-control" id="mssv" value="<?php echo $mssv?>" placeholder="MSSV" readonly>
+                                   
+                                </div>
+                                
+                                <div class="form-floating">
+                                  <label for="hoDem">Họ đệm</label>
+                                    <input type="text" name="hodem" class="form-control" id="hoDem" value="<?php echo $hoDem?>" placeholder="Họ đệm">
+                                    
+                                </div>
+
+                                <div class="form-floating">
+                                    <label for="stt">Số điện thoại</label>
+                                    <input type="text" name="sdt" class="form-control" id="sdt" value="<?php echo $stt?>" placeholder="Số điện thoại">
+                                    
+                                </div>
+
+                                <div class="form-floating">
+                                    <label for="stt">Email</label>
+                                    <input type="text" name="email" class="form-control" id="stt" value="<?php echo $email?>" placeholder="Email">
+                                    
+                                </div>
+                            </div>
+                            
+                            <!-- Cột bên phải -->
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <label for="ten">Tên</label>
+                                    <input type="text" name="ten" class="form-control" id="ten" value="<?php echo $ten?>" placeholder="Tên">
+                                   
+                                </div>
+                                
+                                <div class="form-floating">
+                                    <label for="lop">Lớp</label>
+                                    <input type="text" name="lop" class="form-control" id="lop" value="<?php echo $lop?>" placeholder="Lớp">
+                                    
+                                </div>
+                                
+                                <div class="form-floating">
+                                  <label for="chuyenNganh">Chuyên Ngành</label>
+                                    <select name="chuyennganh" class="form-control" style="min-width: 150px;">
+                                          <option value="cn.IDNganh" disabled>Chuyên ngành</option>
+                                          <?php
+                                          foreach ($dt as $khoa):
+                                          echo '<option value="'.$khoa['IDNganh'].'" '.($sv['IDNganh'] == $khoa['IDNganh'] ? 'selected' : '').'>'.$khoa['ChuyenNganh'].'</option>';
+                                          endforeach;
+                                          ?>
+                                    </select>
+                                      
+                                </div>
+
+                                <div class="form-floating">
+                                    <label for="Nhom">Nhóm</label>
+                                    <select name="idnhom" class="form-control" style="min-width: 150px;">
+                                          <option value="cn.IDNganh" disabled>Nhóm</option>
+                                          <?php
+                                          foreach ($nhom as $idnhom):
+                                          echo '<option value="'.$idnhom['IDNhom'].'" '.($sv['IDNhom'] == $idnhom['IDNhom'] ? 'selected' : '').'>'.$idnhom['IDNhom'].'</option>';
+                                          endforeach;
+                                          ?>
+                                    </select>
+                                </div>
+                                  <?php
+                                    endforeach; 
+                                  ?>
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="form-footer text-center">
+                            <button type="submit" name="btn_CapNhat" class="btn btn-primary btn-lg px-5 me-3">
+                                <i class="fas fa-check me-2"></i> Xác nhận
+                            </button>
+                            <button type="button" id="cancelBtn" class="btn btn-outline-secondary btn-lg px-5">
+                                <i class="fas fa-times me-2"></i> Hủy
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-
-            <form method="POST" action="">
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <label class="form-label">Họ đệm <span class="required">*</span></label>
-                        <input type="text" name="hodem" class="form-control" value="' . htmlspecialchars($sv[0]['HoDem']) . '" required>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <label class="form-label">Tên <span class="required">*</span></label>
-                        <input type="text" name="ten" class="form-control" value="' . htmlspecialchars($sv[0]['Ten']) . '" required>
-                    </div>
-                </div>
-                
-                <div class="row g-4 mt-2">
-                    <div class="col-md-6">
-                        <label class="form-label">Lớp <span class="required">*</span></label>
-                        <input type="text" name="lop" class="form-control" value="' . htmlspecialchars($sv[0]['Lop']) . '" required>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <label class="form-label">Chuyên ngành <span class="required">*</span></label>
-                        <select name="chuyennganh" class="form-select" required>
-                            <option value="">Chọn chuyên ngành</option>';
-                            foreach ($dt as $row) {
-                                $selected = ($sv[0]['IDNganh'] == $row['IDNganh']) ? 'selected' : '';
-                                echo '<option value="' . $row['IDNganh'] . '" ' . $selected . '>' . $row['ChuyenNganh'] . '</option>';
-                            }
-echo '                  </select>
-                    </div>
-                </div>
-                
-                <div class="row g-4 mt-2">
-                    <div class="col-md-6">
-                        <label class="form-label">Nhóm</label>
-                        <select name="idnhom" class="form-select">
-                            <option value="">Chưa có nhóm</option>';
-                            foreach ($nhom as $row) {
-                                $selected = (isset($sv[0]['IDNhom']) && $sv[0]['IDNhom'] == $row['IDNhom']) ? 'selected' : '';
-                                echo '<option value="' . $row['IDNhom'] . '" ' . $selected . '>Nhóm ' . $row['IDNhom'] . '</option>';
-                            }
-echo '                  </select>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <label class="form-label">Số điện thoại <span class="required">*</span></label>
-                        <input type="tel" name="sdt" class="form-control" value="' . htmlspecialchars($sv[0]['SDT']) . '" required pattern="[0-9]{10}">
-                    </div>
-                </div>
-                
-                <div class="row g-4 mt-2">
-                    <div class="col-md-12">
-                        <label class="form-label">Email <span class="required">*</span></label>
-                        <input type="email" name="email" class="form-control" value="' . htmlspecialchars($sv[0]['Email']) . '" required>
-                    </div>
-                </div>
-                
-                <div class="d-flex gap-2 justify-content-end mt-4 pt-4" style="border-top: 1px solid #E2E8F0;">
-                    <a href="/CongNgheMoi/Admin/QuanLySV" class="btn btn-cancel">
-                        <i class="fas fa-arrow-left me-2"></i>Quay lại
-                    </a>
-                    <button type="submit" name="btn_CapNhat" class="btn btn-submit">
-                        <i class="fas fa-save me-2"></i>Cập nhật
-                    </button>
-                </div>
-            </form>
         </div>
     </div>
-</div>';
-?>
+            </div>
+          </div>
+        </div>
+        
+        
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const studentForm = document.getElementById('studentForm');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            
+            
+            // Cancel button
+            cancelBtn.addEventListener('click', function() {
+                studentForm.reset();
+                successMessage.style.display = 'none';
+                errorMessage.style.display = 'none';
+            });
+            
+            // Add animation to form fields on focus
+            const formInputs = document.querySelectorAll('.form-control');
+            formInputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.style.transform = 'translateY(-5px)';
+                    this.parentElement.style.transition = 'transform 0.3s ease';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>

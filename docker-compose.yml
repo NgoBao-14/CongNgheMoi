@@ -5,10 +5,10 @@ services:
     ports:
       - "8080:80"
     volumes:
-      # Mount source để dev (comment lại khi deploy production)
-      # - .:/var/www/html
-      - ./logs:/var/www/html/logs
-      - ./public/uploads:/var/www/html/public/uploads
+      # Mount source để dev - code tự động cập nhật không cần rebuild
+      - .:/var/www/html/CongNgheMoi
+      - ./logs:/var/www/html/CongNgheMoi/logs
+      - ./public/uploads:/var/www/html/CongNgheMoi/public/uploads
     environment:
       # Database config - override .env nếu cần
       - USE_CLOUD_SQL=${USE_CLOUD_SQL:-true}

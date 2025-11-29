@@ -209,7 +209,7 @@ if (!empty($detai)) {
             <td>' . (isset($row['IDNhom']) && $row['IDNhom'] ? '<span class="badge-custom" style="background: #F5F3FF; color: #8B5CF6;">Nhóm ' . $row['IDNhom'] . '</span>' : '<span class="badge-custom" style="background: #F1F5F9; color: #64748B;">-</span>') . '</td>
             <td class="text-center"><span class="badge-custom" style="background: #F1F5F9; color: #334155;">' . (isset($row['SoLuongTV']) ? $row['SoLuongTV'] : '0') . '</span></td>
             <td>
-                <a href="/CongNgheMoi/Admin/CapNhatDT?id=' . $row['IDDeTai'] . '" class="btn btn-sm" style="background: #F8FAFC; color: #4F46E5; border: 1px solid #E2E8F0; border-radius: 0.5rem; padding: 0.375rem 0.75rem;">
+                <a href="' . base_url('/Admin/CapNhatDT?id=' . $row['IDDeTai']) . '" class="btn btn-sm" style="background: #F8FAFC; color: #4F46E5; border: 1px solid #E2E8F0; border-radius: 0.5rem; padding: 0.375rem 0.75rem;">
                     <i class="fas fa-edit"></i>
                 </a>
             </td>

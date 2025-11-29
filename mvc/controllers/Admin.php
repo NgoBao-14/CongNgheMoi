@@ -2,8 +2,8 @@
     class admin extends Controller{
         public function SayHi(){
             if($_SESSION["PQ"] != 3){
-                echo "<script>alert('Bạn không có quyền truy cập')</script>";
-                header("refresh: 0; url='/CongNgheMoi'");
+                echo "<script>alert('Bạn không có quyền truy cập'); window.location.href='" . base_url('/') . "';</script>";
+                exit;
             }
             $admin = $this->model("mAdmin");
             $kq = $admin->GetSinhVien();

@@ -13,7 +13,7 @@ class DoiMatKhau extends Controller {
         $iduser = $_SESSION['iduser'];
         $model = $this->model("mDoiMatKhau");
 
-        // Xử lý form đổi mật khẩu
+        // Xử lý form  mật khẩu
         if (isset($_POST['btnDoiMatKhau'])) {
             $matKhauCu = md5($_POST['matKhauCu']);
             $matKhauMoi = $_POST['matKhauMoi'];
@@ -27,14 +27,14 @@ class DoiMatKhau extends Controller {
                 $checkOldPass = json_decode($model->checkOldPassword($iduser, $matKhauCu), true);
                 
                 if ($checkOldPass) {
-                    // Đổi mật khẩu
+                    //  mật khẩu
                     $matKhauMoiMD5 = md5($matKhauMoi);
                     $result = json_decode($model->changePassword($iduser, $matKhauMoiMD5), true);
                     
                     if ($result) {
-                        ToastHelper::success('Đổi mật khẩu thành công!', '/CongNgheMoi/DoiMatKhau');
+                        ToastHelper::success(' mật khẩu thành công!', '/CongNgheMoi/DoiMatKhau');
                     } else {
-                        ToastHelper::error('Đổi mật khẩu thất bại!');
+                        ToastHelper::error(' mật khẩu thất bại!');
                     }
                 } else {
                     ToastHelper::error('Mật khẩu cũ không đúng!');
@@ -43,9 +43,15 @@ class DoiMatKhau extends Controller {
         }
 
         // Hiển thị view tương ứng với phân quyền
-        $pq = $_SESSION["PQ"];
+        $pq = intval($_SESSION["PQ"]);
         
-        if ($pq == 1) {
+        if ($pq == 4) {
+            // Trưởng khoa
+            $this->view("layoutTK", [
+                "Page" => "TK_DoiMatKhau",
+                "active" => "doimatkhau"
+            ]);
+        } elseif ($pq == 1) {
             // Giảng viên
             $this->view("layoutGV2", [
                 "Page" => "DoiMatKhau"
@@ -54,12 +60,6 @@ class DoiMatKhau extends Controller {
             // Sinh viên
             $this->view("layoutSinhVien", [
                 "Page" => "SV_DoiMatKhau"
-            ]);
-        } elseif ($pq == 4) {
-            // Trưởng khoa
-            $this->view("layoutTK", [
-                "Page" => "TK_DoiMatKhau",
-                "active" => "doimatkhau"
             ]);
         } else {
             // Mặc định
