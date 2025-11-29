@@ -103,6 +103,18 @@ echo '
             border-radius: 0.5rem;
             font-size: 0.75rem;
             font-weight: 600;
+            white-space: nowrap;
+            display: inline-block;
+        }
+        
+        .badge-truongkhoa {
+            background: #DBEAFE;
+            color: #2563EB;
+        }
+        
+        .badge-giangvien {
+            background: #FEF3C7;
+            color: #D97706;
         }
         
         .btn-action {
@@ -186,10 +198,10 @@ if (!empty($gv)) {
             <td class="fw-semibold">' . $i++ . '</td>
             <td><span class="badge-custom" style="background: #ECFDF5; color: #10B981;">' . $row['MaGV'] . '</span></td>
             <td class="fw-semibold">' . htmlspecialchars($row['HoDem'] . ' ' . $row['Ten']) . '</td>
-            <td><span style="font-size: 0.8125rem;">' . htmlspecialchars($row['ChuyenNganh']) . '</span></td>
+            <td><span style="font-size: 0.8125rem;">' . htmlspecialchars($row['TenChuyenNganh'] ?? 'N/A') . '</span></td>
             <td><span style="font-size: 0.8125rem; color: #64748B;">' . htmlspecialchars(isset($row['Email']) ? $row['Email'] : 'N/A') . '</span></td>
             <td><span style="font-size: 0.8125rem; color: #64748B;">' . htmlspecialchars(isset($row['SDT']) ? $row['SDT'] : 'N/A') . '</span></td>
-            <td>' . (isset($row['ChucVu']) ? '<span class="badge-custom" style="background: #FEF3C7; color: #D97706;">' . htmlspecialchars($row['ChucVu']) . '</span>' : '<span class="badge-custom" style="background: #F1F5F9; color: #64748B;">N/A</span>') . '</td>
+            <td>' . (isset($row['VaiTro']) ? '<span class="badge-custom ' . ($row['VaiTro'] == 'Trưởng khoa' ? 'badge-truongkhoa' : 'badge-giangvien') . '">' . htmlspecialchars($row['VaiTro']) . '</span>' : '<span class="badge-custom" style="background: #F1F5F9; color: #64748B;">N/A</span>') . '</td>
             <td>
                 <a href="/CongNgheMoi/Admin/CapNhatGV?id=' . $row['iduser'] . '" class="btn btn-sm" style="background: #F8FAFC; color: #4F46E5; border: 1px solid #E2E8F0; border-radius: 0.5rem; padding: 0.375rem 0.75rem;">
                     <i class="fas fa-edit"></i>

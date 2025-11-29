@@ -119,19 +119,51 @@
        }
        public function GetThongTinGV()
        {
-        $param = "";
-        $url = $this->api."getThongTinGV.php".$param;
-
-            $results=$this->docjson($url);
-            return json_encode($results);
+        // Query trực tiếp để lấy cả giảng viên (PQ=1) và trưởng khoa (PQ=4)
+        $str = "SELECT gv.MaGV, u.iduser, u.HoDem, u.Ten, u.SDT, u.Email, u.IDNganh, 
+                       cn.ChuyenNganh as TenChuyenNganh, tk.PQ,
+                       CASE 
+                           WHEN tk.PQ = 4 THEN 'Trưởng khoa'
+                           ELSE 'Giảng viên'
+                       END as VaiTro
+                FROM giangvien gv
+                JOIN user u ON gv.iduser = u.iduser
+                JOIN taikhoan tk ON u.iduser = tk.iduser
+                LEFT JOIN chuyennganh cn ON u.IDNganh = cn.IDNganh
+                WHERE tk.PQ IN (1, 4)
+                ORDER BY tk.PQ DESC, u.HoDem, u.Ten";
+        $result = mysqli_query($this->connect, $str);
+        $data = [];
+        if ($result) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $data[] = $row;
+            }
+        }
+        return json_encode($data);
        }
        public function GetThongTinGVTheoKhoa($id)
        {
-        $param = "?id=$id";
-        $url = $this->api."getThongTinGVTheoKhoa.php".$param;
-
-            $results=$this->docjson($url);
-            return json_encode($results);
+        $id = intval($id);
+        $str = "SELECT gv.MaGV, u.iduser, u.HoDem, u.Ten, u.SDT, u.Email, u.IDNganh, 
+                       cn.ChuyenNganh as TenChuyenNganh, tk.PQ,
+                       CASE 
+                           WHEN tk.PQ = 4 THEN 'Trưởng khoa'
+                           ELSE 'Giảng viên'
+                       END as VaiTro
+                FROM giangvien gv
+                JOIN user u ON gv.iduser = u.iduser
+                JOIN taikhoan tk ON u.iduser = tk.iduser
+                LEFT JOIN chuyennganh cn ON u.IDNganh = cn.IDNganh
+                WHERE tk.PQ IN (1, 4) AND u.IDNganh = $id
+                ORDER BY tk.PQ DESC, u.HoDem, u.Ten";
+        $result = mysqli_query($this->connect, $str);
+        $data = [];
+        if ($result) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $data[] = $row;
+            }
+        }
+        return json_encode($data);
        }
        public function GetThongTinGVTheoID($id)
         {
