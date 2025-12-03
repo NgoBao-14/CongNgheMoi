@@ -10,16 +10,17 @@ import org.json.JSONObject;
 
 public class ModernMainForm extends JFrame {
     
-    private String iduser, name;
+    private String iduser, name, maGV;
     private JLabel lblWelcome;
     private JTable tblDeTai, tblDiem;
     private JButton btnSave, btnRefresh, btnLogout;
     private JTextField txtIdDeTai, txtIdNhom;
     private DefaultTableModel modelDeTai, modelDiem;
     
-    public ModernMainForm(String iduser, String name) {
+    public ModernMainForm(String iduser, String name, String maGV) {
         this.iduser = iduser;
         this.name = name;
+        this.maGV = maGV;
         initComponents();
         loadDeTai();
     }
@@ -44,17 +45,19 @@ public class ModernMainForm extends JFrame {
         contentPanel.setBackground(ModernUI.LIGHT_BG);
         contentPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
         
-        // Left panel - Danh sách đề tài
-        JPanel leftPanel = createDeTaiPanel();
+        // Top panel - Danh sách đề tài
+        JPanel topPanel = createDeTaiPanel();
+        topPanel.setPreferredSize(new Dimension(0, 250));
         
-        // Right panel - Bảng chấm điểm
-        JPanel rightPanel = createDiemPanel();
+        // Bottom panel - Bảng chấm điểm
+        JPanel bottomPanel = createDiemPanel();
         
-        // Split pane
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel);
-        splitPane.setDividerLocation(350);
+        // Split pane - Vertical (trên-dưới)
+        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, topPanel, bottomPanel);
+        splitPane.setDividerLocation(250);
         splitPane.setOneTouchExpandable(true);
         splitPane.setBorder(null);
+        splitPane.setResizeWeight(0.3);
         
         contentPanel.add(splitPane, BorderLayout.CENTER);
         
@@ -164,7 +167,7 @@ public class ModernMainForm extends JFrame {
         titleLabel.setForeground(ModernUI.PRIMARY_COLOR);
         
         // Table
-        String[] columns = {"ID", "Tên Đề Tài", "Trạng Thái", "Nhóm"};
+        String[] columns = {"ID ĐK", "Tên Đề Tài", "Mã SV", "Lớp", "Họ Tên SV"};
         modelDeTai = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -175,9 +178,10 @@ public class ModernMainForm extends JFrame {
         tblDeTai = new JTable(modelDeTai);
         customizeTable(tblDeTai);
         tblDeTai.getColumnModel().getColumn(0).setPreferredWidth(50);
-        tblDeTai.getColumnModel().getColumn(1).setPreferredWidth(150);
+        tblDeTai.getColumnModel().getColumn(1).setPreferredWidth(180);
         tblDeTai.getColumnModel().getColumn(2).setPreferredWidth(80);
-        tblDeTai.getColumnModel().getColumn(3).setPreferredWidth(50);
+        tblDeTai.getColumnModel().getColumn(3).setPreferredWidth(60);
+        tblDeTai.getColumnModel().getColumn(4).setPreferredWidth(120);
         
         tblDeTai.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -221,7 +225,7 @@ public class ModernMainForm extends JFrame {
             new EmptyBorder(8, 12, 8, 12)
         ));
         
-        JLabel infoLabel = new JLabel("ℹ️ Chọn đề tài bên trái để xem và chấm điểm");
+        JLabel infoLabel = new JLabel("ℹ️ Chọn đề tài ở trên để xem và chấm điểm");
         infoLabel.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         infoLabel.setForeground(ModernUI.TEXT_COLOR);
         infoPanel.add(infoLabel);
@@ -238,6 +242,7 @@ public class ModernMainForm extends JFrame {
         };
         
         tblDiem = new JTable(modelDiem);
+        tblDiem.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         customizeTable(tblDiem);
         
         // Set column widths
@@ -246,6 +251,28 @@ public class ModernMainForm extends JFrame {
         tblDiem.getColumnModel().getColumn(2).setPreferredWidth(200);
         tblDiem.getColumnModel().getColumn(3).setPreferredWidth(70);
         tblDiem.getColumnModel().getColumn(8).setPreferredWidth(80);
+        
+        // Cell editor cho cột điểm - chỉ cho nhập 0-10
+        DefaultCellEditor diemEditor = new DefaultCellEditor(new JTextField()) {
+            @Override
+            public boolean stopCellEditing() {
+                String value = ((JTextField) getComponent()).getText().trim();
+                if (!value.isEmpty()) {
+                    try {
+                        double diem = Double.parseDouble(value);
+                        if (diem < 0 || diem > 10) {
+                            JOptionPane.showMessageDialog(tblDiem, "Điểm phải từ 0 đến 10!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                            return false;
+                        }
+                    } catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(tblDiem, "Vui lòng nhập số!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                        return false;
+                    }
+                }
+                return super.stopCellEditing();
+            }
+        };
+        tblDiem.getColumnModel().getColumn(8).setCellEditor(diemEditor);
         
         // Text area renderer for long content
         tblDiem.getColumnModel().getColumn(2).setCellRenderer(new TextAreaRenderer());
@@ -306,7 +333,7 @@ public class ModernMainForm extends JFrame {
     private void loadDeTai() {
         try {
             mycls cls = new mycls();
-            String id = cls.mahoa(iduser).replace("+", "%2B");
+            String id = cls.mahoa(maGV).replace("+", "%2B");
             String url = Constants.API_XEM_DETAI + "id=" + id;
             JSONArray jarr = cls.docapi(url);
             
@@ -316,10 +343,11 @@ public class ModernMainForm extends JFrame {
                 for (int i = 0; i < jarr.length(); i++) {
                     JSONObject job = jarr.getJSONObject(i);
                     Vector<String> row = new Vector<>();
-                    row.add(job.getString("IDDeTai"));
+                    row.add(job.getString("IDDangKy"));
                     row.add(job.getString("TenDeTai"));
-                    row.add(job.getString("TrangThaiDeTai"));
-                    row.add(job.getString("idnhom"));
+                    row.add(job.getString("MaSV"));
+                    row.add(job.getString("Lop"));
+                    row.add(job.getString("HoDem") + " " + job.getString("Ten"));
                     modelDeTai.addRow(row);
                 }
             }
@@ -334,15 +362,13 @@ public class ModernMainForm extends JFrame {
     private void handleDeTaiSelection() {
         int selectedRow = tblDeTai.getSelectedRow();
         if (selectedRow >= 0) {
-            String idDeTai = modelDeTai.getValueAt(selectedRow, 0).toString();
-            String idNhom = modelDeTai.getValueAt(selectedRow, 3).toString();
-            txtIdDeTai.setText(idDeTai);
-            txtIdNhom.setText(idNhom);
-            loadDiem(idDeTai, idNhom);
+            String idDangKy = modelDeTai.getValueAt(selectedRow, 0).toString();
+            txtIdDeTai.setText(idDangKy);
+            loadDiem(idDangKy);
         }
     }
     
-    private void loadDiem(String idDeTai, String idNhom) {
+    private void loadDiem(String idDangKy) {
         try {
             String[][] rawData = {
                 {"1", "1", "Hình thành và phát triển ý tưởng nghiên cứu", "15%",
@@ -389,8 +415,8 @@ public class ModernMainForm extends JFrame {
                                "Muc6.1", "Muc6.2", "Muc6.3"};
             
             mycls cls = new mycls();
-            String id = cls.mahoa(idDeTai).replace("+", "%2B");
-            String url = Constants.API_XEM_DSDIEM + "iddetai=" + id;
+            String id = cls.mahoa(idDangKy).replace("+", "%2B");
+            String url = Constants.API_XEM_DSDIEM + "id=" + id;
             JSONArray jarr = cls.docapi(url);
             
             modelDiem.setRowCount(0);
@@ -418,6 +444,11 @@ public class ModernMainForm extends JFrame {
     
     private void handleSaveDiem() {
         try {
+            // Stop editing để commit giá trị đang nhập vào model
+            if (tblDiem.isEditing()) {
+                tblDiem.getCellEditor().stopCellEditing();
+            }
+            
             if (txtIdDeTai.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(this, 
                     "Vui lòng chọn đề tài trước!", 

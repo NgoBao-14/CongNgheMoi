@@ -37,22 +37,37 @@ public class Testlaythongtinmay {
         {
             String token = cls.docfile();
             String url = Constants.API_CHECK_TOKEN + token;
-            JSONArray jarr = new JSONArray();
-            jarr = cls.docapi(url);
-            for(int i=0;i<cls.docapi(url).length();i++)
-            {
+            JSONArray jarr = cls.docapi(url);
+            
+            // Token cũ không hợp lệ hoặc thiếu MaGV -> xóa token và đăng nhập lại
+            if (jarr == null || jarr.length() == 0) {
+                cls.xoaToken();
+                ModernLoginForm fm = new ModernLoginForm();
+                fm.setVisible(true);
+                return;
+            }
+            
             try {
-                JSONObject jon = jarr.getJSONObject(i);
+                JSONObject jon = jarr.getJSONObject(0);
                 String iduser = String.valueOf(jon.getInt("iduser")); 
                 String pq = jon.getString("PQ");
                 String name = jon.getString("name");
-                ModernMainForm mf = new ModernMainForm(iduser,name);
-                mf.setVisible(true);
+                String maGV = jon.optString("MaGV", "");
                 
-                }catch(Exception e)
-                {
-                
+                // Nếu không có MaGV trong token cũ -> xóa token và đăng nhập lại
+                if (maGV.isEmpty()) {
+                    cls.xoaToken();
+                    ModernLoginForm fm = new ModernLoginForm();
+                    fm.setVisible(true);
+                    return;
                 }
+                
+                ModernMainForm mf = new ModernMainForm(iduser, name, maGV);
+                mf.setVisible(true);
+            } catch(Exception e) {
+                cls.xoaToken();
+                ModernLoginForm fm = new ModernLoginForm();
+                fm.setVisible(true);
             }
     }
     

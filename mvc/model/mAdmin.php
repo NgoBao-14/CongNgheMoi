@@ -106,16 +106,20 @@
        public function ThemSinhVien($masv,$hodem,$ten,$lop,$idnganh,$sdt,$email)
        {
         $str1 = "INSERT INTO user (HoDem, Ten, IDNganh, SDT, Email) VALUES ('$hodem', '$ten', '$idnganh', '$sdt', '$email')";
-        $str2 = "INSERT INTO sinhvien (iduser, MaSV, Lop, IDNhom) VALUES (LAST_INSERT_ID() ,'$masv', '$lop', NULL)";
-        $str3 = "INSERT INTO taikhoan (iduser,username,PQ) VALUES (LAST_INSERT_ID(),'$masv', '2')";
         $tblPTTT1 = mysqli_query($this->connect, $str1);
-        $tblPTTT2 = mysqli_query($this->connect, $str2);
-        $tblPTTT3 = mysqli_query($this->connect, $str3);
-        if ($tblPTTT1 && $tblPTTT2 && $tblPTTT3) {
-            return true;
-        } else {
-            return false;
+        
+        if ($tblPTTT1) {
+            $iduser = mysqli_insert_id($this->connect);
+            $str2 = "INSERT INTO sinhvien (iduser, MaSV, Lop, IDNhom) VALUES ($iduser, '$masv', '$lop', NULL)";
+            $str3 = "INSERT INTO taikhoan (iduser, username, PQ) VALUES ($iduser, '$masv', '2')";
+            $tblPTTT2 = mysqli_query($this->connect, $str2);
+            $tblPTTT3 = mysqli_query($this->connect, $str3);
+            
+            if ($tblPTTT2 && $tblPTTT3) {
+                return true;
+            }
         }
+        return false;
        }
        public function GetThongTinGV()
        {
@@ -188,16 +192,20 @@
         public function ThemGiangVien($msgv,$hodem,$ten,$idnganh,$sdt,$email,$chucvu)
         {
             $str1 = "INSERT INTO user (HoDem, Ten, IDNganh, SDT, Email) VALUES ('$hodem', '$ten', '$idnganh', '$sdt', '$email')";
-            $str2 = "INSERT INTO giangvien (iduser, MaGV) VALUES (LAST_INSERT_ID() ,'$msgv')";
-            $str3 = "INSERT INTO taikhoan (iduser,username,PQ) VALUES (LAST_INSERT_ID(),'$msgv', '$chucvu')";
             $tblPTTT1 = mysqli_query($this->connect, $str1);
-            $tblPTTT2 = mysqli_query($this->connect, $str2);
-            $tblPTTT3 = mysqli_query($this->connect, $str3);
-            if ($tblPTTT1 && $tblPTTT2 && $tblPTTT3) {
-                return true;
-            } else {
-                return false;
+            
+            if ($tblPTTT1) {
+                $iduser = mysqli_insert_id($this->connect);
+                $str2 = "INSERT INTO giangvien (iduser, MaGV) VALUES ($iduser, '$msgv')";
+                $str3 = "INSERT INTO taikhoan (iduser, username, PQ) VALUES ($iduser, '$msgv', '$chucvu')";
+                $tblPTTT2 = mysqli_query($this->connect, $str2);
+                $tblPTTT3 = mysqli_query($this->connect, $str3);
+                
+                if ($tblPTTT2 && $tblPTTT3) {
+                    return true;
+                }
             }
+            return false;
         }
         public function GetDSDetai()
         {

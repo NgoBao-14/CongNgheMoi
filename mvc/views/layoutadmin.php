@@ -1,6 +1,7 @@
 <?php
     if($_SESSION["PQ"] != 3){
-        echo "<script>alert('Bạn không có quyền truy cập'); window.location.href='" . base_url('/') . "';</script>";
+        $_SESSION['message'] = ['type' => 'error', 'text' => 'Bạn không có quyền truy cập'];
+        header("location: " . base_url('/'));
         exit;
     }
 ?>
@@ -23,6 +24,31 @@
 <body class="hold-transition">
 <!-- Site wrapper -->
 <div class="wrapper">
+
+<!-- Toast Message -->
+<?php if(isset($_SESSION['message'])): ?>
+<div class="position-fixed" style="top: 20px; right: 20px; z-index: 9999;">
+    <div class="toast show" role="alert">
+        <div class="toast-header <?= $_SESSION['message']['type'] == 'success' ? 'bg-success' : 'bg-danger' ?> text-white">
+            <strong class="mr-auto">
+                <i class="fas <?= $_SESSION['message']['type'] == 'success' ? 'fa-check-circle' : 'fa-exclamation-circle' ?> mr-2"></i>
+                <?= $_SESSION['message']['type'] == 'success' ? 'Thành công' : 'Lỗi' ?>
+            </strong>
+            <button type="button" class="ml-2 mb-1 close text-white" data-dismiss="toast">
+                <span>&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            <?= $_SESSION['message']['text'] ?>
+        </div>
+    </div>
+</div>
+<script>
+    setTimeout(function() {
+        document.querySelector('.toast').style.display = 'none';
+    }, 3000);
+</script>
+<?php unset($_SESSION['message']); endif; ?>
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->

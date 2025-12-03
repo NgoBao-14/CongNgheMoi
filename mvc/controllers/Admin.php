@@ -2,7 +2,8 @@
     class admin extends Controller{
         public function SayHi(){
             if($_SESSION["PQ"] != 3){
-                echo "<script>alert('Bạn không có quyền truy cập'); window.location.href='" . base_url('/') . "';</script>";
+                $_SESSION['message'] = ['type' => 'error', 'text' => 'Bạn không có quyền truy cập'];
+                header("location: " . base_url('/'));
                 exit;
             }
             $admin = $this->model("mAdmin");
@@ -145,8 +146,9 @@
                 $cv = $_POST['chucvu'];
                 if($admin->UpdateGV($id,$hodem,$ten,$idnganh,$sdt,$email,$cv))
                 {
-                    echo "<script>alert('Cập nhật thành công')</script>";
+                    $_SESSION['message'] = ['type' => 'success', 'text' => 'Cập nhật thành công'];
                     header("location: QuanLyGV");
+                    exit;
                 }
             }
             $this->view("layoutadmin", [

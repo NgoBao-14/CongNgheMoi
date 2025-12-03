@@ -30,10 +30,43 @@ require("../private/JWT.php");
 				
 			}
 		}
+		public function xuatdanhsachdetaichotungsinhvien($id)
+		{
+			$link = $this->connect;
+			$sql = "SELECT d.IDDeTai,d.TenDeTai,sv.MaSV,sv.Lop,u.HoDem,u.Ten,dk.IDDangKy,dk.NgayDangKy FROM detai d JOIN dangkydetai dk ON d.IDDeTai = dk.IDDeTai JOIN sinhvien sv ON dk.MaSV = sv.MaSV JOIN user u ON sv.iduser = u.iduser WHERE d.IDGV = '$id' ORDER BY d.IDDeTai, u.HoDem, u.Ten; ";
+			$ketqua = mysqli_query($link,$sql);
+			$i = mysqli_num_rows($ketqua);
+			if($i>0)
+			{
+				$dulieu = array();
+				while($row = mysqli_fetch_array($ketqua))
+				{
+					$IDDeTai = $row["IDDeTai"];
+					$TenDeTai = $row["TenDeTai"];
+					$MaSV = $row["MaSV"];
+					$Lop = $row["Lop"];
+					$HoDem = $row["HoDem"];
+					$Ten = $row["Ten"];
+					$IDDangKy = $row["IDDangKy"];
+					$dulieu[] = array('IDDeTai'=>$IDDeTai,
+									  'TenDeTai'=>$TenDeTai,
+									  'MaSV'=>$MaSV,
+									  'Lop'=>$Lop,
+									  'HoDem'=>$HoDem,
+									  'Ten'=>$Ten,
+									  'IDDangKy'=>$IDDangKy
+									);
+					
+				}
+				header("content-Type:application/json; charset=UTF-8");
+				echo json_encode($dulieu);
+				
+			}
+		}
 		public function xuatdanhsachdiem($iddetai)
 		{
 			$link = $this->connect;
-			$sql = "SELECT * FROM diem d JOIN detai dt ON d.IDDeTai=dt.IDDeTai WHERE d.IDDeTai = '$iddetai'";
+			$sql = "SELECT * FROM diem WHERE diem.IDDangKy = '$iddetai'";
 			$ketqua = mysqli_query($link,$sql);
 			$i = mysqli_num_rows($ketqua);
 			if($i>0)
@@ -130,6 +163,7 @@ require("../private/JWT.php");
 					$tencpu = $row["tencpu"];
 					$os = $row["os"];
 					$name = $row["Ten"];
+					$MaGV = $row["MaGV"];
 				
 					$token = array();
 					$token['iduser'] = $iduser;
@@ -139,11 +173,13 @@ require("../private/JWT.php");
 					$token['tencpu'] = $tencpu;
 					$token['os'] = $os;
 					$token['name'] = $name;
+					$token['MaGV'] = $MaGV;
 					$jsonwebtoken = JWT::encode($token,"NgoBao");
 					
 					$dulieu[] =array(
 							"iduser"=>$iduser,
 							"name"=>$name,
+							"MaGV"=>$MaGV,
 							"PQ"=>$PQ,
 							"token"=>$jsonwebtoken,
 							"time"=> $time + 3600,
@@ -213,6 +249,7 @@ require("../private/JWT.php");
 			$tencpu = $dulieu['tencpu'];
 			$os = $dulieu['os'];
 			$name = $dulieu['name'];
+			$MaGV = $dulieu['MaGV'];
 			
 			$sql = "select tk.iduser, PQ from taikhoan tk join thongtin tt on tk.iduser=tt.iduser where tk.iduser = '$iduser' and username = '$username' and PQ = '$PQ' and tenmay = '$tenmay' and tencpu = '$tencpu' and os = '$os' limit 1";
 			$link = $this->connect;
@@ -227,7 +264,8 @@ require("../private/JWT.php");
 				$dulieu[] = array(
 					'iduser' => $iduser,
 					'PQ' => $PQ,
-					'name'=> $name
+					'name'=> $name,
+					'MaGV'=> $MaGV
 				);
 				header("content-Type:application/json; charset=UTF-8");
 				echo json_encode($dulieu);

@@ -239,10 +239,11 @@ public class ModernLoginForm extends JFrame {
                 } else if (response == 102 && (pq == 1 || pq == 4)) {
                     String token = jon.getString("token");
                     long time = jon.getLong("time");
+                    String maGV = jon.getString("MaGV");
                     cls.ghifile(token, time);
                     
                     SwingUtilities.invokeLater(() -> {
-                        ModernMainForm mf = new ModernMainForm(iduser, name);
+                        ModernMainForm mf = new ModernMainForm(iduser, name, maGV);
                         mf.setVisible(true);
                         dispose();
                     });

@@ -32,15 +32,25 @@ public class mycls {
     {
         try
         {
+            System.out.println("Calling URL: " + url);
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-            con.setRequestMethod("POST");
-            con.getResponseCode();
+            con.setRequestMethod("GET");
+            con.setConnectTimeout(10000);
+            con.setReadTimeout(10000);
             
+            int responseCode = con.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
             
+            // Đọc response để đảm bảo server xử lý xong
+            String response = IOUtils.toString(con.getInputStream(), Charset.forName("UTF-8"));
+            System.out.println("Response: " + response);
+            
+            con.disconnect();
         }catch(Exception e)
         {
-            
+            System.out.println("Lỗi geturl: " + e.getMessage());
+            e.printStackTrace();
         }
     }
     public JSONArray docapi(String url)

@@ -6,5 +6,5 @@ $r = new giaimaAES();
 	$p = new csdl();
 	$id = $_REQUEST['id'];
 	$id = $r->giaima($id);
-	$p->xuatdanhsachdiem($id);
+	$p->xuatdanhsachdetaichotungsinhvien($id);
 ?>

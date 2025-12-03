@@ -49,10 +49,12 @@ class Login extends Controller {
                         break;
                 }
                 
-                echo "<script>alert('Đăng nhập thành công'); window.location.href='" . $redirectUrl . "';</script>";
+                $_SESSION['message'] = ['type' => 'success', 'text' => 'Đăng nhập thành công'];
+                header("location: " . $redirectUrl);
                 exit;
                 } else {
-                    echo "<script>alert('Sai tên đăng nhập hoặc mật khẩu'); window.location.href='Login';</script>";
+                    $_SESSION['message'] = ['type' => 'error', 'text' => 'Sai tên đăng nhập hoặc mật khẩu'];
+                    header("location: Login");
                     exit;
                 }
             } catch (Exception $e) {

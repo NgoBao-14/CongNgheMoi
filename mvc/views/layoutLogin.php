@@ -184,6 +184,23 @@
     </style>
 </head>
 <body>
+    <!-- Toast Message -->
+    <?php if(isset($_SESSION['message'])): ?>
+    <div class="position-fixed" style="top: 20px; right: 20px; z-index: 9999;">
+        <div class="alert alert-<?= $_SESSION['message']['type'] == 'success' ? 'success' : 'danger' ?> alert-dismissible fade show" role="alert">
+            <i class="bi <?= $_SESSION['message']['type'] == 'success' ? 'bi-check-circle' : 'bi-exclamation-circle' ?> me-2"></i>
+            <?= $_SESSION['message']['text'] ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    </div>
+    <script>
+        setTimeout(function() {
+            var alert = document.querySelector('.alert');
+            if(alert) alert.style.display = 'none';
+        }, 3000);
+    </script>
+    <?php unset($_SESSION['message']); endif; ?>
+
     <div class="container-fluid">
         <!-- Header Tabs -->
         <div class="header-tabs">
