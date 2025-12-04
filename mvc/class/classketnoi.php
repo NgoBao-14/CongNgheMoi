@@ -213,7 +213,7 @@ require("../private/JWT.php");
 					return;
 				}
 				else{
-					$sql3 = "select * from taikhoan tk join user u on tk.iduser=u.iduser where tk.iduser = '$iduser' limit 1";
+					$sql3 = "select tk.*, u.*, gv.MaGV from taikhoan tk join user u on tk.iduser=u.iduser left join giangvien gv on tk.iduser=gv.iduser where tk.iduser = '$iduser' limit 1";
 					$kq1 = mysqli_query($link,$sql3);
 					$i3 = mysqli_num_rows($kq1);
 					if($i3==1)
@@ -221,10 +221,12 @@ require("../private/JWT.php");
 						$row1 = mysqli_fetch_array($kq1);
 						$name = $row1["Ten"];
 						$PQ = $row1["PQ"];
+						$MaGV = $row1["MaGV"] ?? "";
 						$dulieu1[]=array(
 							"iduser"=> $iduser,
 							"name"=>$name,
 							"PQ"=>$PQ,
+							"MaGV"=>$MaGV,
 							"Response" => 101
 						);
 						header("content-Type:application/json; charset=UTF-8");

@@ -13,11 +13,12 @@ public class ModernRegisterForm extends JFrame {
     
     private JTextField txt_tenmay, txt_ram1, txt_ram2, txt_rom1, txt_rom2, txt_cpu, txt_os;
     private JButton btn_getInfo, btn_register;
-    private String iduser, name;
+    private String iduser, name, maGV;
     
-    public ModernRegisterForm(String iduser, String name) {
+    public ModernRegisterForm(String iduser, String name, String maGV) {
         this.iduser = iduser;
         this.name = name;
+        this.maGV = maGV;
         initComponents();
     }
     
@@ -247,7 +248,7 @@ public class ModernRegisterForm extends JFrame {
                 "Thành công", 
                 JOptionPane.INFORMATION_MESSAGE);
             
-            ModernMainForm fm = new ModernMainForm(iduser, name);
+            ModernMainForm fm = new ModernMainForm(iduser, name, maGV);
             fm.setVisible(true);
             dispose();
             

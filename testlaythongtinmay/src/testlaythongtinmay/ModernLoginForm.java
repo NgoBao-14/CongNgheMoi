@@ -231,8 +231,9 @@ public class ModernLoginForm extends JFrame {
                 String name = jon.getString("name");
                 
                 if (response == 101 && (pq == 1 || pq == 4)) {
+                    String maGV = jon.optString("MaGV", "");
                     SwingUtilities.invokeLater(() -> {
-                        ModernRegisterForm fm = new ModernRegisterForm(iduser, name);
+                        ModernRegisterForm fm = new ModernRegisterForm(iduser, name, maGV);
                         fm.setVisible(true);
                         dispose();
                     });
