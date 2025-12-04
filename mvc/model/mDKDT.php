@@ -228,47 +228,75 @@ class mDKDT extends DB {
         return $mang;
     }
 
-    // Lấy kết quả chấm từ giảng viên hướng dẫn
-    public function getKetQuaCham($idNhom) {
-        // Giả sử có bảng ketqua_cham hoặc tương tự
-        $sql = "SELECT kq.*,
-                CONCAT(u.HoDem, ' ', u.Ten) AS TenGiangVien
-                FROM ketqua_cham kq
-                JOIN nhom n ON kq.IDNhom = n.IDNhom
-                JOIN detai dt ON n.IDDeTai = dt.IDDeTai
+    // Lấy kết quả chấm từ giảng viên hướng dẫn theo MaSV
+    public function getKetQuaChamByMaSV($masv) {
+        // Lấy IDDangKy của sinh viên
+        $sqlDK = "SELECT IDDangKy FROM dangkydetai WHERE MaSV = '$masv'";
+        $resultDK = mysqli_query($this->connect, $sqlDK);
+        
+        if (!$resultDK || mysqli_num_rows($resultDK) == 0) {
+            return null;
+        }
+        
+        $rowDK = mysqli_fetch_assoc($resultDK);
+        $idDangKy = $rowDK['IDDangKy'];
+        
+        // Lấy điểm từ bảng diem
+        $sql = "SELECT d.*, 
+                CONCAT(uGV.HoDem, ' ', uGV.Ten) AS TenGiangVien,
+                dt.TenDeTai
+                FROM diem d
+                JOIN dangkydetai dk ON d.IDDangKy = dk.IDDangKy
+                JOIN detai dt ON dk.IDDeTai = dt.IDDeTai
                 JOIN giangvien gv ON dt.IDGV = gv.MaGV
-                JOIN user u ON gv.iduser = u.iduser
-                WHERE kq.IDNhom = $idNhom
-                ORDER BY kq.NgayCham DESC
-                LIMIT 1";
+                JOIN user uGV ON gv.iduser = uGV.iduser
+                WHERE d.IDDangKy = '$idDangKy'";
         
         $result = mysqli_query($this->connect, $sql);
         
-        // Nếu bảng không tồn tại, trả về null
-        if (!$result) {
+        if (!$result || mysqli_num_rows($result) == 0) {
             return null;
         }
         
         $ketqua = mysqli_fetch_assoc($result);
         
         if ($ketqua) {
-            // Lấy chi tiết điểm nếu có
-            $sqlChiTiet = "SELECT * FROM chitiet_diem 
-                          WHERE IDKetQuaCham = " . $ketqua['IDKetQuaCham'];
-            $resultChiTiet = mysqli_query($this->connect, $sqlChiTiet);
+            // Tính điểm tổng kết theo tỷ trọng
+            $chiTietDiem = array(
+                array('TenTieuChi' => 'Hình thành và phát triển ý tưởng nghiên cứu', 'Diem' => $ketqua['Muc1'], 'TyTrong' => 15),
+                array('TenTieuChi' => 'Cấu trúc báo cáo KLTN hợp lý khi thuyết trình', 'Diem' => $ketqua['Muc2'], 'TyTrong' => 15),
+                array('TenTieuChi' => 'Sự tương tác giữa SV và CBHD', 'Diem' => $ketqua['Muc3.1'], 'TyTrong' => 10),
+                array('TenTieuChi' => 'Sự tương tác giữa các thành viên nhóm', 'Diem' => $ketqua['Muc3.2'], 'TyTrong' => 10),
+                array('TenTieuChi' => 'Hoàn thành nội dung được phân công', 'Diem' => $ketqua['Muc3.3'], 'TyTrong' => 5),
+                array('TenTieuChi' => 'Thu nhận kết quả và xử lý số liệu', 'Diem' => $ketqua['Muc4.1'], 'TyTrong' => 15),
+                array('TenTieuChi' => 'Thảo luận nghiên cứu', 'Diem' => $ketqua['Muc4.2'], 'TyTrong' => 15),
+                array('TenTieuChi' => 'Tóm tắt kết quả nghiên cứu', 'Diem' => $ketqua['Muc5.1'], 'TyTrong' => 5),
+                array('TenTieuChi' => 'Kiến nghị', 'Diem' => $ketqua['Muc5.2'], 'TyTrong' => 5),
+                array('TenTieuChi' => 'Tài liệu tham khảo', 'Diem' => $ketqua['Muc6.1'], 'TyTrong' => 5),
+                array('TenTieuChi' => 'Chu tích hình ảnh, bảng biểu', 'Diem' => $ketqua['Muc6.2'], 'TyTrong' => 5),
+                array('TenTieuChi' => 'Chính tả, định dạng, thuật ngữ', 'Diem' => $ketqua['Muc6.3'], 'TyTrong' => 5)
+            );
             
-            if ($resultChiTiet) {
-                $chiTiet = array();
-                while ($row = mysqli_fetch_assoc($resultChiTiet)) {
-                    $chiTiet[] = $row;
+            // Tính điểm tổng kết
+            $tongDiem = 0;
+            $coDiem = false;
+            foreach ($chiTietDiem as $ct) {
+                if ($ct['Diem'] !== null && $ct['Diem'] !== '') {
+                    $tongDiem += floatval($ct['Diem']) * $ct['TyTrong'] / 100;
+                    $coDiem = true;
                 }
-                $ketqua['ChiTietDiem'] = $chiTiet;
-            } else {
-                $ketqua['ChiTietDiem'] = array();
             }
+            
+            $ketqua['TongDiem'] = $coDiem ? round($tongDiem, 2) : null;
+            $ketqua['ChiTietDiem'] = $chiTietDiem;
         }
         
         return $ketqua;
+    }
+    
+    // Lấy kết quả chấm từ giảng viên hướng dẫn (giữ lại cho tương thích)
+    public function getKetQuaCham($idNhom) {
+        return null; // Deprecated - sử dụng getKetQuaChamByMaSV thay thế
     }
     
     // Lấy danh sách sinh viên đăng ký cùng đề tài

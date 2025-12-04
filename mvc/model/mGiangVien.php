@@ -99,64 +99,44 @@ class mGiangVien extends DB {
         return $result;
     }
     
-    // Lấy kết quả đánh giá của sinh viên theo đề tài
+    // Lấy kết quả đánh giá của sinh viên theo IDDangKy
     public function getKetQuaDanhGia($MaSV) {
-        // Lấy IDDeTai của sinh viên
-        $sqlDeTai = "SELECT IDDeTai FROM dangkydetai WHERE MaSV = '$MaSV'";
-        $resultDeTai = mysqli_query($this->connect, $sqlDeTai);
-        $rowDeTai = mysqli_fetch_assoc($resultDeTai);
+        // Lấy IDDangKy của sinh viên
+        $sqlDK = "SELECT IDDangKy FROM dangkydetai WHERE MaSV = '$MaSV'";
+        $resultDK = mysqli_query($this->connect, $sqlDK);
+        $rowDK = mysqli_fetch_assoc($resultDK);
         
-        if (!$rowDeTai) {
+        if (!$rowDK) {
             return null;
         }
         
-        $idDeTai = $rowDeTai['IDDeTai'];
+        $idDangKy = $rowDK['IDDangKy'];
         
-        // Lấy điểm từ bảng diem
-        $sql = "SELECT * FROM diem WHERE IDDeTai = '$idDeTai'";
+        // Lấy điểm từ bảng diem theo IDDangKy
+        $sql = "SELECT * FROM diem WHERE IDDangKy = '$idDangKy'";
         $result = mysqli_query($this->connect, $sql);
         
-        if (!$result) {
-            // Nếu bảng không tồn tại hoặc lỗi, trả về cấu trúc rỗng
-            return array(
-                'IDDeTai' => $idDeTai,
-                'Muc1' => null,
-                'Muc2' => null,
-                'Muc3_1' => null,
-                'Muc3_2' => null,
-                'Muc3_3' => null,
-                'Muc4_1' => null,
-                'Muc4_2' => null,
-                'Muc5_1' => null,
-                'Muc5_2' => null,
-                'Muc6_1' => null,
-                'Muc6_2' => null,
-                'Muc6_3' => null
-            );
+        if (!$result || mysqli_num_rows($result) == 0) {
+            return null;
         }
         
         $diem = mysqli_fetch_assoc($result);
         
-        if (!$diem) {
-            // Nếu chưa có điểm, trả về cấu trúc rỗng
-            return array(
-                'IDDeTai' => $idDeTai,
-                'Muc1' => null,
-                'Muc2' => null,
-                'Muc3_1' => null,
-                'Muc3_2' => null,
-                'Muc3_3' => null,
-                'Muc4_1' => null,
-                'Muc4_2' => null,
-                'Muc5_1' => null,
-                'Muc5_2' => null,
-                'Muc6_1' => null,
-                'Muc6_2' => null,
-                'Muc6_3' => null
-            );
-        }
-        
-        return $diem;
+        // Chuyển đổi tên cột có dấu chấm sang dấu gạch dưới cho JavaScript
+        return array(
+            'Muc1' => $diem['Muc1'] ?? null,
+            'Muc2' => $diem['Muc2'] ?? null,
+            'Muc3_1' => $diem['Muc3.1'] ?? null,
+            'Muc3_2' => $diem['Muc3.2'] ?? null,
+            'Muc3_3' => $diem['Muc3.3'] ?? null,
+            'Muc4_1' => $diem['Muc4.1'] ?? null,
+            'Muc4_2' => $diem['Muc4.2'] ?? null,
+            'Muc5_1' => $diem['Muc5.1'] ?? null,
+            'Muc5_2' => $diem['Muc5.2'] ?? null,
+            'Muc6_1' => $diem['Muc6.1'] ?? null,
+            'Muc6_2' => $diem['Muc6.2'] ?? null,
+            'Muc6_3' => $diem['Muc6.3'] ?? null
+        );
     }
 
     // Lấy danh sách đề tài đã duyệt của giảng viên để tạo thông báo

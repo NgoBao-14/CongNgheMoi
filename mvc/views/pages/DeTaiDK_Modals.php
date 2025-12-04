@@ -310,65 +310,113 @@ function loadKetQuaCham() {
         .then(data => {
             if (data.success && data.ketqua) {
                 const kq = data.ketqua;
+                
+                // Xác định màu và trạng thái dựa trên điểm
+                let diemClass = "text-primary";
+                let diemStatus = "";
+                if (kq.TongDiem !== null) {
+                    if (kq.TongDiem >= 8) {
+                        diemClass = "text-success";
+                        diemStatus = "Giỏi";
+                    } else if (kq.TongDiem >= 6.5) {
+                        diemClass = "text-info";
+                        diemStatus = "Khá";
+                    } else if (kq.TongDiem >= 5) {
+                        diemClass = "text-warning";
+                        diemStatus = "Trung bình";
+                    } else {
+                        diemClass = "text-danger";
+                        diemStatus = "Không đạt";
+                    }
+                }
+                
                 let html = `
-                    <div class="card">
+                    <div class="card border-0">
                         <div class="card-body">
-                            <h6 class="card-title mb-3">Thông tin chấm điểm</h6>
-                            <table class="table table-bordered">
-                                <tbody>
-                                    <tr>
-                                        <th style="width: 40%;">Điểm tổng kết:</th>
-                                        <td><strong class="text-primary fs-5">${kq.TongDiem || "Chưa có"} ${kq.TongDiem ? "/10" : ""}</strong></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Ngày chấm:</th>
-                                        <td>${kq.NgayCham ? new Date(kq.NgayCham).toLocaleDateString("vi-VN") : "Chưa có"}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Nhận xét:</th>
-                                        <td>${kq.NhanXet || "Chưa có nhận xét"}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <!-- Điểm tổng kết nổi bật -->
+                            <div class="text-center mb-4 p-4" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 12px;">
+                                <h6 class="text-muted mb-2">ĐIỂM TỔNG KẾT</h6>
+                                <div class="display-3 fw-bold ${diemClass}">${kq.TongDiem !== null ? kq.TongDiem : "-"}<span class="fs-4">/10</span></div>
+                                ${diemStatus ? `<span class="badge bg-${kq.TongDiem >= 5 ? (kq.TongDiem >= 8 ? "success" : (kq.TongDiem >= 6.5 ? "info" : "warning")) : "danger"} mt-2">${diemStatus}</span>` : ""}
+                            </div>
+                            
+                            <!-- Thông tin giảng viên -->
+                            <div class="mb-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="bi bi-person-badge text-primary me-2"></i>
+                                    <strong>Giảng viên chấm:</strong>
+                                    <span class="ms-2">${kq.TenGiangVien || "Chưa có thông tin"}</span>
+                                </div>
+                            </div>
                 `;
                 
                 if (kq.ChiTietDiem && kq.ChiTietDiem.length > 0) {
                     html += `
-                        <h6 class="mt-4 mb-3">Chi tiết điểm</h6>
+                        <h6 class="mb-3 fw-bold"><i class="bi bi-list-check text-primary me-2"></i>Chi tiết điểm theo tiêu chí</h6>
                         <div class="table-responsive">
-                            <table class="table table-sm table-bordered">
-                                <thead class="table-light">
+                            <table class="table table-hover mb-0" style="border-radius: 8px; overflow: hidden;">
+                                <thead style="background: linear-gradient(135deg, #007dc9 0%, #0066a1 100%);">
                                     <tr>
-                                        <th>Tiêu chí</th>
-                                        <th class="text-center">Điểm</th>
+                                        <th class="text-white" style="width: 50%;">Tiêu chí đánh giá</th>
+                                        <th class="text-white text-center" style="width: 20%;">Tỷ trọng</th>
+                                        <th class="text-white text-center" style="width: 15%;">Điểm</th>
+                                        <th class="text-white text-center" style="width: 15%;">Điểm quy đổi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                     `;
-                    kq.ChiTietDiem.forEach(function(ct) {
+                    
+                    let tongDiemQuyDoi = 0;
+                    kq.ChiTietDiem.forEach(function(ct, index) {
+                        const diem = ct.Diem !== null && ct.Diem !== "" ? parseFloat(ct.Diem) : null;
+                        const tyTrong = ct.TyTrong || 0;
+                        const diemQuyDoi = diem !== null ? (diem * tyTrong / 100).toFixed(2) : "-";
+                        if (diem !== null) tongDiemQuyDoi += parseFloat(diemQuyDoi);
+                        
+                        const rowClass = index % 2 === 0 ? "bg-light" : "";
+                        const diemDisplay = diem !== null ? diem : "-";
+                        const diemColor = diem !== null ? (diem >= 8 ? "text-success" : (diem >= 5 ? "text-primary" : "text-danger")) : "text-muted";
+                        
                         html += `
-                            <tr>
-                                <td>${ct.TenTieuChi}</td>
-                                <td class="text-center">${ct.Diem || "-"}</td>
+                            <tr class="${rowClass}">
+                                <td class="py-2">${ct.TenTieuChi}</td>
+                                <td class="text-center py-2"><span class="badge bg-secondary">${tyTrong}%</span></td>
+                                <td class="text-center py-2 fw-bold ${diemColor}">${diemDisplay}</td>
+                                <td class="text-center py-2">${diemQuyDoi}</td>
                             </tr>
                         `;
                     });
+                    
                     html += `
                                 </tbody>
+                                <tfoot style="background-color: #fff3cd;">
+                                    <tr>
+                                        <td class="fw-bold py-2">TỔNG CỘNG</td>
+                                        <td class="text-center fw-bold py-2">100%</td>
+                                        <td class="text-center py-2">-</td>
+                                        <td class="text-center fw-bold py-2 ${diemClass}">${kq.TongDiem !== null ? kq.TongDiem : "-"}</td>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     `;
                 }
                 
                 html += `
+                            <div class="alert alert-info mt-4 mb-0">
+                                <i class="bi bi-info-circle me-2"></i>
+                                <strong>Lưu ý:</strong> Điểm tổng kết được tính theo thang điểm 10. Sinh viên cần đạt tối thiểu 5.0 điểm để được công nhận tốt nghiệp.
+                            </div>
                         </div>
                     </div>
                 `;
                 contentDiv.innerHTML = html;
             } else {
                 contentDiv.innerHTML = `
-                    <div class="alert alert-info text-center">
-                        <i class="bi bi-info-circle"></i> Chưa có kết quả chấm từ giảng viên hướng dẫn.
+                    <div class="text-center py-5">
+                        <i class="bi bi-clipboard-x text-muted" style="font-size: 4rem;"></i>
+                        <h5 class="mt-3 text-muted">Chưa có kết quả chấm</h5>
+                        <p class="text-muted">Giảng viên hướng dẫn chưa nhập điểm cho bạn.<br>Vui lòng quay lại sau.</p>
                     </div>
                 `;
             }

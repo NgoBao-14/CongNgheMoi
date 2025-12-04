@@ -19,13 +19,13 @@ echo '
             <table class="table table-bordered">
                 <thead class="table-primary">
                     <tr>
-                        <th width="5%">STT</th>
-                        <th width="10%">Mã đề tài</th>
-                        <th width="30%">Tên đề tài</th>
-                        <th width="20%">Giảng viên hướng dẫn</th>
-                        <th width="10%">Nhóm</th>
-                        <th width="10%">Điểm</th>
-                        <th width="25%">Thao tác</th>
+                        <th width="4%">STT</th>
+                        <th width="20%">Tên đề tài</th>
+                        <th width="8%">Mã SV</th>
+                        <th width="15%">Họ tên sinh viên</th>
+                        <th width="15%">GVHD</th>
+                        <th width="8%">Điểm</th>
+                        <th width="10%">Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>';
@@ -36,36 +36,37 @@ $coDeTai = false;
 foreach ($dtPage as $row) {
     if ($row['TrangThaiDeTai'] === 'Đã duyệt' && $row['TrangThaiDK'] === 'Đã đăng ký') {
         $coDeTai = true;
+        $diem = isset($row['tongdiem']) && $row['tongdiem'] > 0 ? number_format($row['tongdiem'], 2) : 'Chưa chấm';
         echo '
         <tr>
-            <form method="post">
-                <td>' . $i . '</td>
-                <td>' . $row['IDDeTai'] . '</td>
-                <td>' . htmlspecialchars($row['TenDeTai']) . '</td>
-                <td>' . htmlspecialchars($row['ten_giang_vien']) . '</td>
-                <td>' . ($row['IDNhom']) . '</td>
-                <td>' . ($row['tongdiem'] ? $row['tongdiem'] : 'Chưa có điểm') . '</td>
-                <td>
-                    <button 
-                        type="button"
-                        class="btn btn-info btn-sm view-details"
-                        style="background-color: #EE7600; border-color: #EE7600; color: #fff;"
-                        data-id="' . $row['IDDeTai'] . '"
-                        data-title="' . htmlspecialchars($row['TenDeTai'], ENT_QUOTES) . '"
-                        data-giangvien="' . htmlspecialchars($row['ten_giang_vien'], ENT_QUOTES) . '"
-                        data-mota="' . htmlspecialchars($row['MoTa'], ENT_QUOTES) . '"
-                        data-yeucau="' . htmlspecialchars($row['YeuCau'], ENT_QUOTES) . '"
-                        data-sltoida="' . $row['SoLuongTV'] . '"
-                    >Xem chi tiết</button>
-                </td>
-            </form>
+            <td>' . $i . '</td>
+            <td>' . htmlspecialchars($row['TenDeTai']) . '</td>
+            <td>' . htmlspecialchars($row['MaSV'] ?? '') . '</td>
+            <td>' . htmlspecialchars($row['ten_sinh_vien'] ?? '') . '</td>
+            <td>' . htmlspecialchars($row['ten_giang_vien']) . '</td>
+            <td><span class="badge ' . ($diem != 'Chưa chấm' ? 'bg-success' : 'bg-secondary') . '">' . $diem . '</span></td>
+            <td>
+                <button 
+                    type="button"
+                    class="btn btn-info btn-sm view-details"
+                    style="background-color: #EE7600; border-color: #EE7600; color: #fff;"
+                    data-id="' . $row['IDDeTai'] . '"
+                    data-title="' . htmlspecialchars($row['TenDeTai'], ENT_QUOTES) . '"
+                    data-giangvien="' . htmlspecialchars($row['ten_giang_vien'], ENT_QUOTES) . '"
+                    data-mota="' . htmlspecialchars($row['MoTa'] ?? '', ENT_QUOTES) . '"
+                    data-yeucau="' . htmlspecialchars($row['YeuCau'] ?? '', ENT_QUOTES) . '"
+                    data-sltoida="' . ($row['SoLuongTV'] ?? '') . '"
+                    data-masv="' . htmlspecialchars($row['MaSV'] ?? '', ENT_QUOTES) . '"
+                    data-tensv="' . htmlspecialchars($row['ten_sinh_vien'] ?? '', ENT_QUOTES) . '"
+                >Xem chi tiết</button>
+            </td>
         </tr>';
         $i++;
     }
 }
 
 if (!$coDeTai) {
-    echo '<tr><td colspan="7">Không có đề tài</td></tr>';
+    echo '<tr><td colspan="7" class="text-center">Không có đề tài nào đã đăng ký</td></tr>';
 }
 
 echo '

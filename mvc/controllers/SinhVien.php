@@ -489,16 +489,16 @@ class SinhVien extends Controller {
             return;
         }
         
-        $iduser = $_SESSION['iduser'];
+        $masv = $_SESSION['MaSV'];
         $dtdk = $this->model("mDKDT");
-        $idNhom = $dtdk->getIDNhomByIDUser($iduser);
         
-        if (!$idNhom) {
-            echo json_encode(["success" => false, "message" => "Không tìm thấy nhóm"]);
+        // Kiểm tra sinh viên đã đăng ký đề tài chưa
+        if (!$dtdk->ktSV($masv)) {
+            echo json_encode(["success" => false, "message" => "Bạn chưa đăng ký đề tài"]);
             return;
         }
         
-        $ketqua = $dtdk->getKetQuaCham($idNhom);
+        $ketqua = $dtdk->getKetQuaChamByMaSV($masv);
         echo json_encode(["success" => true, "ketqua" => $ketqua]);
     }
 

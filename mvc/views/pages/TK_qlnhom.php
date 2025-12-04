@@ -69,9 +69,7 @@ echo'                           </tbody>
                 <div class="modal-content">
                     <div class="modal-header bg-info text-white">
                         <h5 class="modal-title" id="ketQuaModalLabel">Kết quả đánh giá</h5>
-                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body" id="ketQuaContent">
                         <div class="text-center py-4">
@@ -82,12 +80,11 @@ echo'                           </tbody>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>';
+        </div>';
 ?>
     
     <script>
@@ -97,7 +94,14 @@ echo'                           </tbody>
             const hoten = $(this).data("hoten");
             
             $("#ketQuaModalLabel").text("Kết quả đánh giá - " + hoten);
-            $("#ketQuaModal").modal("show");
+            
+            // Hỗ trợ cả Bootstrap 4 và 5
+            if (typeof bootstrap !== 'undefined') {
+                var modal = new bootstrap.Modal(document.getElementById("ketQuaModal"));
+                modal.show();
+            } else {
+                $("#ketQuaModal").modal("show");
+            }
             
             loadKetQuaDanhGia(masv);
         });
@@ -115,7 +119,7 @@ echo'                           </tbody>
         `);
         
         $.ajax({
-            url: "../GiangVien/getKetQuaDanhGia",
+            url: "./getKetQuaDanhGia",
             method: "GET",
             data: { masv: masv },
             dataType: "json",
@@ -160,12 +164,7 @@ echo'                           </tbody>
                         `;
                     });
                     
-                    html += `
-                                </tbody>
-                            </table>
-                        </div>
-                    `;
-                    
+                    html += `</tbody></table></div>`;
                     contentDiv.html(html);
                 } else {
                     const tieuChi = [
@@ -196,20 +195,10 @@ echo'                           </tbody>
                     `;
                     
                     tieuChi.forEach(function(tc) {
-                        html += `
-                            <tr>
-                                <td>${tc}</td>
-                                <td class="text-center"></td>
-                            </tr>
-                        `;
+                        html += `<tr><td>${tc}</td><td class="text-center">Chưa chấm</td></tr>`;
                     });
                     
-                    html += `
-                                </tbody>
-                            </table>
-                        </div>
-                    `;
-                    
+                    html += `</tbody></table></div>`;
                     contentDiv.html(html);
                 }
             },

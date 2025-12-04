@@ -7,7 +7,8 @@ class GiangVien extends Controller {
             header("refresh: 0; url='/CongNgheMoi'");
         }
         $this ->view("layoutGV2", [
-            "Page" => "GV"
+            "Page" => "GV",
+            "active" => "dashboard"
         ]);
     }
 
@@ -20,6 +21,7 @@ class GiangVien extends Controller {
         
         $this->view("layoutGV2", [
             "Page" => "qlnhom",
+            "active" => "qlnhom",
             "danhSachSV" => $danhSachSV
         ]);
     }
@@ -51,6 +53,7 @@ class GiangVien extends Controller {
 
         $this->view("layoutGV2", [
             "Page" => "qldetai",
+            "active" => "qldetai",
             "dt" => $detai
         ]);
     }
@@ -100,7 +103,7 @@ class GiangVien extends Controller {
         }
         $this->view("layoutGV2", [
             "Page" => "DeXuatDeTai",
-            
+            "active" => "dexuatdetai"
         ]);
         
     }
@@ -140,6 +143,7 @@ class GiangVien extends Controller {
         
         $this->view("layoutGV2", [
             "Page" => "ThongBaoDeTai",
+            "active" => "thongbaodetai",
             "dsDeTai" => $dsDeTai
         ]);
     }

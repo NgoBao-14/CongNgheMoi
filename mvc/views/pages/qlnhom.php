@@ -69,9 +69,7 @@ echo'                           </tbody>
                 <div class="modal-content">
                     <div class="modal-header bg-info text-white">
                         <h5 class="modal-title" id="ketQuaModalLabel">Kết quả đánh giá</h5>
-                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body" id="ketQuaContent">
                         <div class="text-center py-4">
@@ -82,46 +80,47 @@ echo'                           </tbody>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>';
+        </div>';
 ?>
     
     <script>
-    $(document).ready(function() {
+    document.addEventListener("DOMContentLoaded", function() {
         // Xử lý click nút xem kết quả
-        $(".btn-xem-ketqua").click(function() {
-            const masv = $(this).data("masv");
-            const hoten = $(this).data("hoten");
-            
-            $("#ketQuaModalLabel").text("Kết quả đánh giá - " + hoten);
-            $("#ketQuaModal").modal("show");
-            
-            // Load kết quả đánh giá
-            loadKetQuaDanhGia(masv);
+        document.querySelectorAll(".btn-xem-ketqua").forEach(function(btn) {
+            btn.addEventListener("click", function() {
+                const masv = this.dataset.masv;
+                const hoten = this.dataset.hoten;
+                
+                document.getElementById("ketQuaModalLabel").textContent = "Kết quả đánh giá - " + hoten;
+                
+                // Mở modal Bootstrap 5
+                var modal = new bootstrap.Modal(document.getElementById("ketQuaModal"));
+                modal.show();
+                
+                // Load kết quả đánh giá
+                loadKetQuaDanhGia(masv);
+            });
         });
     });
     
     function loadKetQuaDanhGia(masv) {
-        const contentDiv = $("#ketQuaContent");
-        contentDiv.html(`
+        const contentDiv = document.getElementById("ketQuaContent");
+        contentDiv.innerHTML = `
             <div class="text-center py-4">
                 <div class="spinner-border text-info" role="status">
                     <span class="sr-only">Loading...</span>
                 </div>
                 <p class="mt-2">Đang tải kết quả đánh giá...</p>
             </div>
-        `);
+        `;
         
-        $.ajax({
-            url: "./getKetQuaDanhGia",
-            method: "GET",
-            data: { masv: masv },
-            dataType: "json",
-            success: function(data) {
+        fetch("./getKetQuaDanhGia?masv=" + masv)
+            .then(response => response.json())
+            .then(data => {
                 if (data.success && data.ketqua) {
                     const kq = data.ketqua;
                     
@@ -163,16 +162,11 @@ echo'                           </tbody>
                         `;
                     });
                     
-                    html += `
-                                </tbody>
-                            </table>
-                        </div>
-                    `;
-                    
-                    contentDiv.html(html);
+                    html += `</tbody></table></div>`;
+                    contentDiv.innerHTML = html;
                 } else {
                     // Vẫn hiển thị form rỗng nếu chưa có điểm
-                    const tieuChi = [
+                    const tieuChiEmpty = [
                         "Hình thành và phát triển ý tưởng nghiên cứu",
                         "Cấu trúc báo cáo KLTN hợp lý khi thuyết trình",
                         "Sự tương tác giữa SV và CBHD",
@@ -187,43 +181,25 @@ echo'                           </tbody>
                         "Chính tả, định dạng, thuật ngữ"
                     ];
                     
-                    let html = `
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead style="background-color: #5DADE2; color: white;">
-                                    <tr>
-                                        <th>Nội dung đánh giá</th>
-                                        <th class="text-center" width="150">Điểm</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                    `;
+                    let htmlEmpty = `<div class="table-responsive"><table class="table table-bordered">
+                        <thead style="background-color: #5DADE2; color: white;">
+                            <tr><th>Nội dung đánh giá</th><th class="text-center" width="150">Điểm</th></tr>
+                        </thead><tbody>`;
                     
-                    tieuChi.forEach(function(tc) {
-                        html += `
-                            <tr>
-                                <td>${tc}</td>
-                                <td class="text-center"></td>
-                            </tr>
-                        `;
+                    tieuChiEmpty.forEach(function(tc) {
+                        htmlEmpty += `<tr><td>${tc}</td><td class="text-center">Chưa chấm</td></tr>`;
                     });
                     
-                    html += `
-                                </tbody>
-                            </table>
-                        </div>
-                    `;
-                    
-                    contentDiv.html(html);
+                    htmlEmpty += `</tbody></table></div>`;
+                    contentDiv.innerHTML = htmlEmpty;
                 }
-            },
-            error: function() {
-                contentDiv.html(`
+            })
+            .catch(error => {
+                contentDiv.innerHTML = `
                     <div class="alert alert-danger text-center">
                         <i class="fas fa-exclamation-triangle"></i> Có lỗi xảy ra khi tải kết quả đánh giá
                     </div>
-                `);
-            }
-        });
+                `;
+            });
     }
     </script>

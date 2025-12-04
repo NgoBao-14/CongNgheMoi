@@ -21,15 +21,14 @@ if (!is_array($dt)) {
         <!-- Project Registration Section -->
         <div id="deTaiSection" class="project-section" style="position: relative;">';
         
-        // Hiển thị overlay nếu đã đăng ký
+        // Hiển thị thông báo nếu đã đăng ký
         if ($daDangKy) {
             echo '
-            <div class="registration-disabled-overlay">
-                <div class="registration-disabled-message">
-                    <i class="bi bi-lock-fill" style="font-size: 3rem; color: #dc3545;"></i>
-                    <h4 class="mt-3">Bạn đã đăng ký đề tài</h4>
-                    <p>Bạn không thể đăng ký thêm đề tài mới</p>
-                    <a href="./ThongTinDeTai" class="btn btn-primary mt-2">Xem thông tin đề tài</a>
+            <div class="alert alert-info d-flex align-items-center mb-3" role="alert">
+                <i class="bi bi-info-circle-fill me-2"></i>
+                <div>
+                    Bạn đã đăng ký đề tài. 
+                    <a href="./ThongTinDeTai" class="alert-link">Xem thông tin đề tài của bạn</a>
                 </div>
             </div>';
         }
@@ -90,7 +89,7 @@ if (!is_array($dt)) {
                                             data-yeucau="'.htmlspecialchars($row['YeuCau'], ENT_QUOTES).'"
                                             data-sltoida="'.$row['SoLuongTV'].'"
                                             class="form-check-input"
-                                            '.$disabledAttr.'>
+                                            '.($daDangKy ? 'disabled' : $disabledAttr).'>
                                     </td>
                                     </tr>';
                                     $i++;
@@ -104,45 +103,19 @@ echo '
                 </table>
             </div>
             
-            <div class="text-end mt-3">
-                <button class="btn btn-primary" id="btnDangKyDeTai">Đăng ký</button>
+            <div class="text-end mt-3">';
+            
+            if ($daDangKy) {
+                echo '<button class="btn btn-secondary" id="btnDangKyDeTai" disabled style="opacity: 0.5; cursor: not-allowed;">
+                    <i class="bi bi-lock-fill me-1"></i>Đã đăng ký
+                </button>';
+            } else {
+                echo '<button class="btn btn-primary" id="btnDangKyDeTai">Đăng ký</button>';
+            }
+            
+            echo '
             </div>
-        </div>
-        
-        <style>
-        .registration-disabled-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(5px);
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .registration-disabled-message {
-            text-align: center;
-            padding: 40px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
-        }
-        
-        .registration-disabled-message h4 {
-            color: #dc3545;
-            font-weight: 700;
-        }
-        
-        .registration-disabled-message p {
-            color: #6c757d;
-            margin-bottom: 0;
-        }
-        </style>';
+        </div>';
 
     
     ?>
