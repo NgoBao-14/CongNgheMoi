@@ -7,9 +7,13 @@ class TruongKhoa extends GiangVien {
             echo "<script>alert('Bạn không có quyền truy cập')</script>";
             header("refresh: 0; url='/CongNgheMoi'");
         }
+        $iduser = $_SESSION['iduser'];
+        $dt= $this->model("mTruongKhoa");
+        $detai = json_decode($dt->GetDanhSachDeTai($iduser), true);
         $this ->view("layoutTK", [
-            "Page" => "TK",
-            "active" => "dashboard"
+            "Page" => "TK_DSDeTai",
+            "active" => "dsdetai",
+            "dt" => $detai
         ]);
     }
 

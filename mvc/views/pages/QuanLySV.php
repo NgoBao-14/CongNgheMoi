@@ -167,13 +167,12 @@ echo '              </select>
                     <thead>
                         <tr>
                             <th width="5%">STT</th>
-                            <th width="10%">MSSV</th>
-                            <th width="20%">Họ và tên</th>
+                            <th width="12%">MSSV</th>
+                            <th width="25%">Họ và tên</th>
                             <th width="12%">Lớp</th>
-                            <th width="18%">Chuyên ngành</th>
+                            <th width="20%">Chuyên ngành</th>
                             <th width="18%">Email</th>
-                            <th width="10%">Nhóm</th>
-                            <th width="7%"></th>
+                            <th width="8%"></th>
                         </tr>
                     </thead>
                     <tbody>';
@@ -189,7 +188,6 @@ if (!empty($sv)) {
             <td>' . htmlspecialchars($row['Lop']) . '</td>
             <td><span style="font-size: 0.8125rem;">' . htmlspecialchars($row['ChuyenNganh']) . '</span></td>
             <td><span style="font-size: 0.8125rem; color: #64748B;">' . htmlspecialchars(isset($row['Email']) ? $row['Email'] : 'N/A') . '</span></td>
-            <td>' . (isset($row['IDNhom']) && $row['IDNhom'] ? '<span class="badge-custom" style="background: #ECFDF5; color: #10B981;">Nhóm ' . $row['IDNhom'] . '</span>' : '<span class="badge-custom" style="background: #F1F5F9; color: #64748B;">Chưa có</span>') . '</td>
             <td>
                 <a href="/CongNgheMoi/Admin/CapNhatSV?id=' . $row['iduser'] . '" class="btn btn-sm" style="background: #F8FAFC; color: #4F46E5; border: 1px solid #E2E8F0; border-radius: 0.5rem; padding: 0.375rem 0.75rem;">
                     <i class="fas fa-edit"></i>
@@ -200,7 +198,7 @@ if (!empty($sv)) {
 } else {
     echo '
         <tr>
-            <td colspan="8">
+            <td colspan="7">
                 <div class="empty-state">
                     <i class="fas fa-inbox" style="font-size: 3rem; color: #CBD5E1; margin-bottom: 1rem;"></i>
                     <h5 style="color: #64748B;">Không có dữ liệu</h5>

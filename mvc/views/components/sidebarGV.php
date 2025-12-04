@@ -55,12 +55,13 @@ $active = isset($data['active']) ? $data['active'] : '';
 
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" role="menu">
-                    <li class="nav-item"><a href="<?= base_url('/GiangVien') ?>" class="nav-link <?= $active == 'dashboard' ? 'active' : '' ?>"><i class="nav-icon fas fa-tachometer-alt"></i><p>Bảng điều khiển</p></a></li>
+                    <!-- <li class="nav-item"><a href="<?= base_url('/GiangVien') ?>" class="nav-link <?= $active == 'dashboard' ? 'active' : '' ?>"><i class="nav-icon fas fa-tachometer-alt"></i><p>Bảng điều khiển</p></a></li> -->
                     <li class="nav-header">QUẢN LÝ ĐỀ TÀI</li>
-                    <li class="nav-item"><a href="<?= base_url('/GiangVien/DeXuatDeTai') ?>" class="nav-link <?= $active == 'dexuatdetai' ? 'active' : '' ?>"><i class="nav-icon fas fa-lightbulb"></i><p>Đề xuất đề tài</p></a></li>
                     <li class="nav-item"><a href="<?= base_url('/GiangVien/QuanLyDeTai') ?>" class="nav-link <?= $active == 'qldetai' ? 'active' : '' ?>"><i class="nav-icon fas fa-clipboard-list"></i><p>Đề tài của tôi</p></a></li>
-                    <li class="nav-item"><a href="<?= base_url('/GiangVien/QuanLyNhom') ?>" class="nav-link <?= $active == 'qlnhom' ? 'active' : '' ?>"><i class="nav-icon fas fa-user-graduate"></i><p>Quản lý nhóm</p></a></li>
                     <li class="nav-item"><a href="<?= base_url('/GiangVien/ThongBaoDeTai') ?>" class="nav-link <?= $active == 'thongbaodetai' ? 'active' : '' ?>"><i class="nav-icon fas fa-bell"></i><p>Tạo thông báo</p></a></li>
+                    <li class="nav-item"><a href="<?= base_url('/GiangVien/QuanLyNhom') ?>" class="nav-link <?= $active == 'qlnhom' ? 'active' : '' ?>"><i class="nav-icon fas fa-user-graduate"></i><p>Quản lý nhóm</p></a></li>
+
+                    <li class="nav-item"><a href="<?= base_url('/GiangVien/DeXuatDeTai') ?>" class="nav-link <?= $active == 'dexuatdetai' ? 'active' : '' ?>"><i class="nav-icon fas fa-lightbulb"></i><p>Đề xuất đề tài</p></a></li>
                     <li class="nav-header">CÀI ĐẶT</li>
                     <li class="nav-item"><a href="<?= base_url('/DoiMatKhau') ?>" class="nav-link <?= $active == 'doimatkhau' ? 'active' : '' ?>"><i class="nav-icon fas fa-key"></i><p>Đổi mật khẩu</p></a></li>
                     <li class="nav-item"><a href="<?= base_url('/Logout') ?>" class="nav-link"><i class="nav-icon fas fa-sign-out-alt"></i><p>Đăng xuất</p></a></li>

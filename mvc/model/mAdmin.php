@@ -40,6 +40,19 @@
         }
         return json_encode($data);
        }
+       
+       public function GetSVDaDangKy()
+       {
+        $str = "SELECT DISTINCT MaSV FROM dangkydetai";
+        $result = $this->connect->query($str);
+        $data = [];
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
+        }
+        return json_encode($data);
+       }
        public function GetKhoa()
        {
         $str = "SELECT * FROM chuyennganh";

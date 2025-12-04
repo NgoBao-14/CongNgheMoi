@@ -148,3 +148,33 @@ public class ModernUI {
         return panel;
     }
 }
+
+/**
+ * TextAreaRenderer - Renderer cho các cell có nội dung dài
+ */
+class TextAreaRenderer extends javax.swing.table.DefaultTableCellRenderer {
+    private JTextArea textArea;
+    
+    public TextAreaRenderer() {
+        textArea = new JTextArea();
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        textArea.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+    }
+    
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, 
+            boolean isSelected, boolean hasFocus, int row, int column) {
+        textArea.setText(value != null ? value.toString() : "");
+        
+        if (isSelected) {
+            textArea.setBackground(table.getSelectionBackground());
+            textArea.setForeground(table.getSelectionForeground());
+        } else {
+            textArea.setBackground(table.getBackground());
+            textArea.setForeground(table.getForeground());
+        }
+        
+        return textArea;
+    }
+}

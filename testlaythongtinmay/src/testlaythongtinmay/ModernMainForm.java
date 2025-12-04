@@ -11,11 +11,16 @@ import org.json.JSONObject;
 public class ModernMainForm extends JFrame {
     
     private String iduser, name, maGV;
-    private JLabel lblWelcome;
-    private JTable tblDeTai, tblDiem;
-    private JButton btnSave, btnRefresh, btnLogout;
-    private JTextField txtIdDeTai, txtIdNhom;
-    private DefaultTableModel modelDeTai, modelDiem;
+    private JLabel lblWelcome, lblSinhVienName;
+    private JTable tblDeTai, tblSinhVien, tblDiem;
+    private JButton btnSave, btnRefresh, btnLogout, btnBackToSV;
+    private JTextField txtIdDeTai, txtIdDangKy;
+    private DefaultTableModel modelDeTai, modelSinhVien, modelDiem;
+    private JPanel cardPanel;
+    private CardLayout cardLayout;
+    private String currentDeTaiName = "";
+    private String currentSinhVienName = "";
+    private String currentMSSV = "";
     
     public ModernMainForm(String iduser, String name, String maGV) {
         this.iduser = iduser;
@@ -32,36 +37,43 @@ public class ModernMainForm extends JFrame {
         setLocationRelativeTo(null);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         
-        // Main panel
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(ModernUI.LIGHT_BG);
         
-        // Header panel
         JPanel headerPanel = createHeaderPanel();
         mainPanel.add(headerPanel, BorderLayout.NORTH);
         
-        // Content panel
         JPanel contentPanel = new JPanel(new BorderLayout(15, 15));
         contentPanel.setBackground(ModernUI.LIGHT_BG);
         contentPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
         
-        // Top panel - Danh sách đề tài
-        JPanel topPanel = createDeTaiPanel();
-        topPanel.setPreferredSize(new Dimension(0, 250));
+        // Panel đề tài (bên trái)
+        JPanel leftPanel = createDeTaiPanel();
+        leftPanel.setPreferredSize(new Dimension(400, 0));
+
+        // Panel bên phải với CardLayout (Sinh viên / Phiếu điểm)
+        cardLayout = new CardLayout();
+        cardPanel = new JPanel(cardLayout);
+        cardPanel.setBackground(ModernUI.LIGHT_BG);
         
-        // Bottom panel - Bảng chấm điểm
-        JPanel bottomPanel = createDiemPanel();
+        JPanel sinhVienPanel = createSinhVienPanel();
+        JPanel diemPanel = createDiemPanel();
         
-        // Split pane - Vertical (trên-dưới)
-        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, topPanel, bottomPanel);
-        splitPane.setDividerLocation(250);
+        cardPanel.add(sinhVienPanel, "SINHVIEN");
+        cardPanel.add(diemPanel, "DIEM");
+        
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, cardPanel);
+        splitPane.setDividerLocation(400);
         splitPane.setOneTouchExpandable(true);
         splitPane.setBorder(null);
-        splitPane.setResizeWeight(0.3);
         
         contentPanel.add(splitPane, BorderLayout.CENTER);
-        
         mainPanel.add(contentPanel, BorderLayout.CENTER);
+        
+        txtIdDeTai = new JTextField();
+        txtIdDangKy = new JTextField();
+        txtIdDeTai.setVisible(false);
+        txtIdDangKy.setVisible(false);
         
         add(mainPanel);
     }
@@ -72,7 +84,6 @@ public class ModernMainForm extends JFrame {
         headerPanel.setLayout(new BorderLayout());
         headerPanel.setBorder(new EmptyBorder(20, 30, 20, 30));
         
-        // Left side - Welcome message
         JPanel leftHeader = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
         leftHeader.setOpaque(false);
         
@@ -94,17 +105,18 @@ public class ModernMainForm extends JFrame {
         textPanel.add(lblWelcome);
         textPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         textPanel.add(subLabel);
-        
+
         leftHeader.add(iconLabel);
         leftHeader.add(textPanel);
         
-        // Right side - Buttons
         JPanel rightHeader = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
         rightHeader.setOpaque(false);
         
         btnRefresh = createHeaderButton("🔄 Làm mới", ModernUI.SUCCESS_COLOR);
         btnRefresh.addActionListener(e -> {
             loadDeTai();
+            cardLayout.show(cardPanel, "SINHVIEN");
+            modelSinhVien.setRowCount(0);
             JOptionPane.showMessageDialog(this, "Đã làm mới dữ liệu!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         });
         
@@ -126,7 +138,6 @@ public class ModernMainForm extends JFrame {
             protected void paintComponent(Graphics g) {
                 Graphics2D g2d = (Graphics2D) g.create();
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                
                 if (getModel().isPressed()) {
                     g2d.setColor(bgColor.darker());
                 } else if (getModel().isRollover()) {
@@ -134,14 +145,11 @@ public class ModernMainForm extends JFrame {
                 } else {
                     g2d.setColor(bgColor);
                 }
-                
                 g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 8, 8);
                 g2d.dispose();
-                
                 super.paintComponent(g);
             }
         };
-        
         button.setFont(new Font("Segoe UI", Font.BOLD, 13));
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
@@ -149,10 +157,9 @@ public class ModernMainForm extends JFrame {
         button.setContentAreaFilled(false);
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
         button.setPreferredSize(new Dimension(130, 40));
-        
         return button;
     }
-    
+
     private JPanel createDeTaiPanel() {
         JPanel panel = new JPanel(new BorderLayout(0, 10));
         panel.setBackground(Color.WHITE);
@@ -161,13 +168,11 @@ public class ModernMainForm extends JFrame {
             new EmptyBorder(15, 15, 15, 15)
         ));
         
-        // Title
         JLabel titleLabel = new JLabel("📋 Danh Sách Đề Tài");
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
         titleLabel.setForeground(ModernUI.PRIMARY_COLOR);
         
-        // Table
-        String[] columns = {"ID ĐK", "Tên Đề Tài", "Mã SV", "Lớp", "Họ Tên SV"};
+        String[] columns = {"ID", "Tên Đề Tài", "SL SV"};
         modelDeTai = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -177,11 +182,9 @@ public class ModernMainForm extends JFrame {
         
         tblDeTai = new JTable(modelDeTai);
         customizeTable(tblDeTai);
-        tblDeTai.getColumnModel().getColumn(0).setPreferredWidth(50);
-        tblDeTai.getColumnModel().getColumn(1).setPreferredWidth(180);
-        tblDeTai.getColumnModel().getColumn(2).setPreferredWidth(80);
-        tblDeTai.getColumnModel().getColumn(3).setPreferredWidth(60);
-        tblDeTai.getColumnModel().getColumn(4).setPreferredWidth(120);
+        tblDeTai.getColumnModel().getColumn(0).setPreferredWidth(40);
+        tblDeTai.getColumnModel().getColumn(1).setPreferredWidth(250);
+        tblDeTai.getColumnModel().getColumn(2).setPreferredWidth(50);
         
         tblDeTai.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -192,18 +195,71 @@ public class ModernMainForm extends JFrame {
         JScrollPane scrollPane = new JScrollPane(tblDeTai);
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220), 1));
         
-        // Hidden fields
-        txtIdDeTai = new JTextField();
-        txtIdNhom = new JTextField();
-        txtIdDeTai.setVisible(false);
-        txtIdNhom.setVisible(false);
+        JPanel infoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        infoPanel.setBackground(new Color(240, 248, 255));
+        infoPanel.setBorder(new EmptyBorder(8, 12, 8, 12));
+        JLabel infoLabel = new JLabel("ℹ️ Chọn đề tài để xem danh sách sinh viên");
+        infoLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        infoPanel.add(infoLabel);
         
         panel.add(titleLabel, BorderLayout.NORTH);
         panel.add(scrollPane, BorderLayout.CENTER);
+        panel.add(infoPanel, BorderLayout.SOUTH);
         
         return panel;
     }
-    
+
+    private JPanel createSinhVienPanel() {
+        JPanel panel = new JPanel(new BorderLayout(0, 10));
+        panel.setBackground(Color.WHITE);
+        panel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(220, 220, 220), 1),
+            new EmptyBorder(15, 15, 15, 15)
+        ));
+        
+        JLabel titleLabel = new JLabel("👥 Danh Sách Sinh Viên Đăng Ký");
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        titleLabel.setForeground(ModernUI.PRIMARY_COLOR);
+        
+        String[] columns = {"ID ĐK", "MSSV", "Họ và Tên", "Lớp", "Nhóm"};
+        modelSinhVien = new DefaultTableModel(columns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        
+        tblSinhVien = new JTable(modelSinhVien);
+        customizeTable(tblSinhVien);
+        tblSinhVien.getColumnModel().getColumn(0).setPreferredWidth(50);
+        tblSinhVien.getColumnModel().getColumn(1).setPreferredWidth(80);
+        tblSinhVien.getColumnModel().getColumn(2).setPreferredWidth(180);
+        tblSinhVien.getColumnModel().getColumn(3).setPreferredWidth(80);
+        tblSinhVien.getColumnModel().getColumn(4).setPreferredWidth(100);
+        
+        tblSinhVien.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                handleSinhVienSelection();
+            }
+        });
+        
+        JScrollPane scrollPane = new JScrollPane(tblSinhVien);
+        scrollPane.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220), 1));
+        
+        JPanel infoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        infoPanel.setBackground(new Color(255, 248, 220));
+        infoPanel.setBorder(new EmptyBorder(8, 12, 8, 12));
+        JLabel infoLabel = new JLabel("ℹ️ Chọn sinh viên để xem và chấm phiếu điểm");
+        infoLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        infoPanel.add(infoLabel);
+        
+        panel.add(titleLabel, BorderLayout.NORTH);
+        panel.add(scrollPane, BorderLayout.CENTER);
+        panel.add(infoPanel, BorderLayout.SOUTH);
+        
+        return panel;
+    }
+
     private JPanel createDiemPanel() {
         JPanel panel = new JPanel(new BorderLayout(0, 10));
         panel.setBackground(Color.WHITE);
@@ -212,32 +268,42 @@ public class ModernMainForm extends JFrame {
             new EmptyBorder(15, 15, 15, 15)
         ));
         
-        // Title
+        // Header với nút quay lại
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.setBackground(Color.WHITE);
+        
+        // Panel chứa tiêu đề và tên sinh viên
+        JPanel titlePanel = new JPanel();
+        titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
+        titlePanel.setBackground(Color.WHITE);
+        
         JLabel titleLabel = new JLabel("📝 Phiếu Chấm Điểm");
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
         titleLabel.setForeground(ModernUI.PRIMARY_COLOR);
         
-        // Info panel
-        JPanel infoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
-        infoPanel.setBackground(new Color(240, 248, 255));
-        infoPanel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(ModernUI.ACCENT_COLOR, 1),
-            new EmptyBorder(8, 12, 8, 12)
-        ));
+        lblSinhVienName = new JLabel("Sinh viên: ");
+        lblSinhVienName.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        lblSinhVienName.setForeground(new Color(100, 100, 100));
         
-        JLabel infoLabel = new JLabel("ℹ️ Chọn đề tài ở trên để xem và chấm điểm");
-        infoLabel.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        infoLabel.setForeground(ModernUI.TEXT_COLOR);
-        infoPanel.add(infoLabel);
+        titlePanel.add(titleLabel);
+        titlePanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        titlePanel.add(lblSinhVienName);
         
-        // Table
+        btnBackToSV = new JButton("← Quay lại DS Sinh viên");
+        btnBackToSV.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        btnBackToSV.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnBackToSV.addActionListener(e -> cardLayout.show(cardPanel, "SINHVIEN"));
+        
+        headerPanel.add(titlePanel, BorderLayout.WEST);
+        headerPanel.add(btnBackToSV, BorderLayout.EAST);
+        
         String[] columns = {"STT", "CLO-PI", "Nội dung đánh giá", "Tỷ trọng", 
                            "Mức 1 (0-30%)", "Mức 2 (40-60%)", "Mức 3 (70-80%)", 
                            "Mức 4 (90-100%)", "Điểm /10"};
         modelDiem = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 8; // Chỉ cho sửa cột điểm
+                return column == 8;
             }
         };
         
@@ -245,14 +311,12 @@ public class ModernMainForm extends JFrame {
         tblDiem.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         customizeTable(tblDiem);
         
-        // Set column widths
         tblDiem.getColumnModel().getColumn(0).setPreferredWidth(40);
         tblDiem.getColumnModel().getColumn(1).setPreferredWidth(60);
         tblDiem.getColumnModel().getColumn(2).setPreferredWidth(200);
         tblDiem.getColumnModel().getColumn(3).setPreferredWidth(70);
         tblDiem.getColumnModel().getColumn(8).setPreferredWidth(80);
-        
-        // Cell editor cho cột điểm - chỉ cho nhập 0-10
+
         DefaultCellEditor diemEditor = new DefaultCellEditor(new JTextField()) {
             @Override
             public boolean stopCellEditing() {
@@ -274,7 +338,6 @@ public class ModernMainForm extends JFrame {
         };
         tblDiem.getColumnModel().getColumn(8).setCellEditor(diemEditor);
         
-        // Text area renderer for long content
         tblDiem.getColumnModel().getColumn(2).setCellRenderer(new TextAreaRenderer());
         tblDiem.getColumnModel().getColumn(4).setCellRenderer(new TextAreaRenderer());
         tblDiem.getColumnModel().getColumn(5).setCellRenderer(new TextAreaRenderer());
@@ -284,7 +347,6 @@ public class ModernMainForm extends JFrame {
         JScrollPane scrollPane = new JScrollPane(tblDiem);
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220), 1));
         
-        // Button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
         buttonPanel.setBackground(Color.WHITE);
         
@@ -293,19 +355,13 @@ public class ModernMainForm extends JFrame {
         btnSave.addActionListener(e -> handleSaveDiem());
         buttonPanel.add(btnSave);
         
-        // Top panel with title and info
-        JPanel topPanel = new JPanel(new BorderLayout(0, 10));
-        topPanel.setBackground(Color.WHITE);
-        topPanel.add(titleLabel, BorderLayout.NORTH);
-        topPanel.add(infoPanel, BorderLayout.CENTER);
-        
-        panel.add(topPanel, BorderLayout.NORTH);
+        panel.add(headerPanel, BorderLayout.NORTH);
         panel.add(scrollPane, BorderLayout.CENTER);
         panel.add(buttonPanel, BorderLayout.SOUTH);
         
         return panel;
     }
-    
+
     private void customizeTable(JTable table) {
         table.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         table.setRowHeight(35);
@@ -315,14 +371,12 @@ public class ModernMainForm extends JFrame {
         table.setShowGrid(true);
         table.setIntercellSpacing(new Dimension(1, 1));
         
-        // Header
         JTableHeader header = table.getTableHeader();
         header.setFont(new Font("Segoe UI", Font.BOLD, 13));
         header.setBackground(ModernUI.PRIMARY_COLOR);
         header.setForeground(Color.WHITE);
         header.setPreferredSize(new Dimension(header.getWidth(), 40));
         
-        // Center alignment for all cells
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         for (int i = 0; i < table.getColumnCount(); i++) {
@@ -334,7 +388,7 @@ public class ModernMainForm extends JFrame {
         try {
             mycls cls = new mycls();
             String id = cls.mahoa(maGV).replace("+", "%2B");
-            String url = Constants.API_XEM_DETAI + "id=" + id;
+            String url = Constants.API_GET_DETAI_GV + "id=" + id;
             JSONArray jarr = cls.docapi(url);
             
             modelDeTai.setRowCount(0);
@@ -343,31 +397,70 @@ public class ModernMainForm extends JFrame {
                 for (int i = 0; i < jarr.length(); i++) {
                     JSONObject job = jarr.getJSONObject(i);
                     Vector<String> row = new Vector<>();
-                    row.add(job.getString("IDDangKy"));
+                    row.add(job.getString("IDDeTai"));
                     row.add(job.getString("TenDeTai"));
-                    row.add(job.getString("MaSV"));
-                    row.add(job.getString("Lop"));
-                    row.add(job.getString("HoDem") + " " + job.getString("Ten"));
+                    row.add(job.getString("SoLuongSVDangKy"));
                     modelDeTai.addRow(row);
                 }
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, 
-                "Lỗi khi tải danh sách đề tài: " + e.getMessage(), 
-                "Lỗi", 
-                JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách đề tài: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     private void handleDeTaiSelection() {
         int selectedRow = tblDeTai.getSelectedRow();
         if (selectedRow >= 0) {
-            String idDangKy = modelDeTai.getValueAt(selectedRow, 0).toString();
-            txtIdDeTai.setText(idDangKy);
-            loadDiem(idDangKy);
+            String idDeTai = modelDeTai.getValueAt(selectedRow, 0).toString();
+            currentDeTaiName = modelDeTai.getValueAt(selectedRow, 1).toString();
+            txtIdDeTai.setText(idDeTai);
+            loadSinhVien(idDeTai);
+            cardLayout.show(cardPanel, "SINHVIEN");
         }
     }
     
+    private void loadSinhVien(String idDeTai) {
+        try {
+            mycls cls = new mycls();
+            String id = cls.mahoa(idDeTai).replace("+", "%2B");
+            String url = Constants.API_GET_SV_THEO_DETAI + "id=" + id;
+            JSONArray jarr = cls.docapi(url);
+            
+            modelSinhVien.setRowCount(0);
+            
+            if (jarr != null) {
+                for (int i = 0; i < jarr.length(); i++) {
+                    JSONObject job = jarr.getJSONObject(i);
+                    Vector<String> row = new Vector<>();
+                    row.add(job.getString("IDDangKy"));
+                    row.add(job.getString("MaSV"));
+                    row.add(job.getString("HoTen"));
+                    row.add(job.getString("Lop"));
+                    row.add(job.getString("TenNhom"));
+                    modelSinhVien.addRow(row);
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách sinh viên: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void handleSinhVienSelection() {
+        int selectedRow = tblSinhVien.getSelectedRow();
+        if (selectedRow >= 0) {
+            String idDangKy = modelSinhVien.getValueAt(selectedRow, 0).toString();
+            currentMSSV = modelSinhVien.getValueAt(selectedRow, 1).toString();
+            currentSinhVienName = modelSinhVien.getValueAt(selectedRow, 2).toString();
+            txtIdDangKy.setText(idDangKy);
+            
+            // Cập nhật label hiển thị tên sinh viên
+            lblSinhVienName.setText("Sinh viên: " + currentMSSV + " - " + currentSinhVienName);
+            
+            loadDiem(idDangKy);
+            cardLayout.show(cardPanel, "DIEM");
+        }
+    }
+
     private void loadDiem(String idDangKy) {
         try {
             String[][] rawData = {
@@ -413,7 +506,7 @@ public class ModernMainForm extends JFrame {
             String[] mucKeys = {"Muc1", "Muc2", "Muc3.1", "Muc3.2", "Muc3.3",
                                "Muc4.1", "Muc4.2", "Muc5.1", "Muc5.2",
                                "Muc6.1", "Muc6.2", "Muc6.3"};
-            
+
             mycls cls = new mycls();
             String id = cls.mahoa(idDangKy).replace("+", "%2B");
             String url = Constants.API_XEM_DSDIEM + "id=" + id;
@@ -435,25 +528,18 @@ public class ModernMainForm extends JFrame {
                 }
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, 
-                "Lỗi khi tải phiếu chấm điểm: " + e.getMessage(), 
-                "Lỗi", 
-                JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Lỗi khi tải phiếu chấm điểm: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
     
     private void handleSaveDiem() {
         try {
-            // Stop editing để commit giá trị đang nhập vào model
             if (tblDiem.isEditing()) {
                 tblDiem.getCellEditor().stopCellEditing();
             }
             
-            if (txtIdDeTai.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(this, 
-                    "Vui lòng chọn đề tài trước!", 
-                    "Thông báo", 
-                    JOptionPane.WARNING_MESSAGE);
+            if (txtIdDangKy.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn sinh viên trước!", "Thông báo", JOptionPane.WARNING_MESSAGE);
                 return;
             }
             
@@ -462,7 +548,7 @@ public class ModernMainForm extends JFrame {
                 muc[i] = modelDiem.getValueAt(i, 8).toString();
             }
             
-            String iddetai = txtIdDeTai.getText();
+            String iddetai = txtIdDangKy.getText();
             StringBuilder thamso = new StringBuilder();
             thamso.append("Muc1=").append(muc[0])
                   .append("&Muc2=").append(muc[1])
@@ -477,20 +563,14 @@ public class ModernMainForm extends JFrame {
                   .append("&Muc6_2=").append(muc[10])
                   .append("&Muc6_3=").append(muc[11])
                   .append("&iddetai=").append(iddetai);
-            
+
             String url = Constants.API_NHAP_DIEM + thamso.toString();
             mycls cls = new mycls();
             cls.geturl(url);
             
-            JOptionPane.showMessageDialog(this, 
-                "✅ Lưu điểm thành công!", 
-                "Thành công", 
-                JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "✅ Lưu điểm thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, 
-                "Lỗi khi lưu điểm: " + e.getMessage(), 
-                "Lỗi", 
-                JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Lỗi khi lưu điểm: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -503,25 +583,19 @@ public class ModernMainForm extends JFrame {
         
         if (choice == JOptionPane.YES_OPTION) {
             try {
-                // Xóa token khi đăng xuất
                 mycls cls = new mycls();
                 cls.xoaToken();
                 
-                // Hiển thị thông báo đăng xuất thành công
                 JOptionPane.showMessageDialog(this, 
                     "Đăng xuất thành công!\nHẹn gặp lại bạn!", 
                     "Thông báo", 
                     JOptionPane.INFORMATION_MESSAGE);
                 
-                // Chuyển về form đăng nhập
                 ModernLoginForm loginForm = new ModernLoginForm();
                 loginForm.setVisible(true);
                 dispose();
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, 
-                    "Lỗi khi đăng xuất: " + e.getMessage(), 
-                    "Lỗi", 
-                    JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Lỗi khi đăng xuất: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         }
     }

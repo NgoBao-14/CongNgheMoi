@@ -6,10 +6,16 @@ class DB {
     private function getApiUrl() {
         $basePath = defined('BASE_PATH') ? BASE_PATH : ($_ENV['BASE_PATH'] ?? '/CongNgheMoi');
         
-        // Lấy host từ HTTP_HOST (bao gồm cả port nếu có)
-        $host = $_SERVER['HTTP_HOST'] ?? 'localhost:8080';
+        // Trong Docker container, dùng localhost:80 (Apache internal)
+        // Ngoài Docker, dùng HTTP_HOST
+        if (getenv('DOCKER_ENV') === 'true') {
+            $host = 'localhost';
+            $protocol = 'http';
+        } else {
+            $host = $_SERVER['HTTP_HOST'] ?? 'localhost:8080';
+            $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        }
         
-        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         return $protocol . '://' . $host . $basePath . '/mvc/api/';
     }
     

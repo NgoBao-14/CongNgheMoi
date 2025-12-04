@@ -308,9 +308,10 @@ require_once "./mvc/views/components/sidebarGV.php";
                 // Hiển thị modal thành công
                 showSuccessModal();
                 
-                // Tự động đóng modal thành công sau 0.5 giây
+                // Tự động đóng modal thành công sau 0.5 giây và refresh trang
                 setTimeout(() => {
                     closeSuccessModal();
+                    location.reload();
                 }, 500);
             } else {
                 alert('Lưu thông báo thất bại: ' + (data.message || 'Vui lòng thử lại'));

@@ -7,14 +7,14 @@
                 exit;
             }
             $admin = $this->model("mAdmin");
-            $kq = $admin->GetSinhVien();
-            $sinhvien = count(json_decode($kq, true));
-            $kq = $admin->GetGiangVien();
-            $giangvien = count(json_decode($kq, true));
+            $kq = $admin->GetThongTinSV();
+            $sinhvien = count(json_decode($kq, true) ?? []);
+            $kq = $admin->GetThongTinGV();
+            $giangvien = count(json_decode($kq, true) ?? []);
             $kq = $admin->GetDeTai();
-            $detai = count(json_decode($kq, true));
-            $kq = $admin->GetNhom();
-            $nhom = count(json_decode($kq, true));
+            $detai = count(json_decode($kq, true) ?? []);
+            $kq = $admin->GetSVDaDangKy();
+            $svdangky = count(json_decode($kq, true) ?? []);
             $khoa = $admin->GetKhoa();
             $detaikhoa = $admin->GetDeTaiKhoa();
             if(isset($_POST['btnLoc']))
@@ -28,7 +28,7 @@
                 "sinhvien" => $sinhvien,
                 "giangvien" => $giangvien,
                 "detai" => $detai,
-                "nhom" => $nhom,
+                "svdangky" => $svdangky,
                 "khoa" => $khoa,
                 "detaikhoa" => $detaikhoa,
             ]);

@@ -6,9 +6,14 @@ class GiangVien extends Controller {
             echo "<script>alert('Bạn không có quyền truy cập')</script>";
             header("refresh: 0; url='/CongNgheMoi'");
         }
-        $this ->view("layoutGV2", [
-            "Page" => "GV",
-            "active" => "dashboard"
+        $iduser = $_SESSION['iduser'];
+        $dt= $this->model("mGiangVien");
+        $detai = json_decode($dt->getDSDeTai($iduser), true);
+
+        $this->view("layoutGV2", [
+            "Page" => "qldetai",
+            "active" => "qldetai",
+            "dt" => $detai
         ]);
     }
 

@@ -55,17 +55,19 @@ $active = isset($data['active']) ? $data['active'] : '';
 
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" role="menu">
-                    <li class="nav-item"><a href="<?= base_url('/TruongKhoa') ?>" class="nav-link <?= $active == 'dashboard' ? 'active' : '' ?>"><i class="nav-icon fas fa-tachometer-alt"></i><p>Bảng điều khiển</p></a></li>
+                    <!-- <li class="nav-item"><a href="<?= base_url('/TruongKhoa') ?>" class="nav-link <?= $active == 'dashboard' ? 'active' : '' ?>"><i class="nav-icon fas fa-tachometer-alt"></i><p>Bảng điều khiển</p></a></li> -->
                     <li class="nav-header">QUẢN LÝ TRƯỞNG KHOA</li>
-                    <li class="nav-item"><a href="<?= base_url('/TruongKhoa/DXDeTai') ?>" class="nav-link <?= $active == 'duyetdetai' ? 'active' : '' ?>"><i class="nav-icon fas fa-check-circle"></i><p>Duyệt đề tài</p></a></li>
                     <li class="nav-item"><a href="<?= base_url('/TruongKhoa/DSDeTai') ?>" class="nav-link <?= $active == 'dsdetai' ? 'active' : '' ?>"><i class="nav-icon fas fa-list-alt"></i><p>Danh sách đề tài</p></a></li>
+
+                    <li class="nav-item"><a href="<?= base_url('/TruongKhoa/DXDeTai') ?>" class="nav-link <?= $active == 'duyetdetai' ? 'active' : '' ?>"><i class="nav-icon fas fa-check-circle"></i><p>Duyệt đề tài</p></a></li>
                     <!-- <li class="nav-item"><a href="<?= base_url('/TruongKhoa/DiemKhoaLuanCacNhom') ?>" class="nav-link <?= $active == 'diemkhoaluan' ? 'active' : '' ?>"><i class="nav-icon fas fa-star"></i><p>Điểm khóa luận</p></a></li> -->
                     <li class="nav-header">CHỨC NĂNG GIẢNG VIÊN</li>
-                    <li class="nav-item"><a href="<?= base_url('/TruongKhoa/DeXuatDeTai') ?>" class="nav-link <?= $active == 'dexuatdetai' ? 'active' : '' ?>"><i class="nav-icon fas fa-lightbulb"></i><p>Đề xuất đề tài</p></a></li>
                     <li class="nav-item"><a href="<?= base_url('/TruongKhoa/QuanLyDeTai') ?>" class="nav-link <?= $active == 'qldetai' ? 'active' : '' ?>"><i class="nav-icon fas fa-clipboard-list"></i><p>Đề tài của tôi</p></a></li>
+                    <li class="nav-item"><a href="<?= base_url('/TruongKhoa/ThongBaoDeTai') ?>" class="nav-link <?= $active == 'thongbaodetai' ? 'active' : '' ?>"><i class="nav-icon fas fa-bullhorn"></i><p>Tạo thông báo</p></a></li>
                     <li class="nav-item"><a href="<?= base_url('/TruongKhoa/QuanLyNhom') ?>" class="nav-link <?= $active == 'qlnhom' ? 'active' : '' ?>"><i class="nav-icon fas fa-user-graduate"></i><p>Quản lý nhóm</p></a></li>
 
-                    <li class="nav-item"><a href="<?= base_url('/TruongKhoa/ThongBaoDeTai') ?>" class="nav-link <?= $active == 'thongbaodetai' ? 'active' : '' ?>"><i class="nav-icon fas fa-bullhorn"></i><p>Tạo thông báo</p></a></li>
+                    <li class="nav-item"><a href="<?= base_url('/TruongKhoa/DeXuatDeTai') ?>" class="nav-link <?= $active == 'dexuatdetai' ? 'active' : '' ?>"><i class="nav-icon fas fa-lightbulb"></i><p>Đề xuất đề tài</p></a></li>
+
                     <!-- <li class="nav-item"><a href="<?= base_url('/TruongKhoa/TienDoDeTai') ?>" class="nav-link <?= $active == 'tiendodetai' ? 'active' : '' ?>"><i class="nav-icon fas fa-tasks"></i><p>Tiến độ đề tài</p></a></li> -->
                     <!-- <li class="nav-item"><a href="<?= base_url('/TruongKhoa/QuanLyKhoaLuan') ?>" class="nav-link <?= $active == 'qlkhoaluan' ? 'active' : '' ?>"><i class="nav-icon fas fa-file-alt"></i><p>Báo cáo khóa luận</p></a></li> -->
                     <li class="nav-header">CÀI ĐẶT</li>

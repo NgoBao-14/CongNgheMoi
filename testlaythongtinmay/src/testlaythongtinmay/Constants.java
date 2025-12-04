@@ -17,4 +17,6 @@ public class Constants {
     public static final String API_XEM_DETAI = API_BASE_URL + "xemdetaichotungsinhvien.php?";
     public static final String API_XEM_DSDIEM = API_BASE_URL + "xemdsdiem.php?";
     public static final String API_NHAP_DIEM = API_BASE_URL + "nhapdiem.php?";
+    public static final String API_GET_DETAI_GV = API_BASE_URL + "getDeTaiGV.php?";
+    public static final String API_GET_SV_THEO_DETAI = API_BASE_URL + "getSVTheoDeTai.php?";
 }

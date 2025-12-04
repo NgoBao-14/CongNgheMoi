@@ -21,10 +21,22 @@ class mDKDT extends DB {
         return json_encode($mang);
     }
 
-    // Đăng ký đề tài - lưu vào bảng dangkydetai
+    // Đăng ký đề tài - lưu vào bảng dangkydetai và tạo bản ghi điểm
     public function dangKyDeTai($MaSV, $IDDeTai) {
         $sql = "INSERT INTO dangkydetai (MaSV, IDDeTai, NgayDangKy) VALUES ('$MaSV', '$IDDeTai', NOW())";
-        return mysqli_query($this->connect, $sql);
+        $result = mysqli_query($this->connect, $sql);
+        
+        if ($result) {
+            // Lấy IDDangKy mới nhất vừa insert
+            $idDangKy = mysqli_insert_id($this->connect);
+            
+            // Insert vào bảng điểm với các cột có value = 0
+            $sqlDiem = "INSERT INTO diem (IDDangKy, Muc1, Muc2, `Muc3.1`, `Muc3.2`, `Muc3.3`, `Muc4.1`, `Muc4.2`, `Muc5.1`, `Muc5.2`, `Muc6.1`, `Muc6.2`, `Muc6.3`) 
+                        VALUES ('$idDangKy', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)";
+            mysqli_query($this->connect, $sqlDiem);
+        }
+        
+        return $result;
     }
     
     // Tạo nhóm mới

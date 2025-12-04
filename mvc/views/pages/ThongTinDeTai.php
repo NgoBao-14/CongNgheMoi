@@ -288,7 +288,7 @@ echo '<!DOCTYPE html>
                                     <div class="info-item">
                                         <span class="info-label"><i class="bi bi-check-circle"></i> Trạng thái</span>
                                         <span class="status-badge status-approved">
-                                            '.$row["TrangThaiDK"].'
+                                            Đang thực hiện
                                         </span>
                                     </div>
                                     <div class="info-item">

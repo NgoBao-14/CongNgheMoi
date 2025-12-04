@@ -1,5 +1,8 @@
 <?php
-    session_start();
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
     session_destroy();
-    header("refresh:0; url='Login'");
+    header("Location: Login");
+    exit;
 ?>

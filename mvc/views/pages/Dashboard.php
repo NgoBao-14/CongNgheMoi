@@ -1,11 +1,11 @@
 <?php
 require_once "./mvc/views/components/sidebarAdmin.php";
-$dt = json_decode($data['khoa'], true);
-$detaikhoa = json_decode($data['detaikhoa'], true);
-$sinhvien = $data['sinhvien'];
-$giangvien = $data['giangvien'];
-$detai = $data['detai'];
-$nhom = $data['nhom'];
+$dt = json_decode($data['khoa'], true) ?? [];
+$detaikhoa = json_decode($data['detaikhoa'], true) ?? [];
+$sinhvien = $data['sinhvien'] ?? 0;
+$giangvien = $data['giangvien'] ?? 0;
+$detai = $data['detai'] ?? 0;
+$svdangky = $data['svdangky'] ?? 0;
 
 echo '
 <div class="content-wrapper">
@@ -182,10 +182,10 @@ echo '
             <div class="col-lg-3 col-md-6">
                 <div class="stats-card purple">
                     <div class="stats-icon purple">
-                        <i class="fas fa-users"></i>
+                        <i class="fas fa-user-check"></i>
                     </div>
-                    <div class="stats-label">Nhóm</div>
-                    <div class="stats-value">' . $nhom . '</div>
+                    <div class="stats-label">SV đã đăng ký</div>
+                    <div class="stats-value">' . $svdangky . '</div>
                 </div>
             </div>
         </div>
