@@ -3,8 +3,9 @@ class GiangVien extends Controller {
     
     function SayHi(){
         if($_SESSION["PQ"] != 1 && $_SESSION["PQ"] != 4){
-            echo "<script>alert('Bạn không có quyền truy cập')</script>";
-            header("refresh: 0; url='/CongNgheMoi'");
+            $_SESSION['message'] = ['type' => 'error', 'text' => 'Bạn không có quyền truy cập'];
+            header("location: " . base_url('/'));
+            exit;
         }
         $iduser = $_SESSION['iduser'];
         $dt= $this->model("mGiangVien");
@@ -100,11 +101,12 @@ class GiangVien extends Controller {
             $soLuongTV = $_POST['soLuongTV'];
             $detai = json_decode($dt->addDeTai($TenDeTai, $Mota, $IDGV, $IDNganh, $YeuCau, $soLuongTV), true);
             if ($detai) {
-                echo "<script>alert('Thêm đề tài thành công');</script>";
-                header("refresh:0; url='/CongNgheMoi/GiangVien/DeXuatDeTai'");
+                $_SESSION['message'] = ['type' => 'success', 'text' => 'Thêm đề tài thành công'];
             } else {
-                echo "<script>alert('Thêm đề tài thất bại');</script>";
+                $_SESSION['message'] = ['type' => 'error', 'text' => 'Thêm đề tài thất bại'];
             }
+            header("location: " . base_url('/GiangVien/DeXuatDeTai'));
+            exit;
         }
         $this->view("layoutGV2", [
             "Page" => "DeXuatDeTai",

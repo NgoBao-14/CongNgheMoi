@@ -12,21 +12,25 @@ $startIndex = ($currentPage - 1) * $perPage;
 $dtPage = array_slice($dt, $startIndex, $perPage);
 
 echo '
-<div class="container-fluid">
-    <div id="deTaiSection" class="project-section">
-        <h3 class="text-center my-4">Danh sách đề tài</h3>
-        <div class="project-list">
-            <table class="table table-bordered">
-                <thead class="table-primary">
-                    <tr>
-                        <th width="5%">STT</th>
-                        <th width="10%">Mã đề tài</th>
-                        <th width="30%">Tên đề tài</th>
-                        <th width="20%">Giảng viên hướng dẫn</th>
-                        <th width="15%">Thao tác</th>
-                    </tr>
-                </thead>
-                <tbody>';
+<section class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Danh sách đề tài đã duyệt</h3>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th class="px-3" width="5%">STT</th>
+                                <th class="px-3" width="10%">Mã đề tài</th>
+                                <th class="px-3" width="35%">Tên đề tài</th>
+                                <th class="px-3" width="25%">Giảng viên hướng dẫn</th>
+                                <th class="px-3 text-center" width="15%">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>';
 
 $i = $startIndex + 1;
 $coDeTai = false;
@@ -35,43 +39,42 @@ foreach ($dtPage as $row) {
     if ($row['TrangThaiDeTai'] === 'Đã duyệt') {
         $coDeTai = true;
         echo '
-        <tr>
-            <form method="post">
-                <td>' . $i . '</td>
-                <td>' . $row['IDDeTai'] . '</td>
-                <td>' . htmlspecialchars($row['TenDeTai']) . '</td>
-                <td>' . htmlspecialchars($row['ten_giang_vien']) . '</td>
-                <td>
+            <tr>
+                <td class="px-3">' . $i . '</td>
+                <td class="px-3"><span class="badge bg-info">' . $row['IDDeTai'] . '</span></td>
+                <td class="px-3">' . htmlspecialchars($row['TenDeTai']) . '</td>
+                <td class="px-3">' . htmlspecialchars($row['ten_giang_vien']) . '</td>
+                <td class="px-3 text-center">
                     <button 
                         type="button"
-                        class="btn btn-info btn-sm view-details"
-                        style="background-color: #EE7600; border-color: #EE7600; color: #fff;"
+                        class="btn btn-sm btn-primary view-details"
                         data-id="' . $row['IDDeTai'] . '"
                         data-title="' . htmlspecialchars($row['TenDeTai'], ENT_QUOTES) . '"
                         data-giangvien="' . htmlspecialchars($row['ten_giang_vien'], ENT_QUOTES) . '"
                         data-mota="' . htmlspecialchars($row['MoTa'], ENT_QUOTES) . '"
                         data-yeucau="' . htmlspecialchars($row['YeuCau'], ENT_QUOTES) . '"
                         data-sltoida="' . $row['SoLuongTV'] . '"
-                    >Xem chi tiết</button>
+                    ><i class="fas fa-eye"></i> Xem chi tiết</button>
                 </td>
-            </form>
-        </tr>';
+            </tr>';
         $i++;
     }
 }
 
 if (!$coDeTai) {
-    echo '<tr><td colspan="5">Không có đề tài</td></tr>';
+    echo '<tr><td colspan="5" class="text-center py-4">Không có đề tài đã duyệt</td></tr>';
 }
 
 echo '
-                </tbody>
-            </table>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>';
 
 if ($totalPages > 1) {
     echo '
-        <nav aria-label="Page navigation">
+        <nav aria-label="Page navigation" class="mt-3">
             <ul class="pagination justify-content-center">';
     for ($page = 1; $page <= $totalPages; $page++) {
         $active = ($page == $currentPage) ? 'active' : '';
@@ -86,8 +89,9 @@ if ($totalPages > 1) {
 
 echo '
     </div>
-</div>
+</section>
 
+<!-- Modal Chi tiết -->
 <div class="modal fade" id="projectDetailModal" tabindex="-1" aria-labelledby="projectDetailModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -105,8 +109,7 @@ echo '
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    const detailButtons = document.querySelectorAll(".view-details");
-    detailButtons.forEach(function(button) {
+    document.querySelectorAll(".view-details").forEach(function(button) {
         button.addEventListener("click", function() {
             const title = this.dataset.title;
             const giangVien = this.dataset.giangvien;

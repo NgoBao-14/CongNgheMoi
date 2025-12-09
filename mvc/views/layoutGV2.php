@@ -1,6 +1,7 @@
 <?php
-    if($_SESSION["PQ"] != 1){
-        echo "<script>alert('Bạn không có quyền truy cập'); window.location.href='" . base_url('/') . "';</script>";
+    if($_SESSION["PQ"] != 1 && $_SESSION["PQ"] != 4){
+        $_SESSION['message'] = ['type' => 'error', 'text' => 'Bạn không có quyền truy cập'];
+        header("location: " . base_url('/'));
         exit;
     }
 ?>

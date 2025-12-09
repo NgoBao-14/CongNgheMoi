@@ -2,15 +2,25 @@
 require_once "./mvc/controllers/GiangVien.php";
 
 class TruongKhoa extends GiangVien {
+    
+    private function checkPermission() {
+        if($_SESSION["PQ"] != 4 && $_SESSION["PQ"] != 1){
+            $_SESSION['message'] = ['type' => 'error', 'text' => 'Bạn không có quyền truy cập'];
+            header("location: " . base_url('/'));
+            exit;
+        }
+    }
+    
     function SayHi(){
         if($_SESSION["PQ"] != 4){
-            echo "<script>alert('Bạn không có quyền truy cập')</script>";
-            header("refresh: 0; url='/CongNgheMoi'");
+            $_SESSION['message'] = ['type' => 'error', 'text' => 'Bạn không có quyền truy cập'];
+            header("location: " . base_url('/'));
+            exit;
         }
         $iduser = $_SESSION['iduser'];
         $dt= $this->model("mTruongKhoa");
         $detai = json_decode($dt->GetDanhSachDeTai($iduser), true);
-        $this ->view("layoutTK", [
+        $this->view("layoutTK", [
             "Page" => "TK_DSDeTai",
             "active" => "dsdetai",
             "dt" => $detai
@@ -18,19 +28,17 @@ class TruongKhoa extends GiangVien {
     }
 
     function DXDeTai(){
-        
-    $iduser = $_SESSION['iduser'];
-    $dt= $this->model("mTruongKhoa");
-    $detai = json_decode($dt->GetDT($iduser), true);
+        $iduser = $_SESSION['iduser'];
+        $dt= $this->model("mTruongKhoa");
+        $detai = json_decode($dt->GetDT($iduser), true);
 
-    if (isset($_POST['btnDuyet'])) {
-        $idDetai = $_POST['idDetai'];
-        $tenDeTai = $_POST['TenDeTai']; // Lấy tên đề tài từ form
-
-        $dt->CapNhatDeTai($idDetai);
-        $dt->AddDiemDeTai($idDetai);
-        header("Location: ./DXDeTai");
-        exit();
+        if (isset($_POST['btnDuyet'])) {
+            $idDetai = $_POST['idDetai'];
+            $dt->CapNhatDeTai($idDetai);
+            $dt->AddDiemDeTai($idDetai);
+            $_SESSION['message'] = ['type' => 'success', 'text' => 'Duyệt đề tài thành công'];
+            header("Location: " . base_url('/TruongKhoa/DXDeTai'));
+            exit;
         }
 
         $this->view("layoutTK", [
@@ -65,29 +73,18 @@ class TruongKhoa extends GiangVien {
     }
 
     function HoiDongBaoVe(){
-        $iduser = $_SESSION['iduser'];
-        $dt= $this->model("mTruongKhoa");
-        
-        
         $this->view("layoutTK", [
             "Page" => "TK_HoiDongBaoVe",
             "active" => "hoidong"
-        
         ]);
     }
 
     // Override các method từ GiangVien để cho phép PQ = 4 (Trưởng khoa)
     function QuanLyNhom(){
-        if($_SESSION["PQ"] != 4 && $_SESSION["PQ"] != 1){
-            echo "<script>alert('Bạn không có quyền truy cập')</script>";
-            header("refresh: 0; url='/CongNgheMoi'");
-            return;
-        }
+        $this->checkPermission();
         
         $iduser = $_SESSION['iduser'];
         $dt = $this->model("mGiangVien");
-        
-        // Lấy danh sách tất cả sinh viên đã đăng ký đề tài
         $danhSachSV = json_decode($dt->getDanhSachSinhVienDangKy($iduser), true);
         
         $this->view("layoutTK", [
@@ -98,11 +95,7 @@ class TruongKhoa extends GiangVien {
     }
 
     function QuanLyDeTai(){
-        if($_SESSION["PQ"] != 4 && $_SESSION["PQ"] != 1){
-            echo "<script>alert('Bạn không có quyền truy cập')</script>";
-            header("refresh: 0; url='/CongNgheMoi'");
-            return;
-        }
+        $this->checkPermission();
         
         $iduser = $_SESSION['iduser'];
         $dt= $this->model("mGiangVien");
@@ -116,11 +109,7 @@ class TruongKhoa extends GiangVien {
     }
 
     function TienDoDeTai(){
-        if($_SESSION["PQ"] != 4 && $_SESSION["PQ"] != 1){
-            echo "<script>alert('Bạn không có quyền truy cập')</script>";
-            header("refresh: 0; url='/CongNgheMoi'");
-            return;
-        }
+        $this->checkPermission();
         
         $iduser = $_SESSION['iduser'];
         $dt= $this->model("mGiangVien");
@@ -134,11 +123,7 @@ class TruongKhoa extends GiangVien {
     }
 
     function QuanLyKhoaLuan(){
-        if($_SESSION["PQ"] != 4 && $_SESSION["PQ"] != 1){
-            echo "<script>alert('Bạn không có quyền truy cập')</script>";
-            header("refresh: 0; url='/CongNgheMoi'");
-            return;
-        }
+        $this->checkPermission();
         
         $iduser = $_SESSION['iduser'];
         $dt= $this->model("mGiangVien");
@@ -152,15 +137,11 @@ class TruongKhoa extends GiangVien {
     }
 
     function DeXuatDeTai(){
-        if($_SESSION["PQ"] != 4 && $_SESSION["PQ"] != 1){
-            echo "<script>alert('Bạn không có quyền truy cập')</script>";
-            header("refresh: 0; url='/CongNgheMoi'");
-            return;
-        }
+        $this->checkPermission();
         
         // Kiểm tra MaGV có tồn tại không
         if(!isset($_SESSION['MaGV']) || empty($_SESSION['MaGV'])){
-            echo "<script>alert('Bạn chưa được gán mã giảng viên. Vui lòng liên hệ Admin.');</script>";
+            $_SESSION['message'] = ['type' => 'error', 'text' => 'Bạn chưa được gán mã giảng viên. Vui lòng liên hệ Admin.'];
             $this->view("layoutTK", [
                 "Page" => "TK_DeXuatDeTai",
                 "active" => "dexuatdetai"
@@ -180,11 +161,12 @@ class TruongKhoa extends GiangVien {
             $result = $dt->addDeTai($TenDeTai, $Mota, $IDGV, $IDNganh, $YeuCau, $soLuongTV);
             
             if ($result) {
-                echo "<script>alert('Thêm đề tài thành công');</script>";
-                header("refresh:0; url='/CongNgheMoi/TruongKhoa/DeXuatDeTai'");
+                $_SESSION['message'] = ['type' => 'success', 'text' => 'Thêm đề tài thành công'];
             } else {
-                echo "<script>alert('Thêm đề tài thất bại');</script>";
+                $_SESSION['message'] = ['type' => 'error', 'text' => 'Thêm đề tài thất bại'];
             }
+            header("location: " . base_url('/TruongKhoa/DeXuatDeTai'));
+            exit;
         }
         
         $this->view("layoutTK", [
@@ -194,16 +176,12 @@ class TruongKhoa extends GiangVien {
     }
 
     function ThongBaoDeTai(){
-        if($_SESSION["PQ"] != 4 && $_SESSION["PQ"] != 1){
-            echo "<script>alert('Bạn không có quyền truy cập')</script>";
-            header("refresh: 0; url='/CongNgheMoi'");
-            return;
-        }
+        $this->checkPermission();
         
         $iduser = $_SESSION['iduser'];
         $dt = $this->model("mGiangVien");
         
-        // Xử lý cập nhật thông báo
+        // Xử lý cập nhật thông báo (AJAX)
         if (isset($_POST['btnCapNhat'])) {
             header('Content-Type: application/json');
             $IDDeTai = isset($_POST['IDDeTai']) ? intval($_POST['IDDeTai']) : null;
@@ -229,7 +207,6 @@ class TruongKhoa extends GiangVien {
             exit;
         }
         
-        // Lấy danh sách đề tài để tạo thông báo
         $dsDeTai = json_decode($dt->getDSDeTaiThongBao($iduser), true);
         
         $this->view("layoutTK", [
@@ -257,6 +234,5 @@ class TruongKhoa extends GiangVien {
             echo json_encode(["success" => false, "message" => "Chưa có kết quả đánh giá"]);
         }
     }
-
 }
 ?>

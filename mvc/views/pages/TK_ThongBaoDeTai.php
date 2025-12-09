@@ -93,53 +93,56 @@ require_once "./mvc/views/components/sidebarTK.php";
     }
 </style>
 
-<div class="row">
-    <div class="col-md-12">
+<section class="content">
+    <div class="container-fluid">
         <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Tạo thông báo cho đề tài</h3>
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Tạo thông báo cho đề tài</h3>
             </div>
-            <div class="card-body">
+            <div class="card-body p-0">
                 <?php if (!empty($data['dsDeTai'])): ?>
-                    <table class="table table-hover table-bordered">
-                        <thead class="table-sticky bg-light">
-                            <tr>
-                                <th style="width: 5%">STT</th>
-                                <th style="width: 20%">Tên đề tài</th>
-                                <th style="width: 25%">Mô tả</th>
-                                <th style="width: 25%">Yêu cầu</th>
-                                <th style="width: 15%">Hành động</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($data['dsDeTai'] as $key => $detai): ?>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="bg-light">
                                 <tr>
-                                    <td><?= $key + 1 ?></td>
-                                    <td><?= htmlspecialchars($detai['TenDeTai']) ?></td>
-                                    <td>
-                                        <textarea class="form-control" readonly style="height: 100px;"><?= htmlspecialchars($detai['MoTa']) ?></textarea>
-                                    </td>
-                                    <td>
-                                        <textarea class="form-control" readonly style="height: 100px;"><?= htmlspecialchars($detai['YeuCau']) ?></textarea>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-primary btn-edit" data-bs-toggle="modal" data-bs-target="#thongBaoModal" onclick="loadThongBao(<?= $detai['IDDeTai'] ?>, '<?= htmlspecialchars($detai['TenDeTai'], ENT_QUOTES) ?>', '<?= htmlspecialchars($detai['ThongBao'] ?? '', ENT_QUOTES) ?>')">
-                                            <i class="fas fa-edit"></i> Tạo thông báo
-                                        </button>
-                                    </td>
+                                    <th class="px-3" style="width: 5%">STT</th>
+                                    <th class="px-3" style="width: 25%">Tên đề tài</th>
+                                    <th class="px-3" style="width: 25%">Mô tả</th>
+                                    <th class="px-3" style="width: 25%">Yêu cầu</th>
+                                    <th class="px-3 text-center" style="width: 20%">Hành động</th>
                                 </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($data['dsDeTai'] as $key => $detai): ?>
+                                    <tr>
+                                        <td class="px-3"><?= $key + 1 ?></td>
+                                        <td class="px-3"><?= htmlspecialchars($detai['TenDeTai']) ?></td>
+                                        <td class="px-3">
+                                            <div class="description-cell"><?= htmlspecialchars($detai['MoTa']) ?></div>
+                                        </td>
+                                        <td class="px-3">
+                                            <div class="description-cell"><?= htmlspecialchars($detai['YeuCau']) ?></div>
+                                        </td>
+                                        <td class="px-3 text-center">
+                                            <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#thongBaoModal" onclick="loadThongBao(<?= $detai['IDDeTai'] ?>, '<?= htmlspecialchars($detai['TenDeTai'], ENT_QUOTES) ?>', '<?= htmlspecialchars($detai['ThongBao'] ?? '', ENT_QUOTES) ?>')">
+                                                <i class="fas fa-edit"></i> Tạo thông báo
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 <?php else: ?>
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle"></i> Không có đề tài nào để tạo thông báo
+                    <div class="text-center py-4">
+                        <i class="fas fa-info-circle text-muted" style="font-size: 2rem;"></i>
+                        <p class="mt-2 text-muted">Không có đề tài nào để tạo thông báo</p>
                     </div>
                 <?php endif; ?>
             </div>
         </div>
     </div>
-</div>
+</section>
 
 <!-- Modal Thông báo -->
 <div class="modal fade modal-large" id="thongBaoModal" tabindex="-1" aria-labelledby="thongBaoModalLabel" aria-hidden="true">
