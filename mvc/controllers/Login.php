@@ -1,4 +1,6 @@
 <?php
+require_once "./mvc/private/JWTAuth.php";
+
 class Login extends Controller {
     public function SayHi() {
         if (isset($_POST['btndn'])) {
@@ -16,6 +18,9 @@ class Login extends Controller {
                 $login = $p->GetDN($user, $pass);
 
                 if ($login && $r = $login->fetch_assoc()) {
+                // Regenerate session ID để chống session fixation
+                session_regenerate_id(true);
+                
                 // Thiết lập session
                 $_SESSION['iduser'] = $r['iduser'];
                 $_SESSION['username'] = $r['username'];
@@ -26,6 +31,9 @@ class Login extends Controller {
                 $_SESSION['phanquyen'] = $r['PhanQuyen'];
                 $_SESSION['idNganh'] = $r['IDNganh'];
                 $_SESSION['PQ'] = $r['PQ'];
+                
+                // Tạo JWT token và lưu vào cookie
+                JWTAuth::createToken($r);
 
                 // Lấy base path (hỗ trợ cả XAMPP và Docker)
                 $basePath = defined('BASE_PATH') ? BASE_PATH : '/CongNgheMoi';

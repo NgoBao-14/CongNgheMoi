@@ -3,11 +3,14 @@ class DB {
     public $connect;
     public $api;
     
+    // Singleton pattern - giữ 1 connection duy nhất
+    private static $instance = null;
+    private static $connection = null;
+    private static $envLoaded = false;
+    
     private function getApiUrl() {
         $basePath = defined('BASE_PATH') ? BASE_PATH : ($_ENV['BASE_PATH'] ?? '/CongNgheMoi');
         
-        // Trong Docker container, dùng localhost:80 (Apache internal)
-        // Ngoài Docker, dùng HTTP_HOST
         if (getenv('DOCKER_ENV') === 'true') {
             $host = 'localhost';
             $protocol = 'http';
@@ -20,29 +23,39 @@ class DB {
     }
     
     function __construct() {
-        // Load .env file
-        $this->loadEnv();
+        // Load .env chỉ 1 lần
+        if (!self::$envLoaded) {
+            $this->loadEnv();
+            self::$envLoaded = true;
+        }
         
-        // Lấy config từ .env
+        // Reuse connection nếu đã có
+        if (self::$connection !== null && mysqli_ping(self::$connection)) {
+            $this->connect = self::$connection;
+        } else {
+            $this->createConnection();
+        }
+        
+        $this->api = $this->getApiUrl();
+    }
+    
+    private function createConnection() {
         $useCloud = $this->getEnv('USE_CLOUD_SQL', 'false') === 'true';
         
         if ($useCloud) {
-            // Dùng Cloud SQL
             $host = $this->getEnv('CLOUD_SQL_HOST', 'localhost');
             $user = $this->getEnv('CLOUD_SQL_USER', 'root');
             $pass = $this->getEnv('CLOUD_SQL_PASS', '');
             $db = $this->getEnv('CLOUD_SQL_NAME', 'thongtinmay');
         } else {
-            // Dùng Localhost hoặc Docker MySQL container
-            // Trong Docker, host là 'db' (tên service), ngoài Docker là 'localhost'
             $host = $this->getEnv('LOCAL_DB_HOST', 'localhost');
             $user = $this->getEnv('LOCAL_DB_USER', 'bao');
             $pass = $this->getEnv('LOCAL_DB_PASS', '123456');
             $db = $this->getEnv('LOCAL_DB_NAME', 'thongtinmay');
         }
         
-        // Kết nối
-        $this->connect = mysqli_connect($host, $user, $pass, $db);
+        // Persistent connection với p: prefix
+        $this->connect = mysqli_connect('p:' . $host, $user, $pass, $db);
         
         if (!$this->connect) {
             die("Kết nối database thất bại: " . mysqli_connect_error());
@@ -50,20 +63,20 @@ class DB {
         
         mysqli_set_charset($this->connect, "utf8mb4");
         
-        // Set API URL
-        $this->api = $this->getApiUrl();
+        // Cache connection
+        self::$connection = $this->connect;
     }
     
-    // Load file .env
     private function loadEnv() {
-        $envFile = __DIR__ . '/../../.env';
-        
-        if (!file_exists($envFile)) {
+        // Đã load từ index.php bằng Dotenv, không cần load lại
+        if (isset($_ENV['LOCAL_DB_HOST'])) {
             return;
         }
         
-        $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        $envFile = __DIR__ . '/../../.env';
+        if (!file_exists($envFile)) return;
         
+        $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         foreach ($lines as $line) {
             if (strpos(trim($line), '#') === 0) continue;
             if (strpos($line, '=') === false) continue;
@@ -77,13 +90,8 @@ class DB {
         }
     }
     
-    // Lấy giá trị từ .env
     private function getEnv($key, $default = '') {
-        $value = getenv($key);
-        if ($value === false) {
-            $value = isset($_ENV[$key]) ? $_ENV[$key] : $default;
-        }
-        return $value;
+        return $_ENV[$key] ?? getenv($key) ?: $default;
     }
     
     public function docjson($url) {
@@ -92,8 +100,7 @@ class DB {
         curl_setopt($client, CURLOPT_TIMEOUT, 30);
         $response = curl_exec($client);
         curl_close($client);
-        $results = json_decode($response);
-        return $results;
+        return json_decode($response);
     }
 }
 ?>
