@@ -1,22 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package testlaythongtinmay;
 
 /**
- *
- * @author admin
+ * Constants - Sử dụng Config để lấy giá trị từ environment
+ * Không hardcode credentials
  */
 public class Constants {
-    public static final String API_BASE_URL = "http://localhost:8080/CongNgheMoi/mvc/api/";
+    // Sử dụng Config thay vì hardcode
+    public static final String API_BASE_URL = Config.getApiBaseUrl();
     
-    public static final String API_LOGIN = API_BASE_URL + "dangnhap.php?";
-    public static final String API_REGISTER = API_BASE_URL + "them.php?";
-    public static final String API_CHECK_TOKEN = API_BASE_URL + "checktoken.php?token=";
-    public static final String API_XEM_DETAI = API_BASE_URL + "xemdetaichotungsinhvien.php?";
-    public static final String API_XEM_DSDIEM = API_BASE_URL + "xemdsdiem.php?";
-    public static final String API_NHAP_DIEM = API_BASE_URL + "nhapdiem.php?";
-    public static final String API_GET_DETAI_GV = API_BASE_URL + "getDeTaiGV.php?";
-    public static final String API_GET_SV_THEO_DETAI = API_BASE_URL + "getSVTheoDeTai.php?";
+    public static final String API_LOGIN = Config.getApiLogin();
+    public static final String API_REGISTER = Config.getApiRegister();
+    public static final String API_CHECK_TOKEN = Config.getApiCheckToken();
+    public static final String API_XEM_DETAI = Config.getApiXemDetai();
+    public static final String API_XEM_DSDIEM = Config.getApiXemDsDiem();
+    public static final String API_NHAP_DIEM = Config.getApiNhapDiem();
+    public static final String API_GET_DETAI_GV = Config.getApiGetDetaiGV();
+    public static final String API_GET_SV_THEO_DETAI = Config.getApiGetSVTheoDeTai();
 }

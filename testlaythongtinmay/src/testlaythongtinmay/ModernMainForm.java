@@ -387,13 +387,16 @@ public class ModernMainForm extends JFrame {
     private void loadDeTai() {
         try {
             mycls cls = new mycls();
+            
             String id = cls.mahoa(maGV).replace("+", "%2B");
             String url = Constants.API_GET_DETAI_GV + "id=" + id;
+            System.out.println("Loading đề tài từ: " + url);
+            
             JSONArray jarr = cls.docapi(url);
             
             modelDeTai.setRowCount(0);
             
-            if (jarr != null) {
+            if (jarr != null && jarr.length() > 0) {
                 for (int i = 0; i < jarr.length(); i++) {
                     JSONObject job = jarr.getJSONObject(i);
                     Vector<String> row = new Vector<>();
@@ -402,8 +405,13 @@ public class ModernMainForm extends JFrame {
                     row.add(job.getString("SoLuongSVDangKy"));
                     modelDeTai.addRow(row);
                 }
+                System.out.println("Đã load " + jarr.length() + " đề tài");
+            } else {
+                System.out.println("Không có đề tài nào hoặc API trả về null");
             }
         } catch (Exception e) {
+            System.out.println("Lỗi loadDeTai: " + e.getMessage());
+            e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách đề tài: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -422,13 +430,16 @@ public class ModernMainForm extends JFrame {
     private void loadSinhVien(String idDeTai) {
         try {
             mycls cls = new mycls();
+            
             String id = cls.mahoa(idDeTai).replace("+", "%2B");
             String url = Constants.API_GET_SV_THEO_DETAI + "id=" + id;
+            System.out.println("Loading sinh viên từ: " + url);
+            
             JSONArray jarr = cls.docapi(url);
             
             modelSinhVien.setRowCount(0);
             
-            if (jarr != null) {
+            if (jarr != null && jarr.length() > 0) {
                 for (int i = 0; i < jarr.length(); i++) {
                     JSONObject job = jarr.getJSONObject(i);
                     Vector<String> row = new Vector<>();
@@ -439,8 +450,13 @@ public class ModernMainForm extends JFrame {
                     row.add(job.getString("TenNhom"));
                     modelSinhVien.addRow(row);
                 }
+                System.out.println("Đã load " + jarr.length() + " sinh viên");
+            } else {
+                System.out.println("Không có sinh viên nào");
             }
         } catch (Exception e) {
+            System.out.println("Lỗi loadSinhVien: " + e.getMessage());
+            e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách sinh viên: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -508,8 +524,11 @@ public class ModernMainForm extends JFrame {
                                "Muc6.1", "Muc6.2", "Muc6.3"};
 
             mycls cls = new mycls();
+            
             String id = cls.mahoa(idDangKy).replace("+", "%2B");
             String url = Constants.API_XEM_DSDIEM + "id=" + id;
+            System.out.println("Loading điểm từ: " + url);
+            
             JSONArray jarr = cls.docapi(url);
             
             modelDiem.setRowCount(0);
@@ -543,6 +562,8 @@ public class ModernMainForm extends JFrame {
                 return;
             }
             
+            mycls cls = new mycls();
+            
             String[] muc = new String[12];
             for (int i = 0; i < 12; i++) {
                 muc[i] = modelDiem.getValueAt(i, 8).toString();
@@ -565,7 +586,7 @@ public class ModernMainForm extends JFrame {
                   .append("&iddetai=").append(iddetai);
 
             String url = Constants.API_NHAP_DIEM + thamso.toString();
-            mycls cls = new mycls();
+            System.out.println("Saving điểm: " + url);
             cls.geturl(url);
             
             JOptionPane.showMessageDialog(this, "✅ Lưu điểm thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);

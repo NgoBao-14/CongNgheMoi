@@ -2,6 +2,9 @@
 class mDKDT extends DB {
     
     public function getTTDeTai($iduser) {
+        // Đảm bảo charset UTF-8
+        mysqli_set_charset($this->connect, "utf8mb4");
+        
         // Lấy danh sách đề tài và đếm số lượng sinh viên đã đăng ký
         $sql = "SELECT 
                 dt.*,
@@ -16,9 +19,15 @@ class mDKDT extends DB {
         $result = mysqli_query($this->connect, $sql);
         $mang = array();
         while ($row = mysqli_fetch_assoc($result)) {
+            // Đảm bảo encoding UTF-8 cho tất cả các trường text
+            foreach ($row as $key => $value) {
+                if (is_string($value)) {
+                    $row[$key] = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
+                }
+            }
             $mang[] = $row;
         }
-        return json_encode($mang);
+        return json_encode($mang, JSON_UNESCAPED_UNICODE);
     }
 
     // Đăng ký đề tài - lưu vào bảng dangkydetai và tạo bản ghi điểm
@@ -93,6 +102,8 @@ class mDKDT extends DB {
     }
 
     public function TTSV($masv){
+        mysqli_set_charset($this->connect, "utf8mb4");
+        
         $str = "SELECT * FROM sinhvien sv
         JOIN user u on sv.iduser=u.iduser
         JOIN chuyennganh cn on u.IDNganh= cn.IDNganh
@@ -102,11 +113,14 @@ class mDKDT extends DB {
         while ($row = mysqli_fetch_assoc($result)) {
             $mang[] = $row;
         }
-        return json_encode($mang);
+        return json_encode($mang, JSON_UNESCAPED_UNICODE);
     }
 
     // Lấy thông tin đề tài đã đăng ký của sinh viên
     public function getTTDeTaiByIDU($iduser) {
+        // Đảm bảo charset UTF-8
+        mysqli_set_charset($this->connect, "utf8mb4");
+        
         $str = "SELECT 
                 dt.*,
                 CONCAT(uGV.HoDem, ' ', uGV.Ten) AS GiangVienHuongDan,
@@ -127,7 +141,7 @@ class mDKDT extends DB {
         while ($row = mysqli_fetch_assoc($result)) {
             $mang[] = $row;
         }
-        return json_encode($mang);
+        return json_encode($mang, JSON_UNESCAPED_UNICODE);
     }
     // Lấy IDNhom của sinh viên
     public function getIDNhomByIDUser($iduser) {
@@ -159,6 +173,8 @@ class mDKDT extends DB {
             return json_encode(array());
         }
         
+        mysqli_set_charset($this->connect, "utf8mb4");
+        
         $str = "SELECT 
                 sv.MaSV,
                 CONCAT(u.HoDem, ' ', u.Ten) AS HoTenSinhVien,
@@ -176,7 +192,7 @@ class mDKDT extends DB {
         while ($row = mysqli_fetch_assoc($result)) {
             $mang[] = $row;
         }
-        return json_encode($mang);
+        return json_encode($mang, JSON_UNESCAPED_UNICODE);
     }
 
     public function nopBaoCao($idNhom, $file) {
@@ -313,6 +329,8 @@ class mDKDT extends DB {
     
     // Lấy danh sách sinh viên đăng ký cùng đề tài
     public function getDanhSachSVCungDeTai($MaSV) {
+        mysqli_set_charset($this->connect, "utf8mb4");
+        
         // Lấy IDDeTai của sinh viên hiện tại
         $sqlDeTai = "SELECT IDDeTai FROM dangkydetai WHERE MaSV = '$MaSV'";
         $resultDeTai = mysqli_query($this->connect, $sqlDeTai);
@@ -347,7 +365,7 @@ class mDKDT extends DB {
         while ($row = mysqli_fetch_assoc($result)) {
             $mang[] = $row;
         }
-        return json_encode($mang);
+        return json_encode($mang, JSON_UNESCAPED_UNICODE);
     }
     
     // Hủy đăng ký đề tài
@@ -385,6 +403,8 @@ class mDKDT extends DB {
     
     // Lấy lịch sử đăng ký
     public function getLichSuDangKy($iduser) {
+        mysqli_set_charset($this->connect, "utf8mb4");
+        
         $sql = "SELECT 
                 dt.TenDeTai,
                 CONCAT(u.HoDem, ' ', u.Ten) AS GiangVienHuongDan,
@@ -403,7 +423,7 @@ class mDKDT extends DB {
         while ($row = mysqli_fetch_assoc($result)) {
             $mang[] = $row;
         }
-        return json_encode($mang);
+        return json_encode($mang, JSON_UNESCAPED_UNICODE);
     }
 }   
 ?>

@@ -279,6 +279,57 @@
             }
             return json_encode($data);
         }
+        
+        /**
+         * Xóa đề tài và các dữ liệu liên quan
+         * @param int $id - ID đề tài cần xóa
+         * @return bool
+         */
+        public function XoaDeTai($id)
+        {
+            $id = intval($id);
+            
+            // Bắt đầu transaction
+            $this->connect->begin_transaction();
+            
+            try {
+                // 1. Xóa điểm của sinh viên đăng ký đề tài này
+                $sqlDiem = "DELETE d FROM diem d 
+                            INNER JOIN dangkydetai dk ON d.IDDangKy = dk.IDDangKy 
+                            WHERE dk.IDDeTai = $id";
+                $this->connect->query($sqlDiem);
+                
+                // 2. Xóa đăng ký đề tài
+                $sqlDangKy = "DELETE FROM dangkydetai WHERE IDDeTai = $id";
+                $this->connect->query($sqlDangKy);
+                
+                // 3. Xóa thành viên nhóm liên quan đến đề tài này
+                $sqlThanhVien = "DELETE tv FROM thanhviennhom tv 
+                                 INNER JOIN nhom n ON tv.IDNhom = n.IDNhom 
+                                 WHERE n.IDDeTai = $id";
+                $this->connect->query($sqlThanhVien);
+                
+                // 4. Xóa nhóm của đề tài
+                $sqlNhom = "DELETE FROM nhom WHERE IDDeTai = $id";
+                $this->connect->query($sqlNhom);
+                
+                // 5. Xóa đề tài
+                $sqlDeTai = "DELETE FROM detai WHERE IDDeTai = $id";
+                $result = $this->connect->query($sqlDeTai);
+                
+                if ($result && $this->connect->affected_rows > 0) {
+                    $this->connect->commit();
+                    return true;
+                } else {
+                    $this->connect->rollback();
+                    return false;
+                }
+                
+            } catch (Exception $e) {
+                $this->connect->rollback();
+                return false;
+            }
+        }
   
     }
 ?>

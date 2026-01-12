@@ -206,7 +206,6 @@ echo '
         <h5 class="text-primary mb-3"><i class="bi bi-info-circle me-2"></i>Ghi chú:</h5>
         <ul class="mb-0">
             <li>Điểm tổng kết được tính theo thang điểm 10</li>
-            <li>Sinh viên cần đạt tối thiểu 5.0 điểm để được công nhận tốt nghiệp</li>
             <li>Điểm cuối cùng sẽ được tổng hợp từ giảng viên hướng dẫn và hội đồng bảo vệ</li>
             <li>Mỗi tiêu chí được đánh giá theo 4 mức độ: Mức 1 (0-30%), Mức 2 (40-60%), Mức 3 (70-80%), Mức 4 (90-100%)</li>
         </ul>

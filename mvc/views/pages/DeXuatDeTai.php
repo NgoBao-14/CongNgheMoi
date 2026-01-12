@@ -119,7 +119,7 @@ require_once "./mvc/views/components/sidebarGV.php";
 
                                                 <div class="form-floating mb-3">
                                                     <label for="soLuongTV">Số lượng thành viên</label>
-                                                    <input type="number" name="soLuongTV" class="form-control" placeholder="Số lượng thành viên" min="1" max="5" required>
+                                                    <input type="number" name="soLuongTV" class="form-control" placeholder="Số lượng thành viên" min="1" max="10" required>
                                                 </div>
                                             </div>
 

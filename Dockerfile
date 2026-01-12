@@ -46,6 +46,9 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 777 /var/www/html/CongNgheMoi/logs 2>/dev/null || true \
     && chmod -R 777 /var/www/html/CongNgheMoi/public/uploads 2>/dev/null || true
 
+# Set biến môi trường cho Docker
+ENV DOCKER_ENV=true
+
 # Expose port 80
 EXPOSE 80
 

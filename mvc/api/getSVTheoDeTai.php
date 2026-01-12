@@ -1,15 +1,27 @@
 <?php
-// API lấy danh sách sinh viên đăng ký theo đề tài (bao gồm thông tin nhóm)
+/**
+ * API lấy danh sách sinh viên đăng ký theo đề tài
+ */
 require_once("../Bridge.php");
 include("../class/classketnoi.php");
 include("../private/AES.php");
 
+header("Content-Type: application/json; charset=UTF-8");
+
 $r = new giaimaAES();
 $p = new csdl();
-$id = $_REQUEST['id'];
-$id = $r->giaima($id);
 
+$id = $_REQUEST['id'] ?? '';
+if (empty($id)) {
+    echo json_encode([]);
+    exit();
+}
+
+$id = $r->giaima($id);
 $link = $p->connect;
+mysqli_set_charset($link, "utf8mb4");
+$id_safe = mysqli_real_escape_string($link, $id);
+
 $sql = "SELECT dk.IDDangKy, dk.MaSV, dk.NgayDangKy,
         u.HoDem, u.Ten, sv.Lop,
         tv.IDNhom,
@@ -18,7 +30,7 @@ $sql = "SELECT dk.IDDangKy, dk.MaSV, dk.NgayDangKy,
         JOIN sinhvien sv ON dk.MaSV = sv.MaSV
         JOIN user u ON sv.iduser = u.iduser
         LEFT JOIN thanhviennhom tv ON dk.MaSV = tv.MaSV
-        WHERE dk.IDDeTai = '$id'
+        WHERE dk.IDDeTai = '$id_safe'
         ORDER BY tv.IDNhom, u.HoDem, u.Ten";
 
 $ketqua = mysqli_query($link, $sql);
@@ -29,7 +41,6 @@ if ($ketqua && mysqli_num_rows($ketqua) > 0) {
         $idNhom = $row["IDNhom"];
         $soThanhVien = $row["SoThanhVienNhom"];
         
-        // Xác định tên nhóm hiển thị
         if ($idNhom == null || $soThanhVien <= 1) {
             $tenNhom = "Làm một mình";
         } else {
@@ -50,6 +61,5 @@ if ($ketqua && mysqli_num_rows($ketqua) > 0) {
     }
 }
 
-header("content-Type:application/json; charset=UTF-8");
-echo json_encode($dulieu);
+echo json_encode($dulieu, JSON_UNESCAPED_UNICODE);
 ?>

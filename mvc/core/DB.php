@@ -11,11 +11,13 @@ class DB {
     private function getApiUrl() {
         $basePath = defined('BASE_PATH') ? BASE_PATH : ($_ENV['BASE_PATH'] ?? '/CongNgheMoi');
         
-        if (getenv('DOCKER_ENV') === 'true') {
+        // Trong Docker, curl gọi từ PHP cần dùng localhost:80 (port nội bộ container)
+        // Không phải localhost:8080 (port map ra ngoài)
+        if (getenv('DOCKER_ENV') === 'true' || isset($_ENV['DOCKER_ENV'])) {
             $host = 'localhost';
             $protocol = 'http';
         } else {
-            $host = $_SERVER['HTTP_HOST'] ?? 'localhost:8080';
+            $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
             $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         }
         

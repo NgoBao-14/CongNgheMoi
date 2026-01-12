@@ -155,8 +155,8 @@ echo '
                 
                 <div class="row g-4 mt-2">
                     <div class="col-md-6">
-                        <label class="form-label">Chuyên ngành <span class="required">*</span></label>
-                        <select name="chuyennganh" class="form-select" required>
+                        <label class="form-label">Chuyên ngành </label>
+                        <select name="chuyennganh" class="form-select" required disabled>
                             <option value="">Chọn chuyên ngành</option>';
                             foreach ($dt as $row) {
                                 $selected = ($detai['IDNganh'] == $row['IDNganh']) ? 'selected' : '';
@@ -180,31 +180,13 @@ echo '                  </select>
                         </select>
                     </div>
                     
-                    <div class="col-md-6">
-                        <label class="form-label">Trạng thái đăng ký <span class="required">*</span></label>
-                        <select name="trangthaidk" class="form-select" required>
-                            <option value="Chưa đăng ký" ' . ($detai['TrangThaiDK'] == 'Chưa đăng ký' ? 'selected' : '') . '>Chưa đăng ký</option>
-                            <option value="Đã đăng ký" ' . ($detai['TrangThaiDK'] == 'Đã đăng ký' ? 'selected' : '') . '>Đã đăng ký</option>
-                        </select>
-                    </div>
+                    
                 </div>
                 
                 <div class="row g-4 mt-2">
-                    <div class="col-md-6">
-                        <label class="form-label">Ngày đăng ký</label>
-                        <input type="date" name="ngaydk" class="form-control" value="' . (isset($detai['NgayDK']) ? $detai['NgayDK'] : '') . '">
-                    </div>
                     
-                    <div class="col-md-6">
-                        <label class="form-label">Nhóm</label>
-                        <select name="nhom" class="form-select">
-                            <option value="">Chưa có nhóm</option>';
-                            foreach ($nhom as $row) {
-                                $selected = (isset($detai['IDNhom']) && $detai['IDNhom'] == $row['IDNhom']) ? 'selected' : '';
-                                echo '<option value="' . $row['IDNhom'] . '" ' . $selected . '>Nhóm ' . $row['IDNhom'] . '</option>';
-                            }
-echo '                  </select>
-                    </div>
+                    
+                    
                 </div>
                 
                 <div class="d-flex gap-2 justify-content-end mt-4 pt-4" style="border-top: 1px solid #E2E8F0;">

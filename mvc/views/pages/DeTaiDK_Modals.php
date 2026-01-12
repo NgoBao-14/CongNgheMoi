@@ -104,7 +104,7 @@ echo '
                 </div>
                 <div class="alert alert-info mt-3">
                     <i class="bi bi-info-circle me-2"></i>
-                    <strong>Lưu ý:</strong> Điểm tổng kết được tính theo thang điểm 10. Sinh viên cần đạt tối thiểu 5.0 điểm để được công nhận tốt nghiệp.
+                    
                 </div>
             </div>
             <div class="modal-footer">
@@ -403,10 +403,7 @@ function loadKetQuaCham() {
                 }
                 
                 html += `
-                            <div class="alert alert-info mt-4 mb-0">
-                                <i class="bi bi-info-circle me-2"></i>
-                                <strong>Lưu ý:</strong> Điểm tổng kết được tính theo thang điểm 10. Sinh viên cần đạt tối thiểu 5.0 điểm để được công nhận tốt nghiệp.
-                            </div>
+                            
                         </div>
                     </div>
                 `;

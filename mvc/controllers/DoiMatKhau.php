@@ -1,13 +1,12 @@
 <?php
-require_once "./mvc/helpers/ToastHelper.php";
-
 class DoiMatKhau extends Controller {
     
     function SayHi(){
         // Kiểm tra đã đăng nhập chưa
         if(!isset($_SESSION["iduser"])){
-            ToastHelper::error('Vui lòng đăng nhập', '/CongNgheMoi');
-            return;
+            $_SESSION['message'] = ['type' => 'error', 'text' => 'Vui lòng đăng nhập'];
+            header("location: " . base_url('/'));
+            exit;
         }
 
         $iduser = $_SESSION['iduser'];
@@ -21,7 +20,7 @@ class DoiMatKhau extends Controller {
 
             // Kiểm tra mật khẩu mới và xác nhận có khớp không
             if ($matKhauMoi !== $xacNhanMatKhau) {
-                ToastHelper::error('Mật khẩu mới và xác nhận mật khẩu không khớp!');
+                $_SESSION['message'] = ['type' => 'error', 'text' => 'Mật khẩu mới và xác nhận mật khẩu không khớp!'];
             } else {
                 // Kiểm tra mật khẩu cũ
                 $checkOldPass = json_decode($model->checkOldPassword($iduser, $matKhauCu), true);
@@ -32,12 +31,14 @@ class DoiMatKhau extends Controller {
                     $result = json_decode($model->changePassword($iduser, $matKhauMoiMD5), true);
                     
                     if ($result) {
-                        ToastHelper::success(' mật khẩu thành công!', '/CongNgheMoi/DoiMatKhau');
+                        $_SESSION['message'] = ['type' => 'success', 'text' => 'Đổi mật khẩu thành công!'];
+                        header("location: " . base_url('/DoiMatKhau'));
+                        exit;
                     } else {
-                        ToastHelper::error(' mật khẩu thất bại!');
+                        $_SESSION['message'] = ['type' => 'error', 'text' => 'Đổi mật khẩu thất bại!'];
                     }
                 } else {
-                    ToastHelper::error('Mật khẩu cũ không đúng!');
+                    $_SESSION['message'] = ['type' => 'error', 'text' => 'Mật khẩu cũ không đúng!'];
                 }
             }
         }
@@ -54,7 +55,8 @@ class DoiMatKhau extends Controller {
         } elseif ($pq == 1) {
             // Giảng viên
             $this->view("layoutGV2", [
-                "Page" => "DoiMatKhau"
+                "Page" => "DoiMatKhau",
+                "active" => "doimatkhau"
             ]);
         } elseif ($pq == 2) {
             // Sinh viên
@@ -64,7 +66,8 @@ class DoiMatKhau extends Controller {
         } else {
             // Mặc định
             $this->view("layoutGV2", [
-                "Page" => "DoiMatKhau"
+                "Page" => "DoiMatKhau",
+                "active" => "doimatkhau"
             ]);
         }
     }

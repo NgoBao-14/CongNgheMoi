@@ -6,7 +6,11 @@
 .env
 .env.local
 .env.production
+.env.docker
 *.env
+
+# Java config files - chứa credentials
+testlaythongtinmay/.env
 
 # Logs
 logs/

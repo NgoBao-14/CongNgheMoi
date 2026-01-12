@@ -209,9 +209,14 @@ if (!empty($detai)) {
             <td>' . (isset($row['IDNhom']) && $row['IDNhom'] ? '<span class="badge-custom" style="background: #F5F3FF; color: #8B5CF6;">Nhóm ' . $row['IDNhom'] . '</span>' : '<span class="badge-custom" style="background: #F1F5F9; color: #64748B;">-</span>') . '</td>
             <td class="text-center"><span class="badge-custom" style="background: #F1F5F9; color: #334155;">' . (isset($row['SoLuongTV']) ? $row['SoLuongTV'] : '0') . '</span></td>
             <td>
-                <a href="' . base_url('/Admin/CapNhatDT?id=' . $row['IDDeTai']) . '" class="btn btn-sm" style="background: #F8FAFC; color: #4F46E5; border: 1px solid #E2E8F0; border-radius: 0.5rem; padding: 0.375rem 0.75rem;">
-                    <i class="fas fa-edit"></i>
-                </a>
+                <div class="d-flex gap-1">
+                    <a href="' . base_url('/Admin/CapNhatDT?id=' . $row['IDDeTai']) . '" class="btn btn-sm" style="background: #F8FAFC; color: #4F46E5; border: 1px solid #E2E8F0; border-radius: 0.5rem; padding: 0.375rem 0.75rem;" title="Chỉnh sửa">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <button type="button" class="btn btn-sm btn-xoa-detai" data-id="' . $row['IDDeTai'] . '" data-ten="' . htmlspecialchars($row['TenDeTai']) . '" style="background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; border-radius: 0.5rem; padding: 0.375rem 0.75rem;" title="Xóa">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
             </td>
         </tr>';
     }
@@ -234,5 +239,58 @@ echo '
             </div>
         </div>
     </div>
-</div>';
+</div>
+
+<!-- Modal Xác nhận xóa -->
+<div class="modal fade" id="modalXoaDeTai" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 1rem; border: none;">
+            <div class="modal-header" style="background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%); border-radius: 1rem 1rem 0 0; border: none;">
+                <h5 class="modal-title" style="color: #DC2626;">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Xác nhận xóa đề tài
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <p class="mb-3">Bạn có chắc chắn muốn xóa đề tài:</p>
+                <div class="alert" style="background: #FEF2F2; border: 1px solid #FECACA; border-radius: 0.5rem;">
+                    <strong id="tenDeTaiXoa" style="color: #DC2626;"></strong>
+                </div>
+                <p class="text-muted mb-0" style="font-size: 0.875rem;">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Hành động này không thể hoàn tác. Tất cả dữ liệu liên quan sẽ bị xóa.
+                </p>
+            </div>
+            <div class="modal-footer" style="border: none;">
+                <button type="button" class="btn" data-bs-dismiss="modal" style="background: #F1F5F9; color: #64748B; border-radius: 0.5rem;">
+                    <i class="fas fa-times me-1"></i>Hủy
+                </button>
+                <form id="formXoaDeTai" method="POST" action="' . base_url('/Admin/XoaDeTai') . '" style="display: inline;">
+                    <input type="hidden" name="id" id="idDeTaiXoa">
+                    <button type="submit" name="btn_xoa" class="btn" style="background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%); color: white; border-radius: 0.5rem;">
+                        <i class="fas fa-trash me-1"></i>Xóa đề tài
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Xử lý click nút xóa
+    document.querySelectorAll(".btn-xoa-detai").forEach(function(btn) {
+        btn.addEventListener("click", function() {
+            var id = this.getAttribute("data-id");
+            var ten = this.getAttribute("data-ten");
+            
+            document.getElementById("idDeTaiXoa").value = id;
+            document.getElementById("tenDeTaiXoa").textContent = ten;
+            
+            var modal = new bootstrap.Modal(document.getElementById("modalXoaDeTai"));
+            modal.show();
+        });
+    });
+});
+</script>';
 ?>

@@ -25,7 +25,7 @@ echo '
                             <th style="width: 10%;" class="text-center">STT</th>
                             <th style="width: 45%;">Tên đề tài</th>
                             <th style="width: 25%;">Giảng viên hướng dẫn</th>
-                            <th style="width: 20%;" class="text-center">Đợt</th>
+                            <th style="width: 20%;" class="text-center">Ngày đăng ký</th>
                         </tr>
                     </thead>
                     <tbody>';

@@ -243,6 +243,39 @@
             ]);
         }
         
+        /**
+         * Xóa đề tài
+         * Xóa cả các dữ liệu liên quan: đăng ký đề tài, điểm, nhóm
+         */
+        function XoaDeTai()
+        {
+            // Kiểm tra quyền admin
+            if($_SESSION["PQ"] != 3){
+                $_SESSION['message'] = ['type' => 'error', 'text' => 'Bạn không có quyền thực hiện'];
+                header("location: " . base_url('/Admin/DSDeTai'));
+                exit;
+            }
+            
+            if(isset($_POST['btn_xoa']))
+            {
+                $id = $_POST['id'];
+                $admin = $this->model("mAdmin");
+                
+                // Xóa đề tài (các ràng buộc sẽ được xử lý trong model)
+                if($admin->XoaDeTai($id))
+                {
+                    $_SESSION['message'] = ['type' => 'success', 'text' => 'Xóa đề tài thành công'];
+                }
+                else
+                {
+                    $_SESSION['message'] = ['type' => 'error', 'text' => 'Xóa đề tài thất bại. Có thể đề tài đang có sinh viên đăng ký.'];
+                }
+            }
+            
+            header("location: " . base_url('/Admin/DSDeTai'));
+            exit;
+        }
+        
     }
 
 ?>
